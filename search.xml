@@ -291,9 +291,9 @@
             
             <tag> JavaWeb </tag>
             
-            <tag> Apache </tag>
-            
             <tag> HTTP </tag>
+            
+            <tag> Apache </tag>
             
         </tags>
       
@@ -537,13 +537,13 @@
       
         <tags>
             
-            <tag> Net </tag>
+            <tag> Java </tag>
             
             <tag> LRU </tag>
             
-            <tag> Java </tag>
-            
             <tag> CoreJava </tag>
+            
+            <tag> Net </tag>
             
         </tags>
       
@@ -570,11 +570,11 @@
       
         <tags>
             
-            <tag> Net </tag>
-            
             <tag> Java </tag>
             
             <tag> CoreJava </tag>
+            
+            <tag> Net </tag>
             
             <tag> JDK </tag>
             
