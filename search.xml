@@ -89,140 +89,10 @@
         <category>algorithm</category>
       </categories>
       <tags>
-        <tag>Java</tag>
-        <tag>LRU</tag>
-        <tag>CoreJava</tag>
         <tag>Net</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Nginx Stream L4 负载均衡</title>
-    <url>/posts/2018-04-12-nginx-l4-loadblance-md/</url>
-    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>使用Nginx Stream实现反向代理（通信协议：TCP），并结合DNS、keepalived 和VIP ，实现Nginx Stream的多活和高可用。<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20200814175544.png"></p>
-<h2 id="实现与配置"><a href="#实现与配置" class="headerlink" title="实现与配置"></a>实现与配置</h2><h3 id="Nginx-Stream-安装"><a href="#Nginx-Stream-安装" class="headerlink" title="Nginx Stream 安装"></a>Nginx Stream 安装</h3><p>Nginx Stream 编译安装，参照本文 <a href="./">附录一 Nignx Stream 安装</a><br>注意: 在centos7 OS上通过yum安装的nginx-all-modules 已经包含Nginx Stream module,可以直接使用<a href="http://nginx.org/en/linux_packages.html#RHEL-CentOS">cenots/RHEL yum install nginx</a></p>
-<h3 id="Nginx-Stream-L4-负载基本配置"><a href="#Nginx-Stream-L4-负载基本配置" class="headerlink" title="Nginx Stream L4 负载基本配置"></a>Nginx Stream L4 负载基本配置</h3><h4 id="Nginx-Stream-配置"><a href="#Nginx-Stream-配置" class="headerlink" title="Nginx Stream 配置"></a>Nginx Stream 配置</h4><p>Nginx Stream 使用过程中可能还会遇到需要进行负载均衡方式调整、A/B测试、流量镜像、使用TLS加密、记录日志和配置多活等。</p>
-<h4 id="负载均衡方法"><a href="#负载均衡方法" class="headerlink" title="负载均衡方法"></a>负载均衡方法</h4><p>在upstream 的几种负载均衡方法：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">upstream backend_ods &#123;</span><br><span class="line">     <span class="built_in">hash</span> $remote_addr<span class="variable">$remote_port</span> consistent;</span><br><span class="line">     server 10.224.17.246:10091;</span><br><span class="line">     server 10.224.17.246:10092;</span><br><span class="line">     server 10.224.17.246:10093;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th align="left">load blance</th>
-<th align="left">desc</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>hash $remote_addr consistent</code></td>
-<td align="left">按client ip(ipv4/ipv6) addrees进行hash和取模（计算可以表示为： mod(hash($remote_addr),upstream_size)), 同一个client的所有会被分发给一个后端节点。问题：单个cleint的并发很高时，会造后端服务节点的负载不均衡。好处：方便跟踪日志和抓包</td>
-</tr>
-<tr>
-<td align="left"><code>hash $remote_addr$remote_port  consistent</code></td>
-<td align="left">按client ip(ipv4/ipv6) addrees + client port进行hash和取模，可以更好的实现后端节点的负载均衡</td>
-</tr>
-<tr>
-<td align="left"><code>hash $connection  consistent</code></td>
-<td align="left">按 client 链接到nginx 的 <code>connection serial number</code> 进行hash和取模，这个方式类似于<code>$remote_addr$remote_port</code></td>
-</tr>
-</tbody></table>
-<p>*这里<code>consistent</code> 常量的作用是避免增加或者删除后端server时候，大量服务断开的问题。参照：<a href="http://nginx.org/en/docs/stream/ngx_stream_upstream_module.html#hash"> consistent parameter</a></p>
-<p>Nginx Stream其它负载均衡方法：<code>least_conn</code>,<code>least_time</code>,<code>random</code>。</p>
-<h4 id="Stream-流量镜像"><a href="#Stream-流量镜像" class="headerlink" title="Stream 流量镜像"></a>Stream 流量镜像</h4><p>将生产环境的一部分流量转发到指定节点进行压力测试或者灰度测试， 因为nginx 的mirro module是不支持stream模式下的流量复制，这里需要借助使用<code>iptables</code>实现。<br>实现复制10.224.18.34：9443的进站流量到<code>10.224.17.246:10095</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">iptables -t mangle -A PREROUTING -d 10.224.18.34 -dport 9443 -j TEE --gateway 10.224.17.246:10095</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>这里需要配置<a href="https://www.linode.com/docs/security/firewalls/control-network-traffic-with-iptables/"><code>iptables-servcie</code></a>和<br><a href="https://forums.centos.org/viewtopic.php?f=50&t=67768">Mirroring outbound https traffic w/ iptables</a><br>注意：如果是TLS加密数据，镜像后的流量需要解密。</p>
-<h4 id="Stream-A-B测试"><a href="#Stream-A-B测试" class="headerlink" title="Stream A/B测试"></a>Stream A/B测试</h4><p>将流量进行切分，执行A/B测试的场景。<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20200814172223.png"></p>
-<p>配置文件：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">stream &#123;</span><br><span class="line">   upstream backend_ods &#123;</span><br><span class="line">      <span class="built_in">hash</span> <span class="variable">$connection</span> consistent;</span><br><span class="line">      server 10.224.17.246:10091 ;</span><br><span class="line">      server 10.224.17.245:10091  ;</span><br><span class="line">   &#125;</span><br><span class="line">   upstream test_ods&#123;</span><br><span class="line">       server 10.224.17.242:10092;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#20% 流量用于验证 test_ods group upstream </span></span><br><span class="line">    split_clients <span class="string">&quot;<span class="variable">$&#123;remote_addr&#125;</span>AAA&quot;</span> <span class="variable">$upstream</span> &#123;</span><br><span class="line">                  80%                backend_ods;</span><br><span class="line">                  *                  test_ods;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   server &#123;</span><br><span class="line">        listen 9443 so_keepalive=on so_keepalive=30m::10;</span><br><span class="line">        <span class="comment">#后端节点链接超时时间，如果所有后端节点存在异常，应快速断开，避免数据堆积</span></span><br><span class="line">        proxy_connect_timeout 10s;</span><br><span class="line">        proxy_timeout 30m;</span><br><span class="line">        proxy_pass <span class="variable">$upstream</span>;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>split_clients</code>分流算法使用<code>MurmurHash2</code></li>
-<li>详情参考<a href="http://nginx.org/en/docs/stream/ngx_stream_split_clients_module.html">ngx_stream_split_clients_module</a></li>
-</ul>
-<h4 id="配置Stream-TLS-SSL"><a href="#配置Stream-TLS-SSL" class="headerlink" title="配置Stream TLS/SSL"></a>配置Stream TLS/SSL</h4><p>如果程序涉及的数据比较机密或者或者网络环境不可信时，需要使用<code>stream_ssl_preread_module</code>配置TLS 证书进行加密,配置如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen     9443;</span><br><span class="line">    proxy_pass backend_ods;</span><br><span class="line">    proxy_ssl  on;</span><br><span class="line">    ssl_certificate        /etc/ssl/certs/server.crt;</span><br><span class="line">    ssl_certificate_key    /etc/ssl/certs/server.key;</span><br><span class="line">    proxy_ssl_trusted_certificate /etc/ssl/certs/trusted_ca_cert.crt;</span><br><span class="line">    ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">    ssl_ciphers    HIGH:!aNULL:!MD5;</span><br><span class="line">    <span class="comment"># default 60s</span></span><br><span class="line">    ssl_handshake_timeout 10s;</span><br><span class="line">    ssl_session_cache shared:SSL:1m;</span><br><span class="line">    ssl_session_timeout 4h;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>可能涉及配置证书等操作，请参照<a href="https://ordiychen.github.io/2020-01-01-tls-truststores-md/">HTTP2 TLS加密通信理解与应用</a></li>
-<li>跟多配置信息<a href="http://nginx.org/en/docs/stream/ngx_stream_ssl_module.html">ngx_stream_ssl_module</a></li>
-</ul>
-<h4 id="配置Stream-log"><a href="#配置Stream-log" class="headerlink" title="配置Stream log"></a>配置Stream log</h4><p>在Nginx Stream 调试时，需要输出一些详细日志用于问题定位和检查，需要使用<code>ngx_stream_log_module</code> 打印更多日志信息。<br>记录请求数据日志：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">stream &#123;</span><br><span class="line">   log_format basic <span class="string">&#x27;$remote_addr$remote_port [$time_local] &#x27;</span></span><br><span class="line">                 <span class="string">&#x27;$protocol $status $bytes_sent $bytes_received &#x27;</span></span><br><span class="line">                 <span class="string">&#x27;$session_time  &quot;$upstream_addr&quot; &#x27;</span> <span class="string">&#x27;&quot;$upstream_bytes_sent&quot; &quot;$upstream_bytes_received&quot; &quot;$upstream_connect_time&quot;&#x27;</span>;</span><br><span class="line">   access_log /var/<span class="built_in">log</span>/nginx/nginx-access.log basic buffer=32k;</span><br><span class="line">   error_log  /var/<span class="built_in">log</span>/nginx/error.log info;</span><br><span class="line">   open_log_file_cache max=1000 inactive=20s valid=1m min_uses=2;</span><br><span class="line"></span><br><span class="line">   server &#123;</span><br><span class="line">        ......</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>增加对TLS 的日志记录，便于查看client 使用的加密方法等信息：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">upstream &#123;</span><br><span class="line">    log_format sslparams <span class="string">&#x27;$ssl_protocol $ssl_cipher &#x27;</span></span><br><span class="line">                  <span class="string">&#x27;$remote_addr &#x27;</span> ;</span><br><span class="line">   access_log  /var/<span class="built_in">log</span>/nginx/sslparams.log sslparams;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>注意：使用yum intall nginx 安装的无法配置 stream log( 缺少<code>ngx_stream_log_module</code>)</li>
-<li>跟多配置参数：<a href="http://nginx.org/en/docs/stream/ngx_stream_log_module.html">ngx_stream_log_module</a></li>
-</ul>
-<h3 id="配置多活"><a href="#配置多活" class="headerlink" title="配置多活"></a>配置多活</h3><p>使用keepalive 配置多活，这里keepalived + VIP + DNS 实现多活，整个逻辑和实现如下图<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20200817100506.png" alt="images"></p>
-<ul>
-<li>安装于配置<a href="https://access.redhat.com/discussions/3007011">keepalived multiple vips</a></li>
-</ul>
-<h3 id="Nginx-Stream-L4-代理遇到的问题"><a href="#Nginx-Stream-L4-代理遇到的问题" class="headerlink" title="Nginx Stream L4 代理遇到的问题"></a>Nginx Stream L4 代理遇到的问题</h3><h4 id="Health-Check"><a href="#Health-Check" class="headerlink" title="Health Check"></a>Health Check</h4><p>Nginx Stream 官方的health check(<a href="http://nginx.org/en/docs/stream/ngx_stream_upstream_hc_module.html#health_check">ngx_stream_upstream_hc_module</a>)需要使用商业订阅, $2500/Year起。社区有一些替代方案：<br><a href="https://github.com/lusis/ngx_stream_upstream_check_module">ngx_stream_upstream_health_check</a>  </p>
-<ul>
-<li>注意 ngx_stream_upstream_health_check 方案需要后端程序提供http port （对于微服务很适用)</li>
-<li>吐槽 PS:  HaProxy Health Check 在社区版本是免费提供</li>
-</ul>
-<h4 id="后端服务平滑升级会出现-TCP链接断开的问题"><a href="#后端服务平滑升级会出现-TCP链接断开的问题" class="headerlink" title="后端服务平滑升级会出现 TCP链接断开的问题"></a>后端服务平滑升级会出现 TCP链接断开的问题</h4><p>为避免增加或者删除后端服务节点时，出现大量TCP 链接重连，建议将loadBalance策略配置为 <code>hash $remote_addr$remote_port  consistent</code> 或者类似的，可以减少链接断开的情况，但后端服务重启时部分反向代理到该节点的client 连接依然会断开。这个问题暂时没解决。</p>
-<h4 id="参数优化问题"><a href="#参数优化问题" class="headerlink" title="参数优化问题"></a>参数优化问题</h4><ul>
-<li>TCP keepalived 参数设置,优化点如下；<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 允许一定时间的会话保持 避免频繁断开连接</span></span><br><span class="line">listen 9443 so_keepalive=on so_keepalive=30m::10;</span><br><span class="line"><span class="comment">#后端节点链接超时时间，如果所有后端节点存在异常，应快速断开，避免数据堆积</span></span><br><span class="line">proxy_connect_timeout 10s;</span><br><span class="line">proxy_timeout 30m;</span><br></pre></td></tr></table></figure></li>
-<li>设置读写缓冲区<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">listen address:9443 ssl sndbuf&#x3D;128k rcvbuf&#x3D;128k</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">   preread_buffer_size 1024k</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-设置<code>sndbuf</code> <code>rcvbuf</code> 可以设置每个 Socket的读写缓冲区大小。</li>
-</ul>
-<h4 id="流量镜像的操作非常不方便"><a href="#流量镜像的操作非常不方便" class="headerlink" title="流量镜像的操作非常不方便"></a>流量镜像的操作非常不方便</h4><p>如果需要使用该功能，还是推荐使用HaProxy</p>
-<h4 id="性能方面"><a href="#性能方面" class="headerlink" title="性能方面"></a>性能方面</h4><p>Nginx Stram 性能测试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">机器: 8核心16G内存 Centos7 </span><br><span class="line">流量:  速率5W&#x2F;S （流量大小：grpc request 1kb）</span><br><span class="line">备注：这里没有测试到Nginx Stream 在以上配置和场景下可以承载流量的最大值，结合社区的资料估计在15W+ </span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20200817102547.png"></p>
-<ul>
-<li>备注：在TCP 反向代理上，HaProxy 在性能方面更有优势</li>
-</ul>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>参考文献：<br> <a href="http://nginx.org/en/docs/stream/ngx_stream_upstream_module.html#hash">http://nginx.org/en/docs/stream/ngx_stream_upstream_module.html#hash</a></p>
-<h2 id="附录-Nginx-安装"><a href="#附录-Nginx-安装" class="headerlink" title="附录 Nginx 安装"></a>附录 Nginx 安装</h2><h3 id="检查openssl-版本"><a href="#检查openssl-版本" class="headerlink" title="检查openssl 版本"></a>检查openssl 版本</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openssl version</span><br></pre></td></tr></table></figure>
-<p><code>OpenSSL 1.0.1e-fips 11 Feb 2013</code> 为了便于TLS1.3等使用，需要将openssl 升级到最新版本 <code>1.1.1</code></p>
-<h3 id="升级openssl"><a href="#升级openssl" class="headerlink" title="升级openssl"></a>升级openssl</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd ~</span><br><span class="line">wget http:&#x2F;&#x2F;nginx.org&#x2F;download&#x2F;nginx-1.17.0.tar.gz</span><br><span class="line">tar -zxvf nginx-1.17.0.tar.gz</span><br><span class="line"></span><br><span class="line">cd nginx-1.17.0</span><br><span class="line"></span><br><span class="line">#install make </span><br><span class="line">.&#x2F;config</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>运行openssl 出现错误:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;bin&#x2F;openssl version</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;bin&#x2F;openssl: error while loading shared libraries: libcrypto.so.1.1: cannot open shared object file: No such file or directory</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>使用以下步骤修复该问题：</p>
-<ul>
-<li><p>Create links to libssl:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo ln -s &#x2F;usr&#x2F;local&#x2F;lib64&#x2F;libssl.so.1.1 &#x2F;usr&#x2F;lib64&#x2F;</span><br><span class="line">sudo ln -s &#x2F;usr&#x2F;local&#x2F;lib64&#x2F;libcrypto.so.1.1 &#x2F;usr&#x2F;lib64&#x2F;</span><br></pre></td></tr></table></figure></li>
-<li><p>Finally create link to new openssl</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo ln -s /usr/<span class="built_in">local</span>/bin/openssl /usr/bin/openssl_latest</span><br></pre></td></tr></table></figure></li>
-<li><p>测试版本</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">openssl_latest version</span><br><span class="line">OpenSSL 1.1.0f 25 May 2017</span><br><span class="line">Additional tips</span><br></pre></td></tr></table></figure>
-<p>设置最新的openssl:</p>
-</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/bin/</span><br><span class="line">mv openssl openssl_old</span><br><span class="line">mv openssl_latest openssl</span><br></pre></td></tr></table></figure>
-
-<p>检查：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">openssl version</span><br></pre></td></tr></table></figure>
-
-<h3 id="检查和升级zlib"><a href="#检查和升级zlib" class="headerlink" title="检查和升级zlib"></a>检查和升级zlib</h3><p>nginx 压缩gzip 使用 zlip库进行压缩。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yun info zlip </span><br></pre></td></tr></table></figure>
-<p>版本是 2.0.7 将其升级到zlib-1.2.11</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://zlib.net/zlib-1.2.11.tar.gz</span><br><span class="line"></span><br><span class="line">tar -zxvf zlib-1.2.11.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># install </span></span><br><span class="line"><span class="built_in">cd</span> zlib-1.2.11 </span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/zlib</span><br><span class="line">sudo make &amp;&amp; sudo make check &amp;&amp; sudo make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在/etc/ld.so.conf 新增lib </span></span><br><span class="line">sudo <span class="built_in">echo</span> <span class="string">&quot;/usr/local/zlib/lib&quot;</span> &gt;&gt; /etc/ld.so.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># reoload </span></span><br><span class="line">sudo ldconfig -v</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>zlib 升级完成</p>
-<h3 id="PCRE"><a href="#PCRE" class="headerlink" title="PCRE"></a>PCRE</h3><p>PCRE 用于Nginx正则进行重写要用到, 需要注意nginx 是不支持PCRE2的。这里将其升级到 PCRE 8.44 </p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#nginx 支持的最新 pcre版本是 8.43 </span></span><br><span class="line"><span class="built_in">cd</span> ./nginx-module</span><br><span class="line">wget https://ftp.pcre.org/pub/pcre/pcre-8.43.tar.gz</span><br><span class="line"></span><br><span class="line">tar zxvf https://ftp.pcre.org/pub/pcre/pcre-8.43.tar.gz</span><br><span class="line"><span class="built_in">cd</span> pcre-8.43</span><br><span class="line"></span><br><span class="line">./configure</span><br><span class="line">make </span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line"><span class="comment">#check </span></span><br><span class="line">pcre-config --verison</span><br></pre></td></tr></table></figure>
-
-<h3 id="编译安装-nginx"><a href="#编译安装-nginx" class="headerlink" title="编译安装 nginx"></a>编译安装 nginx</h3><p>执行编译</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/nginx-18.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># configure</span></span><br><span class="line">./configure \</span><br><span class="line">--sbin-path=/usr/<span class="built_in">local</span>/nginx/nginx \</span><br><span class="line">--conf-path=/usr/<span class="built_in">local</span>/nginx/nginx.conf \</span><br><span class="line">--pid-path=/usr/<span class="built_in">local</span>/nginx/nginx.pid \</span><br><span class="line">--conf-path=/etc/nginx/nginx.conf \</span><br><span class="line">--error-log-path=/var/<span class="built_in">log</span>/nginx/error.log \</span><br><span class="line">--pid-path=/var/run/nginx.pid \</span><br><span class="line">--http-log-path=/var/<span class="built_in">log</span>/nginx/access.log \</span><br><span class="line">--user=nginx \</span><br><span class="line">--group=nginx \</span><br><span class="line">--with-http_stub_status_module \</span><br><span class="line">--with-http_ssl_module \</span><br><span class="line">--with-http_v2_module \</span><br><span class="line">--with-stream \</span><br><span class="line">--with-stream_ssl_module \</span><br><span class="line">--with-stream_realip_module \</span><br><span class="line">--with-stream_geoip_module \</span><br><span class="line">--with-stream_ssl_preread_module  \</span><br><span class="line">--with-pcre=./nginx-modules/pcre-8.43 \</span><br><span class="line">--with-pcre-jit \</span><br><span class="line">--with-openssl=./nginx-modules/openssl-1.1.1g \</span><br><span class="line">--with-zlib=./nginx-modules/zlib-1.2.11 \</span><br><span class="line">--add-module=./ngx_stream_upstream_check_module \</span><br><span class="line">--with-debug</span><br><span class="line"></span><br><span class="line">make </span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line"><span class="comment">#check </span></span><br><span class="line">/usr/<span class="built_in">local</span>/nginx/nginx -V </span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nginx version: nginx/1.18.0</span><br><span class="line">built by gcc 4.8.5 20150623 (Red Hat 4.8.5-39) (GCC)</span><br><span class="line">built with OpenSSL 1.1.1g  21 Apr 2020</span><br><span class="line">TLS SNI support enabled</span><br><span class="line">configure arguments: --sbin-path=/usr/<span class="built_in">local</span>/nginx/nginx --conf-path=/usr/<span class="built_in">local</span>/nginx/nginx.conf --pid-path=/usr/<span class="built_in">local</span>/nginx/nginx.pid --user=nginx --group=nginx --with-http_ssl_module --with-http_v2_module --with-stream --with-stream=dynamic --with-stream_ssl_module --with-stream_realip_module --with-stream_geoip_module --with-stream_geoip_module=dynamic --with-stream_ssl_preread_module --with-pcre=./nginx-modules/pcre-8.43 --with-pcre-jit --with-openssl=./nginx-modules/openssl-1.1.1g --with-zlib=./nginx-modules/zlib-1.2.11 --with-debug</span><br></pre></td></tr></table></figure>
-
-<h3 id="设置防火墙"><a href="#设置防火墙" class="headerlink" title="设置防火墙"></a>设置防火墙</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">sudo firewall-cmd --add-port=8443/tcp --permanent</span><br><span class="line">sudo firewall-cmd --add-port=8443/udp --permanent</span><br><span class="line"></span><br><span class="line"><span class="comment"># reload </span></span><br><span class="line">sudo firewall-cmd --reload</span><br><span class="line"></span><br><span class="line"><span class="comment">#检查</span></span><br><span class="line">sudo firewall-cmd --zone=public --list-all</span><br></pre></td></tr></table></figure>
-
-<h4 id="使用nc-测试stream"><a href="#使用nc-测试stream" class="headerlink" title="使用nc 测试stream"></a>使用<code>nc</code> 测试stream</h4><p>在nginx node 可以使用<code>nc -l 10091</code> 启动端口监听，方便进行测试。<br>client可以使用telnet 也可以使用<code>nc</code>。</p>
-<p>参考：</p>
-<ul>
-<li><a href="http://nginx.org/en/docs/configure.html">Building nginx from Sources</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>tech</category>
-        <category>nginx stream</category>
-      </categories>
-      <tags>
-        <tag>blog</tag>
-        <tag>Nginx</tag>
-        <tag>Nginx Stream</tag>
+        <tag>LRU</tag>
+        <tag>Java</tag>
+        <tag>CoreJava</tag>
       </tags>
   </entry>
   <entry>
@@ -370,6 +240,136 @@ ARM 处理器目前有多种CPU架构，编译时需要注意。
       </tags>
   </entry>
   <entry>
+    <title>Nginx Stream L4 负载均衡</title>
+    <url>/posts/2018-04-12-nginx-l4-loadblance-md/</url>
+    <content><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>使用Nginx Stream实现反向代理（通信协议：TCP），并结合DNS、keepalived 和VIP ，实现Nginx Stream的多活和高可用。<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20200814175544.png"></p>
+<h2 id="实现与配置"><a href="#实现与配置" class="headerlink" title="实现与配置"></a>实现与配置</h2><h3 id="Nginx-Stream-安装"><a href="#Nginx-Stream-安装" class="headerlink" title="Nginx Stream 安装"></a>Nginx Stream 安装</h3><p>Nginx Stream 编译安装，参照本文 <a href="./">附录一 Nignx Stream 安装</a><br>注意: 在centos7 OS上通过yum安装的nginx-all-modules 已经包含Nginx Stream module,可以直接使用<a href="http://nginx.org/en/linux_packages.html#RHEL-CentOS">cenots/RHEL yum install nginx</a></p>
+<h3 id="Nginx-Stream-L4-负载基本配置"><a href="#Nginx-Stream-L4-负载基本配置" class="headerlink" title="Nginx Stream L4 负载基本配置"></a>Nginx Stream L4 负载基本配置</h3><h4 id="Nginx-Stream-配置"><a href="#Nginx-Stream-配置" class="headerlink" title="Nginx Stream 配置"></a>Nginx Stream 配置</h4><p>Nginx Stream 使用过程中可能还会遇到需要进行负载均衡方式调整、A/B测试、流量镜像、使用TLS加密、记录日志和配置多活等。</p>
+<h4 id="负载均衡方法"><a href="#负载均衡方法" class="headerlink" title="负载均衡方法"></a>负载均衡方法</h4><p>在upstream 的几种负载均衡方法：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">upstream backend_ods &#123;</span><br><span class="line">     <span class="built_in">hash</span> $remote_addr<span class="variable">$remote_port</span> consistent;</span><br><span class="line">     server 10.224.17.246:10091;</span><br><span class="line">     server 10.224.17.246:10092;</span><br><span class="line">     server 10.224.17.246:10093;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th align="left">load blance</th>
+<th align="left">desc</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>hash $remote_addr consistent</code></td>
+<td align="left">按client ip(ipv4/ipv6) addrees进行hash和取模（计算可以表示为： mod(hash($remote_addr),upstream_size)), 同一个client的所有会被分发给一个后端节点。问题：单个cleint的并发很高时，会造后端服务节点的负载不均衡。好处：方便跟踪日志和抓包</td>
+</tr>
+<tr>
+<td align="left"><code>hash $remote_addr$remote_port  consistent</code></td>
+<td align="left">按client ip(ipv4/ipv6) addrees + client port进行hash和取模，可以更好的实现后端节点的负载均衡</td>
+</tr>
+<tr>
+<td align="left"><code>hash $connection  consistent</code></td>
+<td align="left">按 client 链接到nginx 的 <code>connection serial number</code> 进行hash和取模，这个方式类似于<code>$remote_addr$remote_port</code></td>
+</tr>
+</tbody></table>
+<p>*这里<code>consistent</code> 常量的作用是避免增加或者删除后端server时候，大量服务断开的问题。参照：<a href="http://nginx.org/en/docs/stream/ngx_stream_upstream_module.html#hash"> consistent parameter</a></p>
+<p>Nginx Stream其它负载均衡方法：<code>least_conn</code>,<code>least_time</code>,<code>random</code>。</p>
+<h4 id="Stream-流量镜像"><a href="#Stream-流量镜像" class="headerlink" title="Stream 流量镜像"></a>Stream 流量镜像</h4><p>将生产环境的一部分流量转发到指定节点进行压力测试或者灰度测试， 因为nginx 的mirro module是不支持stream模式下的流量复制，这里需要借助使用<code>iptables</code>实现。<br>实现复制10.224.18.34：9443的进站流量到<code>10.224.17.246:10095</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">iptables -t mangle -A PREROUTING -d 10.224.18.34 -dport 9443 -j TEE --gateway 10.224.17.246:10095</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这里需要配置<a href="https://www.linode.com/docs/security/firewalls/control-network-traffic-with-iptables/"><code>iptables-servcie</code></a>和<br><a href="https://forums.centos.org/viewtopic.php?f=50&t=67768">Mirroring outbound https traffic w/ iptables</a><br>注意：如果是TLS加密数据，镜像后的流量需要解密。</p>
+<h4 id="Stream-A-B测试"><a href="#Stream-A-B测试" class="headerlink" title="Stream A/B测试"></a>Stream A/B测试</h4><p>将流量进行切分，执行A/B测试的场景。<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20200814172223.png"></p>
+<p>配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">stream &#123;</span><br><span class="line">   upstream backend_ods &#123;</span><br><span class="line">      <span class="built_in">hash</span> <span class="variable">$connection</span> consistent;</span><br><span class="line">      server 10.224.17.246:10091 ;</span><br><span class="line">      server 10.224.17.245:10091  ;</span><br><span class="line">   &#125;</span><br><span class="line">   upstream test_ods&#123;</span><br><span class="line">       server 10.224.17.242:10092;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#20% 流量用于验证 test_ods group upstream </span></span><br><span class="line">    split_clients <span class="string">&quot;<span class="variable">$&#123;remote_addr&#125;</span>AAA&quot;</span> <span class="variable">$upstream</span> &#123;</span><br><span class="line">                  80%                backend_ods;</span><br><span class="line">                  *                  test_ods;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   server &#123;</span><br><span class="line">        listen 9443 so_keepalive=on so_keepalive=30m::10;</span><br><span class="line">        <span class="comment">#后端节点链接超时时间，如果所有后端节点存在异常，应快速断开，避免数据堆积</span></span><br><span class="line">        proxy_connect_timeout 10s;</span><br><span class="line">        proxy_timeout 30m;</span><br><span class="line">        proxy_pass <span class="variable">$upstream</span>;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>split_clients</code>分流算法使用<code>MurmurHash2</code></li>
+<li>详情参考<a href="http://nginx.org/en/docs/stream/ngx_stream_split_clients_module.html">ngx_stream_split_clients_module</a></li>
+</ul>
+<h4 id="配置Stream-TLS-SSL"><a href="#配置Stream-TLS-SSL" class="headerlink" title="配置Stream TLS/SSL"></a>配置Stream TLS/SSL</h4><p>如果程序涉及的数据比较机密或者或者网络环境不可信时，需要使用<code>stream_ssl_preread_module</code>配置TLS 证书进行加密,配置如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen     9443;</span><br><span class="line">    proxy_pass backend_ods;</span><br><span class="line">    proxy_ssl  on;</span><br><span class="line">    ssl_certificate        /etc/ssl/certs/server.crt;</span><br><span class="line">    ssl_certificate_key    /etc/ssl/certs/server.key;</span><br><span class="line">    proxy_ssl_trusted_certificate /etc/ssl/certs/trusted_ca_cert.crt;</span><br><span class="line">    ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">    ssl_ciphers    HIGH:!aNULL:!MD5;</span><br><span class="line">    <span class="comment"># default 60s</span></span><br><span class="line">    ssl_handshake_timeout 10s;</span><br><span class="line">    ssl_session_cache shared:SSL:1m;</span><br><span class="line">    ssl_session_timeout 4h;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可能涉及配置证书等操作，请参照<a href="https://ordiychen.github.io/2020-01-01-tls-truststores-md/">HTTP2 TLS加密通信理解与应用</a></li>
+<li>跟多配置信息<a href="http://nginx.org/en/docs/stream/ngx_stream_ssl_module.html">ngx_stream_ssl_module</a></li>
+</ul>
+<h4 id="配置Stream-log"><a href="#配置Stream-log" class="headerlink" title="配置Stream log"></a>配置Stream log</h4><p>在Nginx Stream 调试时，需要输出一些详细日志用于问题定位和检查，需要使用<code>ngx_stream_log_module</code> 打印更多日志信息。<br>记录请求数据日志：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">stream &#123;</span><br><span class="line">   log_format basic <span class="string">&#x27;$remote_addr$remote_port [$time_local] &#x27;</span></span><br><span class="line">                 <span class="string">&#x27;$protocol $status $bytes_sent $bytes_received &#x27;</span></span><br><span class="line">                 <span class="string">&#x27;$session_time  &quot;$upstream_addr&quot; &#x27;</span> <span class="string">&#x27;&quot;$upstream_bytes_sent&quot; &quot;$upstream_bytes_received&quot; &quot;$upstream_connect_time&quot;&#x27;</span>;</span><br><span class="line">   access_log /var/<span class="built_in">log</span>/nginx/nginx-access.log basic buffer=32k;</span><br><span class="line">   error_log  /var/<span class="built_in">log</span>/nginx/error.log info;</span><br><span class="line">   open_log_file_cache max=1000 inactive=20s valid=1m min_uses=2;</span><br><span class="line"></span><br><span class="line">   server &#123;</span><br><span class="line">        ......</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>增加对TLS 的日志记录，便于查看client 使用的加密方法等信息：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">upstream &#123;</span><br><span class="line">    log_format sslparams <span class="string">&#x27;$ssl_protocol $ssl_cipher &#x27;</span></span><br><span class="line">                  <span class="string">&#x27;$remote_addr &#x27;</span> ;</span><br><span class="line">   access_log  /var/<span class="built_in">log</span>/nginx/sslparams.log sslparams;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>注意：使用yum intall nginx 安装的无法配置 stream log( 缺少<code>ngx_stream_log_module</code>)</li>
+<li>跟多配置参数：<a href="http://nginx.org/en/docs/stream/ngx_stream_log_module.html">ngx_stream_log_module</a></li>
+</ul>
+<h3 id="配置多活"><a href="#配置多活" class="headerlink" title="配置多活"></a>配置多活</h3><p>使用keepalive 配置多活，这里keepalived + VIP + DNS 实现多活，整个逻辑和实现如下图<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20200817100506.png" alt="images"></p>
+<ul>
+<li>安装于配置<a href="https://access.redhat.com/discussions/3007011">keepalived multiple vips</a></li>
+</ul>
+<h3 id="Nginx-Stream-L4-代理遇到的问题"><a href="#Nginx-Stream-L4-代理遇到的问题" class="headerlink" title="Nginx Stream L4 代理遇到的问题"></a>Nginx Stream L4 代理遇到的问题</h3><h4 id="Health-Check"><a href="#Health-Check" class="headerlink" title="Health Check"></a>Health Check</h4><p>Nginx Stream 官方的health check(<a href="http://nginx.org/en/docs/stream/ngx_stream_upstream_hc_module.html#health_check">ngx_stream_upstream_hc_module</a>)需要使用商业订阅, $2500/Year起。社区有一些替代方案：<br><a href="https://github.com/lusis/ngx_stream_upstream_check_module">ngx_stream_upstream_health_check</a>  </p>
+<ul>
+<li>注意 ngx_stream_upstream_health_check 方案需要后端程序提供http port （对于微服务很适用)</li>
+<li>吐槽 PS:  HaProxy Health Check 在社区版本是免费提供</li>
+</ul>
+<h4 id="后端服务平滑升级会出现-TCP链接断开的问题"><a href="#后端服务平滑升级会出现-TCP链接断开的问题" class="headerlink" title="后端服务平滑升级会出现 TCP链接断开的问题"></a>后端服务平滑升级会出现 TCP链接断开的问题</h4><p>为避免增加或者删除后端服务节点时，出现大量TCP 链接重连，建议将loadBalance策略配置为 <code>hash $remote_addr$remote_port  consistent</code> 或者类似的，可以减少链接断开的情况，但后端服务重启时部分反向代理到该节点的client 连接依然会断开。这个问题暂时没解决。</p>
+<h4 id="参数优化问题"><a href="#参数优化问题" class="headerlink" title="参数优化问题"></a>参数优化问题</h4><ul>
+<li>TCP keepalived 参数设置,优化点如下；<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 允许一定时间的会话保持 避免频繁断开连接</span></span><br><span class="line">listen 9443 so_keepalive=on so_keepalive=30m::10;</span><br><span class="line"><span class="comment">#后端节点链接超时时间，如果所有后端节点存在异常，应快速断开，避免数据堆积</span></span><br><span class="line">proxy_connect_timeout 10s;</span><br><span class="line">proxy_timeout 30m;</span><br></pre></td></tr></table></figure></li>
+<li>设置读写缓冲区<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">listen address:9443 ssl sndbuf&#x3D;128k rcvbuf&#x3D;128k</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">   preread_buffer_size 1024k</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+设置<code>sndbuf</code> <code>rcvbuf</code> 可以设置每个 Socket的读写缓冲区大小。</li>
+</ul>
+<h4 id="流量镜像的操作非常不方便"><a href="#流量镜像的操作非常不方便" class="headerlink" title="流量镜像的操作非常不方便"></a>流量镜像的操作非常不方便</h4><p>如果需要使用该功能，还是推荐使用HaProxy</p>
+<h4 id="性能方面"><a href="#性能方面" class="headerlink" title="性能方面"></a>性能方面</h4><p>Nginx Stram 性能测试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">机器: 8核心16G内存 Centos7 </span><br><span class="line">流量:  速率5W&#x2F;S （流量大小：grpc request 1kb）</span><br><span class="line">备注：这里没有测试到Nginx Stream 在以上配置和场景下可以承载流量的最大值，结合社区的资料估计在15W+ </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20200817102547.png"></p>
+<ul>
+<li>备注：在TCP 反向代理上，HaProxy 在性能方面更有优势</li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>参考文献：<br> <a href="http://nginx.org/en/docs/stream/ngx_stream_upstream_module.html#hash">http://nginx.org/en/docs/stream/ngx_stream_upstream_module.html#hash</a></p>
+<h2 id="附录-Nginx-安装"><a href="#附录-Nginx-安装" class="headerlink" title="附录 Nginx 安装"></a>附录 Nginx 安装</h2><h3 id="检查openssl-版本"><a href="#检查openssl-版本" class="headerlink" title="检查openssl 版本"></a>检查openssl 版本</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openssl version</span><br></pre></td></tr></table></figure>
+<p><code>OpenSSL 1.0.1e-fips 11 Feb 2013</code> 为了便于TLS1.3等使用，需要将openssl 升级到最新版本 <code>1.1.1</code></p>
+<h3 id="升级openssl"><a href="#升级openssl" class="headerlink" title="升级openssl"></a>升级openssl</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd ~</span><br><span class="line">wget http:&#x2F;&#x2F;nginx.org&#x2F;download&#x2F;nginx-1.17.0.tar.gz</span><br><span class="line">tar -zxvf nginx-1.17.0.tar.gz</span><br><span class="line"></span><br><span class="line">cd nginx-1.17.0</span><br><span class="line"></span><br><span class="line">#install make </span><br><span class="line">.&#x2F;config</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>运行openssl 出现错误:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;bin&#x2F;openssl version</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;bin&#x2F;openssl: error while loading shared libraries: libcrypto.so.1.1: cannot open shared object file: No such file or directory</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>使用以下步骤修复该问题：</p>
+<ul>
+<li><p>Create links to libssl:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo ln -s &#x2F;usr&#x2F;local&#x2F;lib64&#x2F;libssl.so.1.1 &#x2F;usr&#x2F;lib64&#x2F;</span><br><span class="line">sudo ln -s &#x2F;usr&#x2F;local&#x2F;lib64&#x2F;libcrypto.so.1.1 &#x2F;usr&#x2F;lib64&#x2F;</span><br></pre></td></tr></table></figure></li>
+<li><p>Finally create link to new openssl</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo ln -s /usr/<span class="built_in">local</span>/bin/openssl /usr/bin/openssl_latest</span><br></pre></td></tr></table></figure></li>
+<li><p>测试版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">openssl_latest version</span><br><span class="line">OpenSSL 1.1.0f 25 May 2017</span><br><span class="line">Additional tips</span><br></pre></td></tr></table></figure>
+<p>设置最新的openssl:</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/bin/</span><br><span class="line">mv openssl openssl_old</span><br><span class="line">mv openssl_latest openssl</span><br></pre></td></tr></table></figure>
+
+<p>检查：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">openssl version</span><br></pre></td></tr></table></figure>
+
+<h3 id="检查和升级zlib"><a href="#检查和升级zlib" class="headerlink" title="检查和升级zlib"></a>检查和升级zlib</h3><p>nginx 压缩gzip 使用 zlip库进行压缩。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yun info zlip </span><br></pre></td></tr></table></figure>
+<p>版本是 2.0.7 将其升级到zlib-1.2.11</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget http://zlib.net/zlib-1.2.11.tar.gz</span><br><span class="line"></span><br><span class="line">tar -zxvf zlib-1.2.11.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># install </span></span><br><span class="line"><span class="built_in">cd</span> zlib-1.2.11 </span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/zlib</span><br><span class="line">sudo make &amp;&amp; sudo make check &amp;&amp; sudo make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在/etc/ld.so.conf 新增lib </span></span><br><span class="line">sudo <span class="built_in">echo</span> <span class="string">&quot;/usr/local/zlib/lib&quot;</span> &gt;&gt; /etc/ld.so.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># reoload </span></span><br><span class="line">sudo ldconfig -v</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>zlib 升级完成</p>
+<h3 id="PCRE"><a href="#PCRE" class="headerlink" title="PCRE"></a>PCRE</h3><p>PCRE 用于Nginx正则进行重写要用到, 需要注意nginx 是不支持PCRE2的。这里将其升级到 PCRE 8.44 </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#nginx 支持的最新 pcre版本是 8.43 </span></span><br><span class="line"><span class="built_in">cd</span> ./nginx-module</span><br><span class="line">wget https://ftp.pcre.org/pub/pcre/pcre-8.43.tar.gz</span><br><span class="line"></span><br><span class="line">tar zxvf https://ftp.pcre.org/pub/pcre/pcre-8.43.tar.gz</span><br><span class="line"><span class="built_in">cd</span> pcre-8.43</span><br><span class="line"></span><br><span class="line">./configure</span><br><span class="line">make </span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line"><span class="comment">#check </span></span><br><span class="line">pcre-config --verison</span><br></pre></td></tr></table></figure>
+
+<h3 id="编译安装-nginx"><a href="#编译安装-nginx" class="headerlink" title="编译安装 nginx"></a>编译安装 nginx</h3><p>执行编译</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/nginx-18.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># configure</span></span><br><span class="line">./configure \</span><br><span class="line">--sbin-path=/usr/<span class="built_in">local</span>/nginx/nginx \</span><br><span class="line">--conf-path=/usr/<span class="built_in">local</span>/nginx/nginx.conf \</span><br><span class="line">--pid-path=/usr/<span class="built_in">local</span>/nginx/nginx.pid \</span><br><span class="line">--conf-path=/etc/nginx/nginx.conf \</span><br><span class="line">--error-log-path=/var/<span class="built_in">log</span>/nginx/error.log \</span><br><span class="line">--pid-path=/var/run/nginx.pid \</span><br><span class="line">--http-log-path=/var/<span class="built_in">log</span>/nginx/access.log \</span><br><span class="line">--user=nginx \</span><br><span class="line">--group=nginx \</span><br><span class="line">--with-http_stub_status_module \</span><br><span class="line">--with-http_ssl_module \</span><br><span class="line">--with-http_v2_module \</span><br><span class="line">--with-stream \</span><br><span class="line">--with-stream_ssl_module \</span><br><span class="line">--with-stream_realip_module \</span><br><span class="line">--with-stream_geoip_module \</span><br><span class="line">--with-stream_ssl_preread_module  \</span><br><span class="line">--with-pcre=./nginx-modules/pcre-8.43 \</span><br><span class="line">--with-pcre-jit \</span><br><span class="line">--with-openssl=./nginx-modules/openssl-1.1.1g \</span><br><span class="line">--with-zlib=./nginx-modules/zlib-1.2.11 \</span><br><span class="line">--add-module=./ngx_stream_upstream_check_module \</span><br><span class="line">--with-debug</span><br><span class="line"></span><br><span class="line">make </span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line"><span class="comment">#check </span></span><br><span class="line">/usr/<span class="built_in">local</span>/nginx/nginx -V </span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nginx version: nginx/1.18.0</span><br><span class="line">built by gcc 4.8.5 20150623 (Red Hat 4.8.5-39) (GCC)</span><br><span class="line">built with OpenSSL 1.1.1g  21 Apr 2020</span><br><span class="line">TLS SNI support enabled</span><br><span class="line">configure arguments: --sbin-path=/usr/<span class="built_in">local</span>/nginx/nginx --conf-path=/usr/<span class="built_in">local</span>/nginx/nginx.conf --pid-path=/usr/<span class="built_in">local</span>/nginx/nginx.pid --user=nginx --group=nginx --with-http_ssl_module --with-http_v2_module --with-stream --with-stream=dynamic --with-stream_ssl_module --with-stream_realip_module --with-stream_geoip_module --with-stream_geoip_module=dynamic --with-stream_ssl_preread_module --with-pcre=./nginx-modules/pcre-8.43 --with-pcre-jit --with-openssl=./nginx-modules/openssl-1.1.1g --with-zlib=./nginx-modules/zlib-1.2.11 --with-debug</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置防火墙"><a href="#设置防火墙" class="headerlink" title="设置防火墙"></a>设置防火墙</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">sudo firewall-cmd --add-port=8443/tcp --permanent</span><br><span class="line">sudo firewall-cmd --add-port=8443/udp --permanent</span><br><span class="line"></span><br><span class="line"><span class="comment"># reload </span></span><br><span class="line">sudo firewall-cmd --reload</span><br><span class="line"></span><br><span class="line"><span class="comment">#检查</span></span><br><span class="line">sudo firewall-cmd --zone=public --list-all</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用nc-测试stream"><a href="#使用nc-测试stream" class="headerlink" title="使用nc 测试stream"></a>使用<code>nc</code> 测试stream</h4><p>在nginx node 可以使用<code>nc -l 10091</code> 启动端口监听，方便进行测试。<br>client可以使用telnet 也可以使用<code>nc</code>。</p>
+<p>参考：</p>
+<ul>
+<li><a href="http://nginx.org/en/docs/configure.html">Building nginx from Sources</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>tech</category>
+        <category>nginx stream</category>
+      </categories>
+      <tags>
+        <tag>blog</tag>
+        <tag>Nginx</tag>
+        <tag>Nginx Stream</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>TLS握手过程</title>
     <url>/posts/2020-01-01-tls-study-md/</url>
     <content><![CDATA[<h2 id="TLS握手过程"><a href="#TLS握手过程" class="headerlink" title="TLS握手过程"></a>TLS握手过程</h2><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> https request</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> curl -i https://dev-local.17xyx.app:2001/test_dir/hello.txt</span> </span><br></pre></td></tr></table></figure>
@@ -473,6 +473,69 @@ ARM 处理器目前有多种CPU架构，编译时需要注意。
       <tags>
         <tag>python</tag>
         <tag>python-plot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>搭建HTTP内网文件服务器-以NGINX为例</title>
+    <url>/posts/2021-02-01-nginx-file-server/</url>
+    <content><![CDATA[<h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>在内网建一个文件服务器，需要示意图如下：<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210329185845.png"></p>
+<p>实现需求，可行的组件:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apache http</span><br><span class="line">tomcat&#x2F;jetty</span><br><span class="line">nginx </span><br><span class="line">.....</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>为方续架构扩展（如做反向代理等）、扩展功能的丰富性和个人对组件的熟悉程度，最终选择了Nginx.</p>
+<h1 id="nginx-搭建文件服务"><a href="#nginx-搭建文件服务" class="headerlink" title="nginx 搭建文件服务"></a>nginx 搭建文件服务</h1><p>这里需要使用到Nginx的<code>autoindex</code> 特性（<code>ngx_http_autoindex_module</code>  模块），以及其它几个module。由于本文涉及到Nginx的多个版本的不同feature ，建议nginx安装版本为： 1.18.0 +  ,详情参照<a href="http://nginx.org/en/CHANGES">Nginx Changes</a></p>
+<h2 id="nginx-install"><a href="#nginx-install" class="headerlink" title="nginx install"></a>nginx install</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;nginx.org&#x2F;packages&#x2F;rhel&#x2F;7&#x2F;x86_64&#x2F;RPMS&#x2F;nginx-1.18.0-2.el7.ngx.x86_64.rpm</span><br><span class="line"></span><br><span class="line">sudo yum install nginx-1.18.0-2.el7.ngx.x86_64.rpm -y</span><br><span class="line"></span><br><span class="line">nginx -V</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;nginx&#x2F;conf.d&#x2F;default.conf</span><br><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    #charset koi8-r;</span><br><span class="line">    #access_log  &#x2F;var&#x2F;log&#x2F;nginx&#x2F;host.access.log  main;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    #location &#x2F; &#123;</span><br><span class="line">    #    root   &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html;</span><br><span class="line">    #    index  index.html index.htm;</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line">    # file index</span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        root &#x2F;opt&#x2F;data&#x2F;hdp_dir&#x2F;;</span><br><span class="line">        charset utf-8;</span><br><span class="line"></span><br><span class="line">        autoindex on;</span><br><span class="line">        autoindex_exact_size off;</span><br><span class="line">        autoindex_format html;</span><br><span class="line">        autoindex_localtime on;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置文件目录权限"><a href="#配置文件目录权限" class="headerlink" title="配置文件目录权限"></a>配置文件目录权限</h2><p> 设置文件目录权限</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chown -R nginx:users  &#x2F;opt&#x2F;data&#x2F;hdp_dir&#x2F;</span><br><span class="line">chmow -R 775 &#x2F;opt&#x2F;data&#x2F;hdp_dir&#x2F;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>nginx 重启</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#开机启动</span><br><span class="line">systemctl enable nginx</span><br><span class="line"></span><br><span class="line"># 启动</span><br><span class="line">systemctl restart nginx</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>测试</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl -XGET &quot;http:&#x2F;&#x2F;127.0.0.1:80&#39;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>文件服务搭建完毕。如下图：<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210329191803.png"></p>
+</li>
+</ul>
+<h2 id="提升IO性能"><a href="#提升IO性能" class="headerlink" title="提升IO性能"></a>提升IO性能</h2><p>由于大并发的大文件下载，磁盘IO会最先成为瓶颈。所以这里对IO进行优化，增加<code>aio</code> 和 <code>sendfile</code> <code>tcp_nopush</code> <code>tcp_nodelay</code> 用以提升IO性能，全部配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user  nginx;</span><br><span class="line">worker_processes  2;</span><br><span class="line"></span><br><span class="line">error_log  &#x2F;var&#x2F;log&#x2F;nginx&#x2F;error.log warn;</span><br><span class="line">pid        &#x2F;var&#x2F;run&#x2F;nginx.pid;</span><br><span class="line"></span><br><span class="line">thread_pool default threads&#x3D;8 max_queue&#x3D;5096;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       &#x2F;etc&#x2F;nginx&#x2F;mime.types;</span><br><span class="line">    default_type  application&#x2F;octet-stream;</span><br><span class="line"></span><br><span class="line">    log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;</span><br><span class="line">                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;</span><br><span class="line">                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;</span><br><span class="line"></span><br><span class="line">    access_log  &#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log  main;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    #tcp_nopush     on;</span><br><span class="line">    #tcp_nodelay    on;</span><br><span class="line">    sendfile_max_chunk 512k;</span><br><span class="line"></span><br><span class="line">    #keep connection keep alive</span><br><span class="line">    keepalive_timeout  300s;</span><br><span class="line"></span><br><span class="line">    gzip  on;</span><br><span class="line"></span><br><span class="line">      server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        access_log  &#x2F;var&#x2F;log&#x2F;nginx&#x2F;host.access.log  main;</span><br><span class="line"></span><br><span class="line">        # file index</span><br><span class="line">        autoindex on;</span><br><span class="line">        location &#x2F; &#123;</span><br><span class="line">            sendfile       on;</span><br><span class="line">            aio            threads&#x3D;default;</span><br><span class="line"></span><br><span class="line">            root &#x2F;home&#x2F;chenpx&#x2F;hdp_dir&#x2F;;</span><br><span class="line">            #index index.html;</span><br><span class="line">            charset utf-8;</span><br><span class="line"></span><br><span class="line">            autoindex on;</span><br><span class="line">            autoindex_exact_size off;</span><br><span class="line">            autoindex_format html;</span><br><span class="line">            autoindex_localtime on;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #error_page  404              &#x2F;404.html;</span><br><span class="line"></span><br><span class="line">        # redirect server error pages to the static page &#x2F;50x.html</span><br><span class="line">        #</span><br><span class="line">        error_page   500 502 503 504  &#x2F;50x.html;</span><br><span class="line">        location &#x3D; &#x2F;50x.html &#123;</span><br><span class="line">            root   &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以下载一个10G文件为例子，从实际测试效果对比看，磁盘的IO压力的下降了很多，如下图：<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210330180829.png"></p>
+<p>按照官网的<a href="https://www.nginx.com/blog/thread-pools-boost-performance-9x/">Thread Pools in NGINX Boost Performance 9x!</a>,性能可以提升9倍。<br>AIO配置说明，参照 <a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#aio">nginx aio </a>.</p>
+<h2 id="增加文件预览"><a href="#增加文件预览" class="headerlink" title="增加文件预览"></a>增加文件预览</h2><p>实现对配置允许的文件格式后缀，文件可以打开，可以下载。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">location &#x2F; &#123;</span><br><span class="line">    charset utf-8;</span><br><span class="line">    autoindex on;</span><br><span class="line">    autoindex_exact_size off;</span><br><span class="line">    autoindex_format html;</span><br><span class="line">    autoindex_localtime on;</span><br><span class="line"></span><br><span class="line">    #file  shows   </span><br><span class="line">    if ($request_filename ~* ^.*?\.(txt|doc|pdf|rar|gz|zip|docx|exe|xlsx|ppt|pptx)$)&#123;</span><br><span class="line">        add_header Content-Disposition: &#39;p_w_upload;&#39;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li><p>index.html文件冲突<br>Nginx <code>autoindex</code> 可能会遇到目录下有 index.html 文件，出现401<code>Error Object</code>问题，可以采用下面的方法解决：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 对目录下的 index.html文件进行重命名</span><br><span class="line">find .&#x2F; -type f -name &quot;index.html&quot; -exec  mv &#123;&#125; &#123;&#125;-bak \;</span><br></pre></td></tr></table></figure>
+<p>修改完成后可能需要nginx 服务。</p>
+</li>
+<li><p>权限控制<br>如果需要设置权限控制，可以使用<a href="http://nginx.org/en/docs/http/ngx_http_access_module.html"><code>ngx_http_access_module</code></a>, 需要用户鉴权还可用设置<a href="https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/"><code>HTTP Basic Authentication</code></a>. 对于需要多租户的场景，可以配置 Basic HTTP authentication，参考<a href="http://www.ttlsa.com/nginx/nginx-basic-http-authentication/">nginx用户认证配置（ Basic HTTP authentication</a></p>
+</li>
+<li><p>文件搜索<br>对于需要使用搜索功能，可以使用 <a href="https://github.com/aperezdc/ngx-fancyindex"><code>ngx-fancyindex)</code></a> 插件，实现效果如下图：<br><img src="https://perso.crans.org/besson/publis/Nginx-Fancyindex-Theme/Nginx-Fancyindex-Theme__example1.png"></p>
+</li>
+<li><p>传输安全<br>如果涉及敏感数据传输，建议增加TLS1.2+协议进行加密传输</p>
+</li>
+<li><p>为什么不用FTP实现<br>FTP不是一项安全的协议，并且具有许多安全漏洞。比如存在暴力破解、FTP反弹攻击。在加上FTP使用的端口是21，一般会被防火墙屏蔽。（yum 等repository 仓库默认使用的都是HTTP协议）</p>
+</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="http://nginx.org/en/docs/http/ngx_http_autoindex_module.html#example">Module ngx_http_autoindex_module</a></li>
+<li><a href="https://aiopsclub.com/nginx/nginx_static_file/">Nginx系列之nginx静态文件服务</a></li>
+<li><a href="https://blog8.flyky.org/20191128/nginx-autoindex-conf/">Nginx目录列表(autoindex)配置相关以及页面美化</a></li>
+<li><a href="https://www.nginx.com/resources/wiki/start/topics/tutorials/install/">Nginx install</a></li>
+<li><a href="https://lanjingling.github.io/2016/06/11/nginx-https-keepalived-youhua/">nginx优化——包括https、keepalive等</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>tech</category>
+        <category>net</category>
+      </categories>
+      <tags>
+        <tag>blog</tag>
+        <tag>Net</tag>
+        <tag>Nginx</tag>
       </tags>
   </entry>
   <entry>
@@ -666,69 +729,6 @@ ARM 处理器目前有多种CPU架构，编译时需要注意。
       </tags>
   </entry>
   <entry>
-    <title>搭建HTTP内网文件服务器-以NGINX为例</title>
-    <url>/posts/2021-02-01-nginx-file-server/</url>
-    <content><![CDATA[<h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>在内网建一个文件服务器，需要示意图如下：<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210329185845.png"></p>
-<p>实现需求，可行的组件:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apache http</span><br><span class="line">tomcat&#x2F;jetty</span><br><span class="line">nginx </span><br><span class="line">.....</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>为方续架构扩展（如做反向代理等）、扩展功能的丰富性和个人对组件的熟悉程度，最终选择了Nginx.</p>
-<h1 id="nginx-搭建文件服务"><a href="#nginx-搭建文件服务" class="headerlink" title="nginx 搭建文件服务"></a>nginx 搭建文件服务</h1><p>这里需要使用到Nginx的<code>autoindex</code> 特性（<code>ngx_http_autoindex_module</code>  模块），以及其它几个module。由于本文涉及到Nginx的多个版本的不同feature ，建议nginx安装版本为： 1.18.0 +  ,详情参照<a href="http://nginx.org/en/CHANGES">Nginx Changes</a></p>
-<h2 id="nginx-install"><a href="#nginx-install" class="headerlink" title="nginx install"></a>nginx install</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;nginx.org&#x2F;packages&#x2F;rhel&#x2F;7&#x2F;x86_64&#x2F;RPMS&#x2F;nginx-1.18.0-2.el7.ngx.x86_64.rpm</span><br><span class="line"></span><br><span class="line">sudo yum install nginx-1.18.0-2.el7.ngx.x86_64.rpm -y</span><br><span class="line"></span><br><span class="line">nginx -V</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;nginx&#x2F;conf.d&#x2F;default.conf</span><br><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    #charset koi8-r;</span><br><span class="line">    #access_log  &#x2F;var&#x2F;log&#x2F;nginx&#x2F;host.access.log  main;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    #location &#x2F; &#123;</span><br><span class="line">    #    root   &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html;</span><br><span class="line">    #    index  index.html index.htm;</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line">    # file index</span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        root &#x2F;opt&#x2F;data&#x2F;hdp_dir&#x2F;;</span><br><span class="line">        charset utf-8;</span><br><span class="line"></span><br><span class="line">        autoindex on;</span><br><span class="line">        autoindex_exact_size off;</span><br><span class="line">        autoindex_format html;</span><br><span class="line">        autoindex_localtime on;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="配置文件目录权限"><a href="#配置文件目录权限" class="headerlink" title="配置文件目录权限"></a>配置文件目录权限</h2><p> 设置文件目录权限</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chown -R nginx:users  &#x2F;opt&#x2F;data&#x2F;hdp_dir&#x2F;</span><br><span class="line">chmow -R 775 &#x2F;opt&#x2F;data&#x2F;hdp_dir&#x2F;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>nginx 重启</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#开机启动</span><br><span class="line">systemctl enable nginx</span><br><span class="line"></span><br><span class="line"># 启动</span><br><span class="line">systemctl restart nginx</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-<li><p>测试</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl -XGET &quot;http:&#x2F;&#x2F;127.0.0.1:80&#39;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>文件服务搭建完毕。如下图：<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210329191803.png"></p>
-</li>
-</ul>
-<h2 id="提升IO性能"><a href="#提升IO性能" class="headerlink" title="提升IO性能"></a>提升IO性能</h2><p>由于大并发的大文件下载，磁盘IO会最先成为瓶颈。所以这里对IO进行优化，增加<code>aio</code> 和 <code>sendfile</code> <code>tcp_nopush</code> <code>tcp_nodelay</code> 用以提升IO性能，全部配置如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">user  nginx;</span><br><span class="line">worker_processes  2;</span><br><span class="line"></span><br><span class="line">error_log  &#x2F;var&#x2F;log&#x2F;nginx&#x2F;error.log warn;</span><br><span class="line">pid        &#x2F;var&#x2F;run&#x2F;nginx.pid;</span><br><span class="line"></span><br><span class="line">thread_pool default threads&#x3D;8 max_queue&#x3D;5096;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       &#x2F;etc&#x2F;nginx&#x2F;mime.types;</span><br><span class="line">    default_type  application&#x2F;octet-stream;</span><br><span class="line"></span><br><span class="line">    log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;</span><br><span class="line">                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;</span><br><span class="line">                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;</span><br><span class="line"></span><br><span class="line">    access_log  &#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log  main;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    #tcp_nopush     on;</span><br><span class="line">    #tcp_nodelay    on;</span><br><span class="line">    sendfile_max_chunk 512k;</span><br><span class="line"></span><br><span class="line">    #keep connection keep alive</span><br><span class="line">    keepalive_timeout  300s;</span><br><span class="line"></span><br><span class="line">    gzip  on;</span><br><span class="line"></span><br><span class="line">      server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        access_log  &#x2F;var&#x2F;log&#x2F;nginx&#x2F;host.access.log  main;</span><br><span class="line"></span><br><span class="line">        # file index</span><br><span class="line">        autoindex on;</span><br><span class="line">        location &#x2F; &#123;</span><br><span class="line">            sendfile       on;</span><br><span class="line">            aio            threads&#x3D;default;</span><br><span class="line"></span><br><span class="line">            root &#x2F;home&#x2F;chenpx&#x2F;hdp_dir&#x2F;;</span><br><span class="line">            #index index.html;</span><br><span class="line">            charset utf-8;</span><br><span class="line"></span><br><span class="line">            autoindex on;</span><br><span class="line">            autoindex_exact_size off;</span><br><span class="line">            autoindex_format html;</span><br><span class="line">            autoindex_localtime on;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #error_page  404              &#x2F;404.html;</span><br><span class="line"></span><br><span class="line">        # redirect server error pages to the static page &#x2F;50x.html</span><br><span class="line">        #</span><br><span class="line">        error_page   500 502 503 504  &#x2F;50x.html;</span><br><span class="line">        location &#x3D; &#x2F;50x.html &#123;</span><br><span class="line">            root   &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>以下载一个10G文件为例子，从实际测试效果对比看，磁盘的IO压力的下降了很多，如下图：<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210330180829.png"></p>
-<p>按照官网的<a href="https://www.nginx.com/blog/thread-pools-boost-performance-9x/">Thread Pools in NGINX Boost Performance 9x!</a>,性能可以提升9倍。<br>AIO配置说明，参照 <a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#aio">nginx aio </a>.</p>
-<h2 id="增加文件预览"><a href="#增加文件预览" class="headerlink" title="增加文件预览"></a>增加文件预览</h2><p>实现对配置允许的文件格式后缀，文件可以打开，可以下载。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">location &#x2F; &#123;</span><br><span class="line">    charset utf-8;</span><br><span class="line">    autoindex on;</span><br><span class="line">    autoindex_exact_size off;</span><br><span class="line">    autoindex_format html;</span><br><span class="line">    autoindex_localtime on;</span><br><span class="line"></span><br><span class="line">    #file  shows   </span><br><span class="line">    if ($request_filename ~* ^.*?\.(txt|doc|pdf|rar|gz|zip|docx|exe|xlsx|ppt|pptx)$)&#123;</span><br><span class="line">        add_header Content-Disposition: &#39;p_w_upload;&#39;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
-<li><p>index.html文件冲突<br>Nginx <code>autoindex</code> 可能会遇到目录下有 index.html 文件，出现401<code>Error Object</code>问题，可以采用下面的方法解决：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 对目录下的 index.html文件进行重命名</span><br><span class="line">find .&#x2F; -type f -name &quot;index.html&quot; -exec  mv &#123;&#125; &#123;&#125;-bak \;</span><br></pre></td></tr></table></figure>
-<p>修改完成后可能需要nginx 服务。</p>
-</li>
-<li><p>权限控制<br>如果需要设置权限控制，可以使用<a href="http://nginx.org/en/docs/http/ngx_http_access_module.html"><code>ngx_http_access_module</code></a>, 需要用户鉴权还可用设置<a href="https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/"><code>HTTP Basic Authentication</code></a>. 对于需要多租户的场景，可以配置 Basic HTTP authentication，参考<a href="http://www.ttlsa.com/nginx/nginx-basic-http-authentication/">nginx用户认证配置（ Basic HTTP authentication</a></p>
-</li>
-<li><p>文件搜索<br>对于需要使用搜索功能，可以使用 <a href="https://github.com/aperezdc/ngx-fancyindex"><code>ngx-fancyindex)</code></a> 插件，实现效果如下图：<br><img src="https://perso.crans.org/besson/publis/Nginx-Fancyindex-Theme/Nginx-Fancyindex-Theme__example1.png"></p>
-</li>
-<li><p>传输安全<br>如果涉及敏感数据传输，建议增加TLS1.2+协议进行加密传输</p>
-</li>
-<li><p>为什么不用FTP实现<br>FTP不是一项安全的协议，并且具有许多安全漏洞。比如存在暴力破解、FTP反弹攻击。在加上FTP使用的端口是21，一般会被防火墙屏蔽。（yum 等repository 仓库默认使用的都是HTTP协议）</p>
-</li>
-</ul>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
-<li><a href="http://nginx.org/en/docs/http/ngx_http_autoindex_module.html#example">Module ngx_http_autoindex_module</a></li>
-<li><a href="https://aiopsclub.com/nginx/nginx_static_file/">Nginx系列之nginx静态文件服务</a></li>
-<li><a href="https://blog8.flyky.org/20191128/nginx-autoindex-conf/">Nginx目录列表(autoindex)配置相关以及页面美化</a></li>
-<li><a href="https://www.nginx.com/resources/wiki/start/topics/tutorials/install/">Nginx install</a></li>
-<li><a href="https://lanjingling.github.io/2016/06/11/nginx-https-keepalived-youhua/">nginx优化——包括https、keepalive等</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>tech</category>
-        <category>net</category>
-      </categories>
-      <tags>
-        <tag>blog</tag>
-        <tag>Net</tag>
-        <tag>Nginx</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Zeppelin In Action</title>
     <url>/posts/2021-04-22-zeppelin-inaction-1/</url>
     <content><![CDATA[<h1 id="About-Zeppelin"><a href="#About-Zeppelin" class="headerlink" title="About Zeppelin"></a>About Zeppelin</h1><p>基于Web的笔记本，可通过SQL，Scala等实现数据驱动的交互式数据分析和协作文档。</p>
@@ -863,9 +863,9 @@ ARM 处理器目前有多种CPU架构，编译时需要注意。
         <category>java</category>
       </categories>
       <tags>
+        <tag>Net</tag>
         <tag>Java</tag>
         <tag>CoreJava</tag>
-        <tag>Net</tag>
         <tag>JDK</tag>
       </tags>
   </entry>
@@ -905,85 +905,6 @@ ARM 处理器目前有多种CPU架构，编译时需要注意。
         <tag>DNS</tag>
         <tag>TCP/IP</tag>
         <tag>NODEJS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HAProxy多协议反向代理以及TLS加密传输</title>
-    <url>/posts/2021-01-11-haproxy-tls-mulit-sni-md/</url>
-    <content><![CDATA[<h1 id="需求场景于实现"><a href="#需求场景于实现" class="headerlink" title="需求场景于实现"></a>需求场景于实现</h1><h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>在防火墙严格限定机器外网端口的情况下，使用HAProxy实现对支持对HTTPS/SSH/FTP的代理需求，实际场景：<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210825120341.png"></p>
-<ul>
-<li>环境信息<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Centos8 </span><br><span class="line">HAProxy2.2 </span><br><span class="line">OpenSSL1.1.g</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>Show code:</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">frontend ft_tcp</span><br><span class="line">    mode tcp</span><br><span class="line">    bind *:<span class="number">443</span> ssl crt /etc/haproxy/certs/</span><br><span class="line"></span><br><span class="line">    tcp-request content accept <span class="keyword">if</span> &#123; req_ssl_hello_type <span class="number">1</span> &#125;</span><br><span class="line">    # The SNI (Server Name Indication) is not encrypted, so inspect the SSL hello for SNI</span><br><span class="line">    # Spread the requests between backends</span><br><span class="line">    use_backend     bk_ssh <span class="keyword">if</span> &#123;req_ssl_sni -i ssh.example.com&#125;</span><br><span class="line">    use_backend     bk_ftp <span class="keyword">if</span> &#123;req_ssl_sni -i ftp.example.com&#125;</span><br><span class="line">    use_backend     bk_www  <span class="keyword">if</span> &#123;req_ssl_sni -i www.example.com&#125;</span><br><span class="line">    default_backend bk_traditional</span><br><span class="line"></span><br><span class="line">backend bk_ftp</span><br><span class="line">    mode tcp</span><br><span class="line">    server ftp ftp-nodes.example.com:<span class="number">21</span> check    </span><br><span class="line"></span><br><span class="line">backend bk_www</span><br><span class="line">  mode http</span><br><span class="line">  # This backend server will need to terminate TLS for hola.example.com</span><br><span class="line">  option http-keep-alive</span><br><span class="line">  server www www-nodes.example.com:<span class="number">80</span> check inter <span class="number">12000</span></span><br><span class="line">  errorfile <span class="number">503</span> /etc/haproxy/error/maintenance.html</span><br><span class="line">  errorfile <span class="number">500</span> /etc/haproxy/error/<span class="number">500.</span>html</span><br><span class="line"></span><br><span class="line">backend bk_ssh</span><br><span class="line">    mode tcp</span><br><span class="line">    option redispatch</span><br><span class="line">    option srvtcpka # client keep alived</span><br><span class="line">    option tcpka   #server keep alved</span><br><span class="line">    server ssh ssh-nodes.example.com:<span class="number">20</span> check</span><br></pre></td></tr></table></figure>
-<ul>
-<li>这里主要依赖于 SSL/TLS SNI实现</li>
-<li><a href="https://en.wikipedia.org/wiki/Server_Name_Indication">关于 SNI WIKI</a></li>
-</ul>
-<h1 id="HAProxy-TCP-HTTPS-TLS-代理场景总结"><a href="#HAProxy-TCP-HTTPS-TLS-代理场景总结" class="headerlink" title="HAProxy TCP/HTTPS TLS 代理场景总结"></a>HAProxy TCP/HTTPS TLS 代理场景总结</h1><h2 id="多域名TLS转发"><a href="#多域名TLS转发" class="headerlink" title="多域名TLS转发"></a>多域名TLS转发</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">frontend ft_tcp</span><br><span class="line">    mode tcp</span><br><span class="line">    bind *:<span class="number">443</span></span><br><span class="line"></span><br><span class="line">    tcp-request content accept <span class="keyword">if</span> &#123; req_ssl_hello_type <span class="number">1</span> &#125;</span><br><span class="line">    # The SNI (Server Name Indication) is not encrypted, so inspect the SSL hello for SNI</span><br><span class="line">    # Spread the requests between backends</span><br><span class="line">    use_backend     bk_agile <span class="keyword">if</span> &#123;req_ssl_sni -i agile.example.com&#125;</span><br><span class="line">    use_backend     bk_hola  <span class="keyword">if</span> &#123;req_ssl_sni -i hola.example.com&#125;</span><br><span class="line">    default_backend bk_traditional</span><br><span class="line"></span><br><span class="line">backend bk_agile</span><br><span class="line">    mode tcp</span><br><span class="line">    # This backend server will need to terminate TLS for agile.example.com</span><br><span class="line">    server agile.internal.example.com:<span class="number">443</span> check    </span><br><span class="line"></span><br><span class="line">backend bk_hola</span><br><span class="line">    mode tcp</span><br><span class="line">    # This backend server will need to terminate TLS for hola.example.com</span><br><span class="line">    server hola.internal.example.com:<span class="number">443</span> check</span><br><span class="line"></span><br><span class="line">backend bk_traditional</span><br><span class="line">    mode tcp</span><br><span class="line">    # This backend server will need to terminate TLS</span><br><span class="line">    server traditional.internal.example.com:<span class="number">443</span> check</span><br></pre></td></tr></table></figure>
-<ul>
-<li>可用于对POP3 IMAP 等TLS代理<br>参考：<br><a href="https://www.liip.ch/en/blog/haproxy-selective-tls-termination">https://www.liip.ch/en/blog/haproxy-selective-tls-termination</a></li>
-</ul>
-<h2 id="TLS-TCP-HTTPS-共用端口-用于按协议分流）"><a href="#TLS-TCP-HTTPS-共用端口-用于按协议分流）" class="headerlink" title="TLS TCP/HTTPS 共用端口(用于按协议分流）"></a>TLS TCP/HTTPS 共用端口(用于按协议分流）</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">frontend tls-<span class="keyword">in</span></span><br><span class="line">    maxconn <span class="number">100</span></span><br><span class="line">    bind *:<span class="number">443</span> tfo ssl crt /etc/letsencrypt/live/www.xxxx.app/xxx_crt.pem alpn h2,http/<span class="number">1.1</span></span><br><span class="line">    #acl http       ssl_fc,not</span><br><span class="line">    #acl https      ssl_fc</span><br><span class="line">    tcp-request inspect-delay 10s</span><br><span class="line">    tcp-request content accept <span class="keyword">if</span> HTTP</span><br><span class="line">    acl is_stats_req path /stats <span class="keyword">if</span> HTTP</span><br><span class="line">    use_backend demo <span class="keyword">if</span> is_stats_req</span><br><span class="line">    use_backend web <span class="keyword">if</span> HTTP</span><br><span class="line">    #use_backend web <span class="keyword">if</span> https</span><br><span class="line">    use_backend vmx <span class="keyword">if</span> !HTTP</span><br><span class="line"></span><br><span class="line">backend web</span><br><span class="line">  option http-keep-alive</span><br><span class="line">  mode http</span><br><span class="line">  server srv1 <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8081</span> check inter <span class="number">12000</span></span><br><span class="line">  errorfile <span class="number">503</span> /etc/haproxy/error/maintenance.html</span><br><span class="line"></span><br><span class="line">backend vmx</span><br><span class="line">    #tcp server </span><br><span class="line">    option log-health-checks</span><br><span class="line">    option redispatch</span><br><span class="line">    option srvtcpka # client keep alived</span><br><span class="line">    option tcpka   #server keep alved</span><br><span class="line">    server px1 <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">1080</span> check inter <span class="number">12000</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>可用于端口伪装等目的</li>
-</ul>
-<h2 id="TLS转发-HTTPS代理"><a href="#TLS转发-HTTPS代理" class="headerlink" title="TLS转发+HTTPS代理"></a>TLS转发+HTTPS代理</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">frontend ft_tcp</span><br><span class="line">    mode tcp</span><br><span class="line">    bind *:<span class="number">443</span></span><br><span class="line"></span><br><span class="line">    tcp-request content accept <span class="keyword">if</span> &#123; req_ssl_hello_type <span class="number">1</span> &#125;</span><br><span class="line">    # The SNI (Server Name Indication) is not encrypted, so inspect the TLS hello for SNI</span><br><span class="line">    # Spread the requests between backends</span><br><span class="line">    use_backend     bk_agile <span class="keyword">if</span> &#123;req_ssl_sni -i agile.example.com&#125;</span><br><span class="line">    default_backend bk_tcp_to_https</span><br><span class="line"></span><br><span class="line">backend bk_tcp_to_https</span><br><span class="line">    mode tcp</span><br><span class="line">    server haproxy-https <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8443</span> check</span><br><span class="line"></span><br><span class="line">frontend ft_https</span><br><span class="line">    mode http</span><br><span class="line">    # HAProxy will take the fitting certificate from the available ones</span><br><span class="line">    bind *:<span class="number">8443</span> ssl crt /etc/haproxy/certs/</span><br><span class="line"></span><br><span class="line">    # Spread the requests between backends</span><br><span class="line">    use_backend     bk_hola  <span class="keyword">if</span> &#123;hdr(host) -i hola.example.com&#125;</span><br><span class="line">    default_backend bk_traditional</span><br><span class="line"></span><br><span class="line">backend bk_agile</span><br><span class="line">    mode tcp</span><br><span class="line">    # This backend server will need to terminate TLS for agile.example.com</span><br><span class="line">    server agile.internal.example.com:<span class="number">443</span> check    </span><br><span class="line"></span><br><span class="line">backend bk_hola</span><br><span class="line">    server hola.internal.example.com:<span class="number">80</span> check</span><br><span class="line"></span><br><span class="line">backend bk_traditional</span><br><span class="line">    server traditional.internal.example.com:<span class="number">80</span> check</span><br></pre></td></tr></table></figure>
-<ul>
-<li>在防火墙只开发443端口的情况下使用<br>参考：<br><a href="https://www.liip.ch/en/blog/haproxy-selective-tls-termination">https://www.liip.ch/en/blog/haproxy-selective-tls-termination</a></li>
-</ul>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这里涉及到HAProxy Configuration的配置语法，以及TLS协议等，涉及的知识点较多这里主要提供一些实现思路。<br>当<code>crt /etc/haproxy/certs/</code> 下面有多个证书时候，建议使用HAProxy 的 <a href="http://cbonte.github.io/haproxy-dconv/2.1/configuration.html#5.1-crt-list"><code>crt-list</code></a>,解决多证书的配置问题。</p>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ul>
-<li><a href="http://cbonte.github.io/haproxy-dconv/2.2/intro.html">HAProxy Document</a></li>
-<li><a href="https://www.liip.ch/en/blog/haproxy-selective-tls-termination">haproxy-selective-tls-termination</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>tech</category>
-      </categories>
-      <tags>
-        <tag>blog</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HBase Region Move 批量操作</title>
-    <url>/posts/2021-06-11-hbase-region-move-md/</url>
-    <content><![CDATA[<h1 id="背景说明"><a href="#背景说明" class="headerlink" title="背景说明"></a>背景说明</h1><p>公司的HBase集群部分RegionServer需要进行重启， 每个RegionServer上有1000个左右的RegionServer，单表的容量1T+, 为将RegionServer重启的过程对业务RPC的影响降低最少，需要在重启前将Region移到别的RegionServer上。</p>
-<h1 id="HBase-Region-和-Region-move-说明"><a href="#HBase-Region-和-Region-move-说明" class="headerlink" title="HBase Region 和 Region move 说明"></a>HBase Region 和 Region move 说明</h1><ul>
-<li><p>HBase Region<br>HBase 表(Table)根据 rowkey 的范围被水平拆分成若干个 region。每个 region 都包含了这个region 的 start key 和 end key 之间的所有行(row)。Regions 被分配给集群中的某些节点来管理，即 Region Server，由它们来负责处理数据的读写请求。<br>Region 目录结构：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Table                    (HBase table)</span><br><span class="line">    Region               (Regions for the table)</span><br><span class="line">        Store            (Store per ColumnFamily for each Region for the table)</span><br><span class="line">            MemStore     (MemStore for each Store for each Region for the table)</span><br><span class="line">            StoreFile    (StoreFiles for each Store for each Region for the table)</span><br><span class="line">                Block    (Blocks within a StoreFile within a Store for each Region for the table)</span><br></pre></td></tr></table></figure>
-<p>注：Region是数据表的分片，是RegionServer管理的主要对象。一个Region由一个或多个Store构成（Store数量取决于Column famliy 的个数)。</p>
-</li>
-<li><p>region move 过程<br>Region move 是一个region assign的过程（这里还没找到具体的资料，后续确定了再补充）<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210623181233.png"></p>
-</li>
-<li><p>使用场景<br>主要用于RPC 流量和Region都非常多的HBase集群，避免在RegionServer重启时，部分Region不可用的问题。比如需要迁移/增加ZK节点需要重启RegionServer/DataNode等，但是又要保证业务不受影响。<br>Client Scan获取Region信息示意图：<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210623180933.png"></p>
-</li>
-</ul>
-<h1 id="Region-move-操作"><a href="#Region-move-操作" class="headerlink" title="Region move 操作"></a>Region move 操作</h1><h2 id="HBase-region-信息获取"><a href="#HBase-region-信息获取" class="headerlink" title="HBase region 信息获取"></a>HBase region 信息获取</h2><p>HBase Region 信息存储在hbase:mata表中，具体可以通过以下方式获取：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#hbase2.X </span></span><br><span class="line">hbase &gt; scan <span class="string">&#x27;hbase:meta&#x27;</span>, &#123;  COLUMNS=&gt;[<span class="string">&#x27;info:sn&#x27;</span>, <span class="string">&#x27;info:regioninfo&#x27;</span>]&#125; </span><br><span class="line"> user_table,user9549,1620813426908.b9130e9b601a0103bac column=info:sn, timestamp=1623903919745, value=sz-hadoop-dev02-9252.xxxxx.com,16020,1623900617214</span><br><span class="line"> ff9d8150f40c0.</span><br><span class="line"> user_table,user9999,1620813426908.6ad01f8a2287220e1db column=info:sn, timestamp=1623903920957, value=sz-hadoop-dev01-9150.xxxxx.com,16020,1623900625182</span><br><span class="line"> d4b7c20db9956.</span><br><span class="line"></span><br><span class="line"><span class="comment"># hbase1.x </span></span><br><span class="line">hbase&gt; scan <span class="string">&#x27;hbase:meta&#x27;</span>, &#123;  COLUMNS=&gt;[<span class="string">&#x27;info:regioninfo&#x27;</span>,<span class="string">&#x27;info:server&#x27;</span>] &#125;</span><br><span class="line">user_table,,1612069265900.fd91d4c9af348e91e8338411992b8860. column=info:regioninfo, timestamp=1612069267443, value=&#123;ENCODED =&gt; fd91d4c9af348e91e8338411992b8860, NAME =&gt; <span class="string">&#x27;user_table,,1612069265900.fd91d4c9af348e91e8338411992b8860.&#x27;</span>, STARTKEY =&gt; <span class="string">&#x27;&#x27;</span>, ENDKEY =&gt; <span class="string">&#x27;00070K5A9503A5&#x27;</span>&#125;</span><br><span class="line"> user_table,,1612069265900.fd91d4c9af348e91e8338411992b8860. column=info:server, timestamp=1619435908083, value=sz-hbase01-node164.xxxxx.com:60020</span><br><span class="line"> user_table,00070K5A9503A5,1612069265900.dc9d6f64b7472a04deb5001c6c5d27bc. column=info:regioninfo, timestamp=1612069267443, value=&#123;ENCODED =&gt; dc9d6f64b7472a04deb5001c6c5d27bc, NAME =&gt; <span class="string">&#x27;user_table,00070K5A9503A5,1612069265900.dc9d6f64b7472a04deb5001c6c5d27bc.&#x27;</span>, STARTKEY =&gt; <span class="string">&#x27;00070K5A9503A5&#x27;</span>, ENDKEY =&gt; <span class="string">&#x27;00070S5C9A028E4&#x27;</span>&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>*HBase2.x 与HBase1.x 的RegionInfo格式是不一样的，这里需要注意。</p>
-<h2 id="Region-blance-switch"><a href="#Region-blance-switch" class="headerlink" title="Region blance switch"></a>Region blance switch</h2><p>关闭region的自动均衡策略：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hbase&gt;  balance_switch <span class="literal">false</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="HBase-region-批量操作"><a href="#HBase-region-批量操作" class="headerlink" title="HBase region 批量操作"></a>HBase region 批量操作</h2><p>将Node99的Region其全部挪动到指定node235</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat &lt;&lt; <span class="string">EOF &gt; node99-shell.sh </span></span><br><span class="line"><span class="string">#!/bin/shell</span></span><br><span class="line"><span class="string">node_name=&quot;node99&quot;</span></span><br><span class="line"><span class="string">move_host=&quot;hbase01-\$&#123;node_name&#125;.xxxxx.com:60020&quot;</span></span><br><span class="line"><span class="string">#目标RegionServer</span></span><br><span class="line"><span class="string">target_host=&quot;hbase01-node235.xxxxx.com,60020,1624259325292&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">echo \$node_name</span></span><br><span class="line"><span class="string">echo \$move_host</span></span><br><span class="line"><span class="string">echo \$target_host</span></span><br><span class="line"><span class="string">echo \$move_hsed</span></span><br><span class="line"><span class="string">mkdir \$node_name</span></span><br><span class="line"><span class="string">cd \$node_name </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">hbase shell ～/test.txt &gt; &quot;\$&#123;node_name&#125;-before-region-info.txt&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#wget convert jar </span></span><br><span class="line"><span class="string">#这个jar包只解析了HBase1.x 的Region信息</span></span><br><span class="line"><span class="string">wget https://github.com/ordiychen/study_notes/blob/master/build-cmd-script.jar</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># shell </span></span><br><span class="line"><span class="string">/home/xx/jdk1.8.0_181/bin/java -jar build-cmd-script.jar  ～/\$node_name/\$&#123;node_name&#125;-before-region-info.txt \$move_host \$target_host </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># test </span></span><br><span class="line"><span class="string">echo -n &quot;exit&quot; &gt;&gt;  &quot;\$&#123;move_host&#125;-move\$&#123;target_host&#125;.txt&quot;</span></span><br><span class="line"><span class="string">echo &quot;\$&#123;move_host&#125;-move\$&#123;target_host&#125;.txt&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">echo &quot; hbase shell  \$&#123;move_host&#125;-move\$&#123;target_host&#125;.txt &quot;</span></span><br><span class="line"><span class="string">echo &quot; ====&gt; &quot;</span></span><br><span class="line"><span class="string">hbase shell &quot;\$&#123;move_host&#125;-move\$&#123;target_host&#125;.txt&quot;</span></span><br><span class="line"><span class="string">echo  &quot;success move ,please use cm restart RegionServer and DataNode&quot;</span></span><br><span class="line"><span class="string">echo &quot;node is : \$&#123;move_host&#125;&quot;</span></span><br><span class="line"><span class="string">echo &quot; cat \$&#123;move_host&#125;-move\$&#123;target_host&#125;.txt | sed &#x27;s/\$&#123;target_host&#125;/&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
-
-
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>提前移动Region和不移动Region，本地化率变化对比：<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210730154803.png"><br>预先move Region，集群的HFile本地化率，更加稳定。<br>Region 的状态机变换机制复杂，这里只是进行了一个简要的介绍，侧重在于应用层面。</p>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ul>
-<li>《HBase原理与实践》</li>
-<li><a href="https://hbase.apache.org/2.2/book.html#regions.arch">HBase Book Guide Regions </a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>tech</category>
-        <category>BigData</category>
-        <category>Hadoop</category>
-        <category>HBase</category>
-      </categories>
-      <tags>
-        <tag>HBase</tag>
-        <tag>Hadoop</tag>
       </tags>
   </entry>
   <entry>
@@ -1046,6 +967,44 @@ ARM 处理器目前有多种CPU架构，编译时需要注意。
       </tags>
   </entry>
   <entry>
+    <title>HAProxy多协议反向代理以及TLS加密传输</title>
+    <url>/posts/2021-01-11-haproxy-tls-mulit-sni-md/</url>
+    <content><![CDATA[<h1 id="需求场景于实现"><a href="#需求场景于实现" class="headerlink" title="需求场景于实现"></a>需求场景于实现</h1><h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>在防火墙严格限定机器外网端口的情况下，使用HAProxy实现对支持对HTTPS/SSH/FTP的代理需求，实际场景：<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210825120341.png"></p>
+<ul>
+<li>环境信息<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Centos8 </span><br><span class="line">HAProxy2.2 </span><br><span class="line">OpenSSL1.1.g</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>Show code:</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">frontend ft_tcp</span><br><span class="line">    mode tcp</span><br><span class="line">    bind *:<span class="number">443</span> ssl crt /etc/haproxy/certs/</span><br><span class="line"></span><br><span class="line">    tcp-request content accept <span class="keyword">if</span> &#123; req_ssl_hello_type <span class="number">1</span> &#125;</span><br><span class="line">    # The SNI (Server Name Indication) is not encrypted, so inspect the SSL hello for SNI</span><br><span class="line">    # Spread the requests between backends</span><br><span class="line">    use_backend     bk_ssh <span class="keyword">if</span> &#123;req_ssl_sni -i ssh.example.com&#125;</span><br><span class="line">    use_backend     bk_ftp <span class="keyword">if</span> &#123;req_ssl_sni -i ftp.example.com&#125;</span><br><span class="line">    use_backend     bk_www  <span class="keyword">if</span> &#123;req_ssl_sni -i www.example.com&#125;</span><br><span class="line">    default_backend bk_traditional</span><br><span class="line"></span><br><span class="line">backend bk_ftp</span><br><span class="line">    mode tcp</span><br><span class="line">    server ftp ftp-nodes.example.com:<span class="number">21</span> check    </span><br><span class="line"></span><br><span class="line">backend bk_www</span><br><span class="line">  mode http</span><br><span class="line">  # This backend server will need to terminate TLS for hola.example.com</span><br><span class="line">  option http-keep-alive</span><br><span class="line">  server www www-nodes.example.com:<span class="number">80</span> check inter <span class="number">12000</span></span><br><span class="line">  errorfile <span class="number">503</span> /etc/haproxy/error/maintenance.html</span><br><span class="line">  errorfile <span class="number">500</span> /etc/haproxy/error/<span class="number">500.</span>html</span><br><span class="line"></span><br><span class="line">backend bk_ssh</span><br><span class="line">    mode tcp</span><br><span class="line">    option redispatch</span><br><span class="line">    option srvtcpka # client keep alived</span><br><span class="line">    option tcpka   #server keep alved</span><br><span class="line">    server ssh ssh-nodes.example.com:<span class="number">20</span> check</span><br></pre></td></tr></table></figure>
+<ul>
+<li>这里主要依赖于 SSL/TLS SNI实现</li>
+<li><a href="https://en.wikipedia.org/wiki/Server_Name_Indication">关于 SNI WIKI</a></li>
+</ul>
+<h1 id="HAProxy-TCP-HTTPS-TLS-代理场景总结"><a href="#HAProxy-TCP-HTTPS-TLS-代理场景总结" class="headerlink" title="HAProxy TCP/HTTPS TLS 代理场景总结"></a>HAProxy TCP/HTTPS TLS 代理场景总结</h1><h2 id="多域名TLS转发"><a href="#多域名TLS转发" class="headerlink" title="多域名TLS转发"></a>多域名TLS转发</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">frontend ft_tcp</span><br><span class="line">    mode tcp</span><br><span class="line">    bind *:<span class="number">443</span></span><br><span class="line"></span><br><span class="line">    tcp-request content accept <span class="keyword">if</span> &#123; req_ssl_hello_type <span class="number">1</span> &#125;</span><br><span class="line">    # The SNI (Server Name Indication) is not encrypted, so inspect the SSL hello for SNI</span><br><span class="line">    # Spread the requests between backends</span><br><span class="line">    use_backend     bk_agile <span class="keyword">if</span> &#123;req_ssl_sni -i agile.example.com&#125;</span><br><span class="line">    use_backend     bk_hola  <span class="keyword">if</span> &#123;req_ssl_sni -i hola.example.com&#125;</span><br><span class="line">    default_backend bk_traditional</span><br><span class="line"></span><br><span class="line">backend bk_agile</span><br><span class="line">    mode tcp</span><br><span class="line">    # This backend server will need to terminate TLS for agile.example.com</span><br><span class="line">    server agile.internal.example.com:<span class="number">443</span> check    </span><br><span class="line"></span><br><span class="line">backend bk_hola</span><br><span class="line">    mode tcp</span><br><span class="line">    # This backend server will need to terminate TLS for hola.example.com</span><br><span class="line">    server hola.internal.example.com:<span class="number">443</span> check</span><br><span class="line"></span><br><span class="line">backend bk_traditional</span><br><span class="line">    mode tcp</span><br><span class="line">    # This backend server will need to terminate TLS</span><br><span class="line">    server traditional.internal.example.com:<span class="number">443</span> check</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可用于对POP3 IMAP 等TLS代理<br>参考：<br><a href="https://www.liip.ch/en/blog/haproxy-selective-tls-termination">https://www.liip.ch/en/blog/haproxy-selective-tls-termination</a></li>
+</ul>
+<h2 id="TLS-TCP-HTTPS-共用端口-用于按协议分流）"><a href="#TLS-TCP-HTTPS-共用端口-用于按协议分流）" class="headerlink" title="TLS TCP/HTTPS 共用端口(用于按协议分流）"></a>TLS TCP/HTTPS 共用端口(用于按协议分流）</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">frontend tls-<span class="keyword">in</span></span><br><span class="line">    maxconn <span class="number">100</span></span><br><span class="line">    bind *:<span class="number">443</span> tfo ssl crt /etc/letsencrypt/live/www.xxxx.app/xxx_crt.pem alpn h2,http/<span class="number">1.1</span></span><br><span class="line">    #acl http       ssl_fc,not</span><br><span class="line">    #acl https      ssl_fc</span><br><span class="line">    tcp-request inspect-delay 10s</span><br><span class="line">    tcp-request content accept <span class="keyword">if</span> HTTP</span><br><span class="line">    acl is_stats_req path /stats <span class="keyword">if</span> HTTP</span><br><span class="line">    use_backend demo <span class="keyword">if</span> is_stats_req</span><br><span class="line">    use_backend web <span class="keyword">if</span> HTTP</span><br><span class="line">    #use_backend web <span class="keyword">if</span> https</span><br><span class="line">    use_backend vmx <span class="keyword">if</span> !HTTP</span><br><span class="line"></span><br><span class="line">backend web</span><br><span class="line">  option http-keep-alive</span><br><span class="line">  mode http</span><br><span class="line">  server srv1 <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8081</span> check inter <span class="number">12000</span></span><br><span class="line">  errorfile <span class="number">503</span> /etc/haproxy/error/maintenance.html</span><br><span class="line"></span><br><span class="line">backend vmx</span><br><span class="line">    #tcp server </span><br><span class="line">    option log-health-checks</span><br><span class="line">    option redispatch</span><br><span class="line">    option srvtcpka # client keep alived</span><br><span class="line">    option tcpka   #server keep alved</span><br><span class="line">    server px1 <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">1080</span> check inter <span class="number">12000</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>可用于端口伪装等目的</li>
+</ul>
+<h2 id="TLS转发-HTTPS代理"><a href="#TLS转发-HTTPS代理" class="headerlink" title="TLS转发+HTTPS代理"></a>TLS转发+HTTPS代理</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">frontend ft_tcp</span><br><span class="line">    mode tcp</span><br><span class="line">    bind *:<span class="number">443</span></span><br><span class="line"></span><br><span class="line">    tcp-request content accept <span class="keyword">if</span> &#123; req_ssl_hello_type <span class="number">1</span> &#125;</span><br><span class="line">    # The SNI (Server Name Indication) is not encrypted, so inspect the TLS hello for SNI</span><br><span class="line">    # Spread the requests between backends</span><br><span class="line">    use_backend     bk_agile <span class="keyword">if</span> &#123;req_ssl_sni -i agile.example.com&#125;</span><br><span class="line">    default_backend bk_tcp_to_https</span><br><span class="line"></span><br><span class="line">backend bk_tcp_to_https</span><br><span class="line">    mode tcp</span><br><span class="line">    server haproxy-https <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8443</span> check</span><br><span class="line"></span><br><span class="line">frontend ft_https</span><br><span class="line">    mode http</span><br><span class="line">    # HAProxy will take the fitting certificate from the available ones</span><br><span class="line">    bind *:<span class="number">8443</span> ssl crt /etc/haproxy/certs/</span><br><span class="line"></span><br><span class="line">    # Spread the requests between backends</span><br><span class="line">    use_backend     bk_hola  <span class="keyword">if</span> &#123;hdr(host) -i hola.example.com&#125;</span><br><span class="line">    default_backend bk_traditional</span><br><span class="line"></span><br><span class="line">backend bk_agile</span><br><span class="line">    mode tcp</span><br><span class="line">    # This backend server will need to terminate TLS for agile.example.com</span><br><span class="line">    server agile.internal.example.com:<span class="number">443</span> check    </span><br><span class="line"></span><br><span class="line">backend bk_hola</span><br><span class="line">    server hola.internal.example.com:<span class="number">80</span> check</span><br><span class="line"></span><br><span class="line">backend bk_traditional</span><br><span class="line">    server traditional.internal.example.com:<span class="number">80</span> check</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在防火墙只开发443端口的情况下使用<br>参考：<br><a href="https://www.liip.ch/en/blog/haproxy-selective-tls-termination">https://www.liip.ch/en/blog/haproxy-selective-tls-termination</a></li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这里涉及到HAProxy Configuration的配置语法，以及TLS协议等，涉及的知识点较多这里主要提供一些实现思路。<br>当<code>crt /etc/haproxy/certs/</code> 下面有多个证书时候，建议使用HAProxy 的 <a href="http://cbonte.github.io/haproxy-dconv/2.1/configuration.html#5.1-crt-list"><code>crt-list</code></a>,解决多证书的配置问题。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ul>
+<li><a href="http://cbonte.github.io/haproxy-dconv/2.2/intro.html">HAProxy Document</a></li>
+<li><a href="https://www.liip.ch/en/blog/haproxy-selective-tls-termination">haproxy-selective-tls-termination</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>tech</category>
+      </categories>
+      <tags>
+        <tag>blog</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MacOS install GitBook 未成功经验</title>
     <url>/posts/2021-02-01-gitbook-macos-cl-error/</url>
     <content><![CDATA[<h1 id="安装GitBook遇到的各种问题"><a href="#安装GitBook遇到的各种问题" class="headerlink" title="安装GitBook遇到的各种问题"></a>安装GitBook遇到的各种问题</h1><ul>
@@ -1083,6 +1042,47 @@ ARM 处理器目前有多种CPU架构，编译时需要注意。
       </categories>
       <tags>
         <tag>tools</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HBase Region Move 批量操作</title>
+    <url>/posts/2021-06-11-hbase-region-move-md/</url>
+    <content><![CDATA[<h1 id="背景说明"><a href="#背景说明" class="headerlink" title="背景说明"></a>背景说明</h1><p>公司的HBase集群部分RegionServer需要进行重启， 每个RegionServer上有1000个左右的RegionServer，单表的容量1T+, 为将RegionServer重启的过程对业务RPC的影响降低最少，需要在重启前将Region移到别的RegionServer上。</p>
+<h1 id="HBase-Region-和-Region-move-说明"><a href="#HBase-Region-和-Region-move-说明" class="headerlink" title="HBase Region 和 Region move 说明"></a>HBase Region 和 Region move 说明</h1><ul>
+<li><p>HBase Region<br>HBase 表(Table)根据 rowkey 的范围被水平拆分成若干个 region。每个 region 都包含了这个region 的 start key 和 end key 之间的所有行(row)。Regions 被分配给集群中的某些节点来管理，即 Region Server，由它们来负责处理数据的读写请求。<br>Region 目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Table                    (HBase table)</span><br><span class="line">    Region               (Regions for the table)</span><br><span class="line">        Store            (Store per ColumnFamily for each Region for the table)</span><br><span class="line">            MemStore     (MemStore for each Store for each Region for the table)</span><br><span class="line">            StoreFile    (StoreFiles for each Store for each Region for the table)</span><br><span class="line">                Block    (Blocks within a StoreFile within a Store for each Region for the table)</span><br></pre></td></tr></table></figure>
+<p>注：Region是数据表的分片，是RegionServer管理的主要对象。一个Region由一个或多个Store构成（Store数量取决于Column famliy 的个数)。</p>
+</li>
+<li><p>region move 过程<br>Region move 是一个region assign的过程（这里还没找到具体的资料，后续确定了再补充）<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210623181233.png"></p>
+</li>
+<li><p>使用场景<br>主要用于RPC 流量和Region都非常多的HBase集群，避免在RegionServer重启时，部分Region不可用的问题。比如需要迁移/增加ZK节点需要重启RegionServer/DataNode等，但是又要保证业务不受影响。<br>Client Scan获取Region信息示意图：<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210623180933.png"></p>
+</li>
+</ul>
+<h1 id="Region-move-操作"><a href="#Region-move-操作" class="headerlink" title="Region move 操作"></a>Region move 操作</h1><h2 id="HBase-region-信息获取"><a href="#HBase-region-信息获取" class="headerlink" title="HBase region 信息获取"></a>HBase region 信息获取</h2><p>HBase Region 信息存储在hbase:mata表中，具体可以通过以下方式获取：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#hbase2.X </span></span><br><span class="line">hbase &gt; scan <span class="string">&#x27;hbase:meta&#x27;</span>, &#123;  COLUMNS=&gt;[<span class="string">&#x27;info:sn&#x27;</span>, <span class="string">&#x27;info:regioninfo&#x27;</span>]&#125; </span><br><span class="line"> user_table,user9549,1620813426908.b9130e9b601a0103bac column=info:sn, timestamp=1623903919745, value=sz-hadoop-dev02-9252.xxxxx.com,16020,1623900617214</span><br><span class="line"> ff9d8150f40c0.</span><br><span class="line"> user_table,user9999,1620813426908.6ad01f8a2287220e1db column=info:sn, timestamp=1623903920957, value=sz-hadoop-dev01-9150.xxxxx.com,16020,1623900625182</span><br><span class="line"> d4b7c20db9956.</span><br><span class="line"></span><br><span class="line"><span class="comment"># hbase1.x </span></span><br><span class="line">hbase&gt; scan <span class="string">&#x27;hbase:meta&#x27;</span>, &#123;  COLUMNS=&gt;[<span class="string">&#x27;info:regioninfo&#x27;</span>,<span class="string">&#x27;info:server&#x27;</span>] &#125;</span><br><span class="line">user_table,,1612069265900.fd91d4c9af348e91e8338411992b8860. column=info:regioninfo, timestamp=1612069267443, value=&#123;ENCODED =&gt; fd91d4c9af348e91e8338411992b8860, NAME =&gt; <span class="string">&#x27;user_table,,1612069265900.fd91d4c9af348e91e8338411992b8860.&#x27;</span>, STARTKEY =&gt; <span class="string">&#x27;&#x27;</span>, ENDKEY =&gt; <span class="string">&#x27;00070K5A9503A5&#x27;</span>&#125;</span><br><span class="line"> user_table,,1612069265900.fd91d4c9af348e91e8338411992b8860. column=info:server, timestamp=1619435908083, value=sz-hbase01-node164.xxxxx.com:60020</span><br><span class="line"> user_table,00070K5A9503A5,1612069265900.dc9d6f64b7472a04deb5001c6c5d27bc. column=info:regioninfo, timestamp=1612069267443, value=&#123;ENCODED =&gt; dc9d6f64b7472a04deb5001c6c5d27bc, NAME =&gt; <span class="string">&#x27;user_table,00070K5A9503A5,1612069265900.dc9d6f64b7472a04deb5001c6c5d27bc.&#x27;</span>, STARTKEY =&gt; <span class="string">&#x27;00070K5A9503A5&#x27;</span>, ENDKEY =&gt; <span class="string">&#x27;00070S5C9A028E4&#x27;</span>&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>*HBase2.x 与HBase1.x 的RegionInfo格式是不一样的，这里需要注意。</p>
+<h2 id="Region-blance-switch"><a href="#Region-blance-switch" class="headerlink" title="Region blance switch"></a>Region blance switch</h2><p>关闭region的自动均衡策略：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hbase&gt;  balance_switch <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="HBase-region-批量操作"><a href="#HBase-region-批量操作" class="headerlink" title="HBase region 批量操作"></a>HBase region 批量操作</h2><p>将Node99的Region其全部挪动到指定node235</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat &lt;&lt; <span class="string">EOF &gt; node99-shell.sh </span></span><br><span class="line"><span class="string">#!/bin/shell</span></span><br><span class="line"><span class="string">node_name=&quot;node99&quot;</span></span><br><span class="line"><span class="string">move_host=&quot;hbase01-\$&#123;node_name&#125;.xxxxx.com:60020&quot;</span></span><br><span class="line"><span class="string">#目标RegionServer</span></span><br><span class="line"><span class="string">target_host=&quot;hbase01-node235.xxxxx.com,60020,1624259325292&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">echo \$node_name</span></span><br><span class="line"><span class="string">echo \$move_host</span></span><br><span class="line"><span class="string">echo \$target_host</span></span><br><span class="line"><span class="string">echo \$move_hsed</span></span><br><span class="line"><span class="string">mkdir \$node_name</span></span><br><span class="line"><span class="string">cd \$node_name </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">hbase shell ～/test.txt &gt; &quot;\$&#123;node_name&#125;-before-region-info.txt&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#wget convert jar </span></span><br><span class="line"><span class="string">#这个jar包只解析了HBase1.x 的Region信息</span></span><br><span class="line"><span class="string">wget https://github.com/ordiychen/study_notes/blob/master/build-cmd-script.jar</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># shell </span></span><br><span class="line"><span class="string">/home/xx/jdk1.8.0_181/bin/java -jar build-cmd-script.jar  ～/\$node_name/\$&#123;node_name&#125;-before-region-info.txt \$move_host \$target_host </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># test </span></span><br><span class="line"><span class="string">echo -n &quot;exit&quot; &gt;&gt;  &quot;\$&#123;move_host&#125;-move\$&#123;target_host&#125;.txt&quot;</span></span><br><span class="line"><span class="string">echo &quot;\$&#123;move_host&#125;-move\$&#123;target_host&#125;.txt&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">echo &quot; hbase shell  \$&#123;move_host&#125;-move\$&#123;target_host&#125;.txt &quot;</span></span><br><span class="line"><span class="string">echo &quot; ====&gt; &quot;</span></span><br><span class="line"><span class="string">hbase shell &quot;\$&#123;move_host&#125;-move\$&#123;target_host&#125;.txt&quot;</span></span><br><span class="line"><span class="string">echo  &quot;success move ,please use cm restart RegionServer and DataNode&quot;</span></span><br><span class="line"><span class="string">echo &quot;node is : \$&#123;move_host&#125;&quot;</span></span><br><span class="line"><span class="string">echo &quot; cat \$&#123;move_host&#125;-move\$&#123;target_host&#125;.txt | sed &#x27;s/\$&#123;target_host&#125;/&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
+
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>提前移动Region和不移动Region，本地化率变化对比：<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210730154803.png"><br>预先move Region，集群的HFile本地化率，更加稳定。<br>Region 的状态机变换机制复杂，这里只是进行了一个简要的介绍，侧重在于应用层面。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ul>
+<li>《HBase原理与实践》</li>
+<li><a href="https://hbase.apache.org/2.2/book.html#regions.arch">HBase Book Guide Regions </a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>tech</category>
+        <category>BigData</category>
+        <category>Hadoop</category>
+        <category>HBase</category>
+      </categories>
+      <tags>
+        <tag>HBase</tag>
+        <tag>Hadoop</tag>
       </tags>
   </entry>
   <entry>

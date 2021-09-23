@@ -214,6 +214,13 @@
 
   
   <url>
+    <loc>https://ordiychen.github.io/tags/java/</loc>
+    <lastmod>2021-09-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://ordiychen.github.io/tags/blog/</loc>
     <lastmod>2021-09-23</lastmod>
     <changefreq>daily</changefreq>
@@ -221,7 +228,63 @@
   </url>
   
   <url>
+    <loc>https://ordiychen.github.io/tags/Net/</loc>
+    <lastmod>2021-09-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/tags/LRU/</loc>
+    <lastmod>2021-09-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://ordiychen.github.io/tags/Java/</loc>
+    <lastmod>2021-09-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/tags/CoreJava/</loc>
+    <lastmod>2021-09-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/tags/HBase/</loc>
+    <lastmod>2021-09-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/tags/Hadoop/</loc>
+    <lastmod>2021-09-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/tags/tools/</loc>
+    <lastmod>2021-09-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/tags/JavaWeb/</loc>
+    <lastmod>2021-09-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/tags/Apache/</loc>
     <lastmod>2021-09-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -236,41 +299,6 @@
   
   <url>
     <loc>https://ordiychen.github.io/tags/Logging/</loc>
-    <lastmod>2021-09-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/tags/LRU/</loc>
-    <lastmod>2021-09-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/tags/CoreJava/</loc>
-    <lastmod>2021-09-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/tags/Net/</loc>
-    <lastmod>2021-09-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/tags/Nginx/</loc>
-    <lastmod>2021-09-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/tags/Nginx-Stream/</loc>
     <lastmod>2021-09-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -305,6 +333,20 @@
   </url>
   
   <url>
+    <loc>https://ordiychen.github.io/tags/Nginx/</loc>
+    <lastmod>2021-09-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/tags/Nginx-Stream/</loc>
+    <lastmod>2021-09-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://ordiychen.github.io/tags/TLS/</loc>
     <lastmod>2021-09-23</lastmod>
     <changefreq>daily</changefreq>
@@ -327,13 +369,6 @@
   
   <url>
     <loc>https://ordiychen.github.io/tags/python-plot/</loc>
-    <lastmod>2021-09-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/tags/HBase/</loc>
     <lastmod>2021-09-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -431,41 +466,6 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/tags/java/</loc>
-    <lastmod>2021-09-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/tags/Hadoop/</loc>
-    <lastmod>2021-09-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/tags/tools/</loc>
-    <lastmod>2021-09-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/tags/JavaWeb/</loc>
-    <lastmod>2021-09-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/tags/Apache/</loc>
-    <lastmod>2021-09-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://ordiychen.github.io/tags/servlet/</loc>
     <lastmod>2021-09-23</lastmod>
     <changefreq>daily</changefreq>
@@ -489,14 +489,14 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/categories/tech/ARM/</loc>
+    <loc>https://ordiychen.github.io/categories/tech/algorithm/</loc>
     <lastmod>2021-09-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/categories/tech/mysql/</loc>
+    <loc>https://ordiychen.github.io/categories/tech/BigData/</loc>
     <lastmod>2021-09-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -510,21 +510,35 @@
   </url>
   
   <url>
+    <loc>https://ordiychen.github.io/categories/tech/tools/</loc>
+    <lastmod>2021-09-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/categories/tech/mysql/</loc>
+    <lastmod>2021-09-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/categories/tech/ARM/</loc>
+    <lastmod>2021-09-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/categories/tech/BigData/Hadoop/</loc>
+    <lastmod>2021-09-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://ordiychen.github.io/categories/tech/python/</loc>
-    <lastmod>2021-09-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/categories/tech/algorithm/</loc>
-    <lastmod>2021-09-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/categories/tech/TLS/</loc>
     <lastmod>2021-09-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -538,7 +552,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/categories/tech/BigData/</loc>
+    <loc>https://ordiychen.github.io/categories/tech/TLS/</loc>
     <lastmod>2021-09-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -567,20 +581,6 @@
   
   <url>
     <loc>https://ordiychen.github.io/categories/tech/DNS/</loc>
-    <lastmod>2021-09-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/categories/tech/BigData/Hadoop/</loc>
-    <lastmod>2021-09-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/categories/tech/tools/</loc>
     <lastmod>2021-09-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
