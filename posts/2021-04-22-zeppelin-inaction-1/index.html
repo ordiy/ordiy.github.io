@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 6.1.0">
 
 
   <link rel="icon" type="image/png" sizes="16x16" href="/function%20()%20%7B%0A%20%20%20%20%20%20for%20(var%20_len2%20=%20arguments.length,%20args%20=%20new%20Array(_len2),%20_key2%20=%200;%20_key2%20%3C%20_len2;%20_key2++)%20%7B%0A%20%20%20%20%20%20%20%20args%5B_key2%5D%20=%20arguments%5B_key2%5D;%0A%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20return%20obj%5Bval%5D.apply(obj,%20args);%0A%20%20%20%20%7D">
@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiychen.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1}},"activeClass":"disqus"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiychen.github.io","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1}},"activeClass":"disqus"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="Zeppelin Install and config，并使用Zeppelin 对MySQL数据进行可视化分析。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Zeppelin In Action">
@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210425120338.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210425143319.png">
 <meta property="article:published_time" content="2021-04-22T14:06:36.000Z">
-<meta property="article:modified_time" content="2021-05-21T07:49:40.651Z">
+<meta property="article:modified_time" content="2021-05-21T07:49:40.000Z">
 <meta property="article:author" content="Ordiy">
 <meta property="article:tag" content="blog">
 <meta property="article:tag" content="ApacheZeppelin">
@@ -152,20 +152,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -285,7 +285,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>2k</span>
+      <span>1.8k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -309,24 +309,24 @@
 </blockquote>
 <p>Architecture<br><img src="http://zeppelin.apache.org/docs/0.9.0-preview1/assets/themes/zeppelin/img/docs-img/submarine-architecture.png"><br><em>图片@apache zeppelin</em></p>
 <p><img src="http://zeppelin.apache.org/docs/0.9.0-preview1/assets/themes/zeppelin/img/docs-img/submarine-interpreter.png"><br><em>图片@apache zeppelin</em></p>
-<h1 id="Install-and-config"><a href="#Install-and-config" class="headerlink" title="Install and config"></a>Install and config</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">环境：</span><br><span class="line">Centos 7.5</span><br><span class="line">JDK1.8</span><br><span class="line">zeppelin-0.9.0</span><br><span class="line">网络：局域网使用</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="Install-and-config"><a href="#Install-and-config" class="headerlink" title="Install and config"></a>Install and config</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">环境：</span><br><span class="line">Centos 7.5</span><br><span class="line">JDK1.8</span><br><span class="line">zeppelin-0.9.0</span><br><span class="line">网络：局域网使用</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>install 过程：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;mirrors.bfsu.edu.cn&#x2F;apache&#x2F;zeppelin&#x2F;zeppelin-0.9.0&#x2F;zeppelin-0.9.0-bin-all.tgz </span><br><span class="line"># https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;apache&#x2F;zeppelin&#x2F;zeppelin-0.9.0&#x2F;zeppelin-0.9.0-bin-all.tgz </span><br><span class="line"></span><br><span class="line">tar zxvf zeppelin-0.9.0-bin-all.tgz</span><br><span class="line"></span><br><span class="line">#软链</span><br><span class="line">ln -s zeppelin-0.9.0-bin-all zeppeline</span><br><span class="line"></span><br><span class="line"># </span><br><span class="line">cd zeppline </span><br><span class="line"></span><br><span class="line"># 修改配置</span><br><span class="line">cat&lt;&lt; EOF&gt; conf&#x2F;zeppelin-site.xml</span><br><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;zeppelin.server.addr&lt;&#x2F;name&gt;</span><br><span class="line">  &lt;value&gt;0.0.0.0&lt;&#x2F;value&gt;</span><br><span class="line">  &lt;description&gt;Server binding address&lt;&#x2F;description&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;zeppelin.server.port&lt;&#x2F;name&gt;</span><br><span class="line">  &lt;value&gt;8089&lt;&#x2F;value&gt;</span><br><span class="line">  &lt;description&gt;Server port.&lt;&#x2F;description&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># start zeppline </span><br><span class="line">.&#x2F;bin&#x2F;zeppelin-daemon.sh start </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.bfsu.edu.cn/apache/zeppelin/zeppelin-0.9.0/zeppelin-0.9.0-bin-all.tgz </span><br><span class="line"># https://mirrors.tuna.tsinghua.edu.cn/apache/zeppelin/zeppelin-0.9.0/zeppelin-0.9.0-bin-all.tgz </span><br><span class="line"></span><br><span class="line">tar zxvf zeppelin-0.9.0-bin-all.tgz</span><br><span class="line"></span><br><span class="line">#软链</span><br><span class="line">ln -s zeppelin-0.9.0-bin-all zeppeline</span><br><span class="line"></span><br><span class="line"># </span><br><span class="line">cd zeppline </span><br><span class="line"></span><br><span class="line"># 修改配置</span><br><span class="line">cat&lt;&lt; EOF&gt; conf/zeppelin-site.xml</span><br><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;zeppelin.server.addr&lt;/name&gt;</span><br><span class="line">  &lt;value&gt;0.0.0.0&lt;/value&gt;</span><br><span class="line">  &lt;description&gt;Server binding address&lt;/description&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;zeppelin.server.port&lt;/name&gt;</span><br><span class="line">  &lt;value&gt;8089&lt;/value&gt;</span><br><span class="line">  &lt;description&gt;Server port.&lt;/description&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># start zeppline </span><br><span class="line">./bin/zeppelin-daemon.sh start </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
 <h1 id="配置一个interpreter"><a href="#配置一个interpreter" class="headerlink" title="配置一个interpreter"></a>配置一个interpreter</h1><p>备注：建议增加一个内网的maven 私服 repostory 地址，便于jar依赖下载</p>
 <p>interperter增加 interpreter<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210425115420.png"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">default.url: 	jdbc:mysql:&#x2F;&#x2F;172.17.8.85:3306&#x2F;</span><br><span class="line">default.user	root	</span><br><span class="line">default.password	***	 </span><br><span class="line">default.driver	com.mysql.jdbc.Driver</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Dependencies:</span><br><span class="line">mysql:mysql-connector-java:5.1.49	</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">default.url:   jdbc:mysql://172.17.8.85:3306/</span><br><span class="line">default.user  root	</span><br><span class="line">default.password  ***	 </span><br><span class="line">default.driver  com.mysql.jdbc.Driver</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Dependencies:</span><br><span class="line">mysql:mysql-connector-java:5.1.49  </span><br></pre></td></tr></table></figure>
 
 <p><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210425120338.png"></p>
 <ul>
 <li>interpreter 命令</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#nstall all community managed interpreters</span><br><span class="line">.&#x2F;bin&#x2F;install-interpreter.sh --all</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># You can get full list of community managed interpreters by running</span><br><span class="line">.&#x2F;bin&#x2F;install-interpreter.sh --list</span><br><span class="line"></span><br><span class="line"># add 第三方 interpreter </span><br><span class="line">#rd party interpreters</span><br><span class="line">#http:&#x2F;&#x2F;zeppelin.apache.org&#x2F;docs&#x2F;0.9.0&#x2F;usage&#x2F;interpreter&#x2F;installation.html#3rd-party-interpreters</span><br><span class="line">   </span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#nstall all community managed interpreters</span><br><span class="line">./bin/install-interpreter.sh --all</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># You can get full list of community managed interpreters by running</span><br><span class="line">./bin/install-interpreter.sh --list</span><br><span class="line"></span><br><span class="line"># add 第三方 interpreter </span><br><span class="line">#rd party interpreters</span><br><span class="line">#http://zeppelin.apache.org/docs/0.9.0/usage/interpreter/installation.html#3rd-party-interpreters</span><br><span class="line">   </span><br></pre></td></tr></table></figure>
 
 
-<h1 id="zeppline-进行数据可视化分析"><a href="#zeppline-进行数据可视化分析" class="headerlink" title="zeppline 进行数据可视化分析"></a>zeppline 进行数据可视化分析</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">%mysql </span><br><span class="line">select tab2.user_name,count(*) as auth_obj_num from  tb_dp_hero_auth_info as tab1 left join tb_dp_hero_user_info tab2 on tab1.user_id &#x3D; tab2.id  group by tab1.user_id ;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="zeppline-进行数据可视化分析"><a href="#zeppline-进行数据可视化分析" class="headerlink" title="zeppline 进行数据可视化分析"></a>zeppline 进行数据可视化分析</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">%mysql </span><br><span class="line">select tab2.user_name,count(*) as auth_obj_num from  tb_dp_hero_auth_info as tab1 left join tb_dp_hero_user_info tab2 on tab1.user_id = tab2.id  group by tab1.user_id ;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>分析用户的授权对象个数：<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20210425143319.png"></p>
 <h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a target="_blank" rel="noopener" href="http://zeppelin.apache.org/docs/0.9.0/usage/interpreter/installation.html">zeppelin interpreter</a><br><a target="_blank" rel="noopener" href="http://zeppelin.apache.org/docs/0.9.0-preview1/interpreter/submarine.html#architecture">zeppelin architecture</a></p>
 
@@ -379,7 +379,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -390,16 +390,16 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">109k</span>
+    <span title="Symbols count total">137k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:39</span>
+    <span title="Reading time total">2:05</span>
   </span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
   </div>
 
     </div>

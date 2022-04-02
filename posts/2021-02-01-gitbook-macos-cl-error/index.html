@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 6.1.0">
 
 
   <link rel="icon" type="image/png" sizes="16x16" href="/function%20()%20%7B%0A%20%20%20%20%20%20for%20(var%20_len2%20=%20arguments.length,%20args%20=%20new%20Array(_len2),%20_key2%20=%200;%20_key2%20%3C%20_len2;%20_key2++)%20%7B%0A%20%20%20%20%20%20%20%20args%5B_key2%5D%20=%20arguments%5B_key2%5D;%0A%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20return%20obj%5Bval%5D.apply(obj,%20args);%0A%20%20%20%20%7D">
@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiychen.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1}},"activeClass":"disqus"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiychen.github.io","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1}},"activeClass":"disqus"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="MacOS 上安装GitBook遇到的各种问题，最终没有正常安装，选择使用&#96;honkit&#96;的悲伤故事">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MacOS install GitBook 未成功经验">
@@ -26,7 +26,7 @@
 <meta property="og:description" content="MacOS 上安装GitBook遇到的各种问题，最终没有正常安装，选择使用&#96;honkit&#96;的悲伤故事">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-07-01T18:18:45.000Z">
-<meta property="article:modified_time" content="2021-07-02T11:36:38.548Z">
+<meta property="article:modified_time" content="2021-07-02T11:36:38.000Z">
 <meta property="article:author" content="Ordiy">
 <meta property="article:tag" content="tools">
 <meta name="twitter:card" content="summary">
@@ -145,20 +145,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -300,15 +300,15 @@
 <li><p>环境信息</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Node.js v14.17.1</span><br><span class="line">ruby 2.5.8p224 (2020-03-31 revision 67882) [x86_64-darwin18]</span><br><span class="line">MacOS Catalina 10.15.7 (19H1217)</span><br></pre></td></tr></table></figure></li>
 <li><p>安装遇到的问题</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm install gitbook-cli -g</span><br><span class="line">mkdir book-test</span><br><span class="line"></span><br><span class="line"><span class="comment"># install </span></span><br><span class="line">$ gitbook server</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm install gitbook-cli -g</span><br><span class="line"><span class="built_in">mkdir</span> book-test</span><br><span class="line"></span><br><span class="line"><span class="comment"># install </span></span><br><span class="line">$ gitbook server</span><br></pre></td></tr></table></figure>
 <p>出现异常：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Installing GitBook 3.2.3</span><br><span class="line">(node:90003) [DEP0150] DeprecationWarning: Setting process.config is deprecated. In the future the property will be read-only.</span><br><span class="line">(Use `node --trace-deprecation ...` to show <span class="built_in">where</span> the warning was created)</span><br><span class="line">xcode-select: error: tool <span class="string">&#x27;xcodebuild&#x27;</span> requires Xcode, but active developer directory <span class="string">&#x27;/Library/Developer/CommandLineTools&#x27;</span> is a <span class="built_in">command</span> line tools instance</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.CLTools_Executables&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.DeveloperToolsCLILeo&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.DeveloperToolsCLI&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">gyp: No Xcode or CLT version detected!</span><br><span class="line">(node:90043) [DEP0150] DeprecationWarning: Setting process.config is deprecated. In the future the property will be read-only.</span><br><span class="line">(Use `node --trace-deprecation ...` to show <span class="built_in">where</span> the warning was created)</span><br><span class="line">xcode-select: error: tool <span class="string">&#x27;xcodebuild&#x27;</span> requires Xcode, but active developer directory <span class="string">&#x27;/Library/Developer/CommandLineTools&#x27;</span> is a <span class="built_in">command</span> line tools instance</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.CLTools_Executables&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.DeveloperToolsCLILeo&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.DeveloperToolsCLI&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">gyp: No Xcode or CLT version detected!</span><br><span class="line">/usr/<span class="built_in">local</span>/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:287</span><br><span class="line">      <span class="keyword">if</span> (cb) cb.apply(this, arguments)</span><br><span class="line">                 ^</span><br><span class="line">TypeError: cb.apply is not a <span class="keyword">function</span></span><br><span class="line">    at /usr/<span class="built_in">local</span>/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:287:18</span><br><span class="line">    at FSReqCallback.oncomplete (node:fs:196:5)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Installing GitBook 3.2.3</span><br><span class="line">(node:90003) [DEP0150] DeprecationWarning: Setting process.config is deprecated. In the future the property will be read-only.</span><br><span class="line">(Use `node --trace-deprecation ...` to show <span class="built_in">where</span> the warning was created)</span><br><span class="line">xcode-select: error: tool <span class="string">&#x27;xcodebuild&#x27;</span> requires Xcode, but active developer directory <span class="string">&#x27;/Library/Developer/CommandLineTools&#x27;</span> is a <span class="built_in">command</span> line tools instance</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.CLTools_Executables&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.DeveloperToolsCLILeo&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.DeveloperToolsCLI&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">gyp: No Xcode or CLT version detected!</span><br><span class="line">(node:90043) [DEP0150] DeprecationWarning: Setting process.config is deprecated. In the future the property will be read-only.</span><br><span class="line">(Use `node --trace-deprecation ...` to show <span class="built_in">where</span> the warning was created)</span><br><span class="line">xcode-select: error: tool <span class="string">&#x27;xcodebuild&#x27;</span> requires Xcode, but active developer directory <span class="string">&#x27;/Library/Developer/CommandLineTools&#x27;</span> is a <span class="built_in">command</span> line tools instance</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.CLTools_Executables&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.DeveloperToolsCLILeo&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.DeveloperToolsCLI&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">gyp: No Xcode or CLT version detected!</span><br><span class="line">/usr/local/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:287</span><br><span class="line">      <span class="keyword">if</span> (cb) cb.apply(this, arguments)</span><br><span class="line">                 ^</span><br><span class="line">TypeError: cb.apply is not a <span class="keyword">function</span></span><br><span class="line">    at /usr/local/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:287:18</span><br><span class="line">    at FSReqCallback.oncomplete (node:fs:196:5)</span><br></pre></td></tr></table></figure>
 <p>修复问题：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#cli pkg noxexits</span></span><br><span class="line">$ /usr/sbin/pkgutil --packages | grep CL</span><br><span class="line"></span><br><span class="line"><span class="comment"># reinstall xcode-select</span></span><br><span class="line">$ sudo rm -rf $(xcode-select -print-path)</span><br><span class="line">$ xcode-select --install</span><br><span class="line">$ /usr/sbin/pkgutil --packages | grep CL</span><br><span class="line">$ sudo npm install -g node-gyp</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#cli pkg noxexits</span></span><br><span class="line">$ /usr/sbin/pkgutil --packages | grep CL</span><br><span class="line"></span><br><span class="line"><span class="comment"># reinstall xcode-select</span></span><br><span class="line">$ sudo <span class="built_in">rm</span> -rf $(xcode-select -print-path)</span><br><span class="line">$ xcode-select --install</span><br><span class="line">$ /usr/sbin/pkgutil --packages | grep CL</span><br><span class="line">$ sudo npm install -g node-gyp</span><br></pre></td></tr></table></figure>
 <p>异常日志：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Installing GitBook 3.2.3</span><br><span class="line">  SOLINK_MODULE(target) Release/.node</span><br><span class="line">  CXX(target) Release/obj.target/fse/fsevents.o</span><br><span class="line">/usr/<span class="built_in">local</span>/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:287</span><br><span class="line">      <span class="keyword">if</span> (cb) cb.apply(this, arguments)</span><br><span class="line">                 ^</span><br><span class="line">TypeError: cb.apply is not a <span class="keyword">function</span></span><br><span class="line">    at /usr/<span class="built_in">local</span>/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:287:1</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Installing GitBook 3.2.3</span><br><span class="line">  SOLINK_MODULE(target) Release/.node</span><br><span class="line">  CXX(target) Release/obj.target/fse/fsevents.o</span><br><span class="line">/usr/local/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:287</span><br><span class="line">      <span class="keyword">if</span> (cb) cb.apply(this, arguments)</span><br><span class="line">                 ^</span><br><span class="line">TypeError: cb.apply is not a <span class="keyword">function</span></span><br><span class="line">    at /usr/local/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:287:1</span><br></pre></td></tr></table></figure>
 <p>修复：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/</span><br><span class="line">$ npm install graceful-fs@latest --save</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /usr/local/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/</span><br><span class="line">$ npm install graceful-fs@latest --save</span><br></pre></td></tr></table></figure>
 <p>参考：<br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/64211386/gitbook-cli-install-error-typeerror-cb-apply-is-not-a-function-inside-graceful">gitbook-cli-install-error-typeerror-cb-apply-is-not-a-function-inside-graceful</a></p>
 </li>
 <li><p>启动服务异常</p>
@@ -318,7 +318,7 @@
 <p>吼吼.... 的node.js 小白水平，放弃了。</p>
 </li>
 </ul>
-<h1 id="使用honkit"><a href="#使用honkit" class="headerlink" title="使用honkit"></a>使用honkit</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#install </span></span><br><span class="line">$ npm init --yes</span><br><span class="line">$ npm install honkit --save-dev</span><br><span class="line"></span><br><span class="line"><span class="comment">#create book &amp; start </span></span><br><span class="line">$ npx honkit init</span><br><span class="line">$ npx honkit serve</span><br></pre></td></tr></table></figure>
+<h1 id="使用honkit"><a href="#使用honkit" class="headerlink" title="使用honkit"></a>使用honkit</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#install </span></span><br><span class="line">$ npm init --<span class="built_in">yes</span></span><br><span class="line">$ npm install honkit --save-dev</span><br><span class="line"></span><br><span class="line"><span class="comment">#create book &amp; start </span></span><br><span class="line">$ npx honkit init</span><br><span class="line">$ npx honkit serve</span><br></pre></td></tr></table></figure>
 <p>OK 搞定了</p>
 <ul>
 <li>参考：<br> <a target="_blank" rel="noopener" href="https://github.com/honkit/honkit">honkit</a></li>
@@ -340,6 +340,9 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
+                <a href="/posts/2022-02-21-hbase-region-server-error-md/" rel="prev" title="HBase Peer状态异常导致的oldWALs目录文件数异常">
+                  <i class="fa fa-chevron-left"></i> HBase Peer状态异常导致的oldWALs目录文件数异常
+                </a>
             </div>
             <div class="post-nav-item">
                 <a href="/posts/2021-06-11-hbase-region-move-md/" rel="next" title="HBase Region Move 批量操作">
@@ -370,7 +373,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -381,16 +384,16 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">109k</span>
+    <span title="Symbols count total">137k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:39</span>
+    <span title="Reading time total">2:05</span>
   </span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
   </div>
 
     </div>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 6.1.0">
 
 
   <link rel="icon" type="image/png" sizes="16x16" href="/function%20()%20%7B%0A%20%20%20%20%20%20for%20(var%20_len2%20=%20arguments.length,%20args%20=%20new%20Array(_len2),%20_key2%20=%200;%20_key2%20%3C%20_len2;%20_key2++)%20%7B%0A%20%20%20%20%20%20%20%20args%5B_key2%5D%20=%20arguments%5B_key2%5D;%0A%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20return%20obj%5Bval%5D.apply(obj,%20args);%0A%20%20%20%20%7D">
@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiychen.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1}},"activeClass":"disqus"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiychen.github.io","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1}},"activeClass":"disqus"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="MySQL show status 查询表的存储、格式、引擎等信息">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL show status 使用指南">
@@ -26,7 +26,7 @@
 <meta property="og:description" content="MySQL show status 查询表的存储、格式、引擎等信息">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2017-03-28T00:00:00.000Z">
-<meta property="article:modified_time" content="2020-08-18T08:13:02.737Z">
+<meta property="article:modified_time" content="2020-08-18T08:13:02.000Z">
 <meta property="article:author" content="Ordiy">
 <meta property="article:tag" content="blog">
 <meta property="article:tag" content="Java">
@@ -148,20 +148,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -300,10 +300,10 @@
     
     <div class="post-body" itemprop="articleBody">
         <h3 id="mysql-show-status"><a href="#mysql-show-status" class="headerlink" title="mysql show status"></a>mysql show status</h3><p><code>SHOW TABLE STATUS</code> 可以查看表/view的大量信息。 这里简述一下用法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#查询数据表 状态</span><br><span class="line">SHOW TABLE STATUS from dp_report_forms_data like &#39;tb_dp_hera_user_access_statistics&#39; \G</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#查询数据表 状态</span><br><span class="line">SHOW TABLE STATUS from dp_report_forms_data like &#x27;tb_dp_hera_user_access_statistics&#x27; \G</span><br></pre></td></tr></table></figure>
 
 <p>结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Name            | tb_dp_hera_user_access_statistics</span><br><span class="line">Engine          | InnoDB</span><br><span class="line">Version         | 10</span><br><span class="line">Row_format      | Dynamic</span><br><span class="line">Rows            | 9661</span><br><span class="line">Avg_row_length  | 164</span><br><span class="line">Data_length     | 1589248</span><br><span class="line">Max_data_length | 0</span><br><span class="line">Index_length    | 1589248</span><br><span class="line">Data_free       | 2097152</span><br><span class="line">Auto_increment  | 240145</span><br><span class="line">Create_time     | 2020-08-06 10:53:18</span><br><span class="line">Update_time     | &lt;null&gt;</span><br><span class="line">Check_time      | &lt;null&gt;</span><br><span class="line">Collation       | utf8_general_ci</span><br><span class="line">Checksum        | &lt;null&gt;</span><br><span class="line">Create_options  |</span><br><span class="line">Comment         | 用户访问统计表(总表)，按天统计</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Name            | tb_dp_hera_user_access_statistics</span><br><span class="line">Engine          | InnoDB</span><br><span class="line">Version         | 10</span><br><span class="line">Row_format      | Dynamic</span><br><span class="line">Rows            | 9661</span><br><span class="line">Avg_row_length  | 164</span><br><span class="line">Data_length     | 1589248</span><br><span class="line">Max_data_length | 0</span><br><span class="line">Index_length    | 1589248</span><br><span class="line">Data_free       | 2097152</span><br><span class="line">Auto_increment  | 240145</span><br><span class="line">Create_time     | 2020-08-06 10:53:18</span><br><span class="line">Update_time     | &lt;null&gt;</span><br><span class="line">Check_time      | &lt;null&gt;</span><br><span class="line">Collation       | utf8_general_ci</span><br><span class="line">Checksum        | &lt;null&gt;</span><br><span class="line">Create_options  |</span><br><span class="line">Comment         | 用户访问统计表(总表)，按天统计</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><p>Name<br>表名称</p>
@@ -344,9 +344,9 @@
 </li>
 </ul>
 <h2 id="INFORMATION-SCHEMA"><a href="#INFORMATION-SCHEMA" class="headerlink" title="INFORMATION_SCHEMA"></a>INFORMATION_SCHEMA</h2><p>INFORMATION_SCHEMA 与show tables的信息有一些相同，重点是表示<code>information about tables in databases</code>. 用法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">select * from INFORMATION_SCHEMA.TABLES WHERE table_schema &#x3D; &#39;db_name&#39; AND table_name LIKE &#39;tb_dp_hera_user_access_statistics&#39; \G</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">select * from INFORMATION_SCHEMA.TABLES WHERE table_schema = &#x27;db_name&#x27; AND table_name LIKE &#x27;tb_dp_hera_user_access_statistics&#x27; \G</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>Result:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">TABLE_CATALOG   | def</span><br><span class="line">TABLE_SCHEMA    | dp_report_forms_data</span><br><span class="line">TABLE_NAME      | tb_dp_hera_user_access_statistics</span><br><span class="line">TABLE_TYPE      | BASE TABLE</span><br><span class="line">ENGINE          | InnoDB</span><br><span class="line">VERSION         | 10</span><br><span class="line">ROW_FORMAT      | Dynamic</span><br><span class="line">TABLE_ROWS      | 9661</span><br><span class="line">AVG_ROW_LENGTH  | 164</span><br><span class="line">DATA_LENGTH     | 1589248</span><br><span class="line">MAX_DATA_LENGTH | 0</span><br><span class="line">INDEX_LENGTH    | 1589248</span><br><span class="line">DATA_FREE       | 2097152</span><br><span class="line">AUTO_INCREMENT  | 240145</span><br><span class="line">CREATE_TIME     | 2020-08-06 10:53:18</span><br><span class="line">UPDATE_TIME     | &lt;null&gt;</span><br><span class="line">CHECK_TIME      | &lt;null&gt;</span><br><span class="line">TABLE_COLLATION | utf8_general_ci</span><br><span class="line">CHECKSUM        | &lt;null&gt;</span><br><span class="line">CREATE_OPTIONS  |</span><br><span class="line">TABLE_COMMENT   | 用户访问统计表(总表)，按天统计</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">TABLE_CATALOG   | def</span><br><span class="line">TABLE_SCHEMA    | dp_report_forms_data</span><br><span class="line">TABLE_NAME      | tb_dp_hera_user_access_statistics</span><br><span class="line">TABLE_TYPE      | BASE TABLE</span><br><span class="line">ENGINE          | InnoDB</span><br><span class="line">VERSION         | 10</span><br><span class="line">ROW_FORMAT      | Dynamic</span><br><span class="line">TABLE_ROWS      | 9661</span><br><span class="line">AVG_ROW_LENGTH  | 164</span><br><span class="line">DATA_LENGTH     | 1589248</span><br><span class="line">MAX_DATA_LENGTH | 0</span><br><span class="line">INDEX_LENGTH    | 1589248</span><br><span class="line">DATA_FREE       | 2097152</span><br><span class="line">AUTO_INCREMENT  | 240145</span><br><span class="line">CREATE_TIME     | 2020-08-06 10:53:18</span><br><span class="line">UPDATE_TIME     | &lt;null&gt;</span><br><span class="line">CHECK_TIME      | &lt;null&gt;</span><br><span class="line">TABLE_COLLATION | utf8_general_ci</span><br><span class="line">CHECKSUM        | &lt;null&gt;</span><br><span class="line">CREATE_OPTIONS  |</span><br><span class="line">TABLE_COMMENT   | 用户访问统计表(总表)，按天统计</span><br></pre></td></tr></table></figure>
 <ul>
 <li>TABLE_TYPE<br>表格的BASE TABLE，视图的VIEW或INFORMATION_SCHEMA表的SYSTEM VIEW。 </li>
 </ul>
@@ -403,7 +403,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -414,16 +414,16 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">109k</span>
+    <span title="Symbols count total">137k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:39</span>
+    <span title="Reading time total">2:05</span>
   </span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
   </div>
 
     </div>

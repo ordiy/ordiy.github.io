@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/function%20()%20%7B%0A%20%20%20%20%20%20for%20(var%20_len2%20=%20arguments.length,%20args%20=%20new%20Array(_len2),%20_key2%20=%200;%20_key2%20%3C%20_len2;%20_key2++)%20%7B%0A%20%20%20%20%20%20%20%20args%5B_key2%5D%20=%20arguments%5B_key2%5D;%0A%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20return%20obj%5Bval%5D.apply(obj,%20args);%0A%20%20%20%20%7D">
+  <meta name="google-site-verification" content="STAcFkvSF49fRv3p9O9gm962auBfI64EX85Z7NIb3j4">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Helvetica:300,300italic,400,400italic,700,700italic%7CGeorgia:300,300italic,400,400italic,700,700italic%7CTahoma:300,300italic,400,400italic,700,700italic%7CRoboto+Slab:300,300italic,400,400italic,700,700italic%7CNoto+Serif+SC:300,300italic,400,400italic,700,700italic%7CArial:300,300italic,400,400italic,700,700italic%7CGaramond:300,300italic,400,400italic,700,700italic%7CPT+Mono:300,300italic,400,400italic,700,700italic%7CCourier+New:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiychen.github.io","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":{"disqus":{"text":"Load Disqus","order":-1}},"activeClass":"disqus"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="RegionServer 在设置Replication（Peer)集群后，主集群的WAL会通过同步&#x2F;异步的方式，拷贝到Peer集群，之后Peer集群重放WAL中的WALEdit(预写日志条目)来完成。当Peer集群异常情况下，主集群会将未能完成复制的WAL放到oldWALs(WAL归档目录)。Peer集群长期异常，会导致oldWALs目录下文件无限膨胀，导致集群存储异常或者宕机。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HBase Peer状态异常导致的oldWALs目录文件数异常">
+<meta property="og:url" content="https://ordiychen.github.io/posts/2022-02-21-hbase-region-server-error-md/index.html">
+<meta property="og:site_name" content="Ordiy&#39;s Blog">
+<meta property="og:description" content="RegionServer 在设置Replication（Peer)集群后，主集群的WAL会通过同步&#x2F;异步的方式，拷贝到Peer集群，之后Peer集群重放WAL中的WALEdit(预写日志条目)来完成。当Peer集群异常情况下，主集群会将未能完成复制的WAL放到oldWALs(WAL归档目录)。Peer集群长期异常，会导致oldWALs目录下文件无限膨胀，导致集群存储异常或者宕机。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220225160713.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220328095759.png">
+<meta property="article:published_time" content="2022-02-24T17:05:36.000Z">
+<meta property="article:modified_time" content="2022-04-02T09:32:03.277Z">
+<meta property="article:author" content="Ordiy">
+<meta property="article:tag" content="blog">
+<meta property="article:tag" content="HBase">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220225160713.png">
+
+
+<link rel="canonical" href="https://ordiychen.github.io/posts/2022-02-21-hbase-region-server-error-md/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://ordiychen.github.io/posts/2022-02-21-hbase-region-server-error-md/","path":"posts/2022-02-21-hbase-region-server-error-md/","title":"HBase Peer状态异常导致的oldWALs目录文件数异常"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>HBase Peer状态异常导致的oldWALs目录文件数异常 | Ordiy's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-175654772-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"enable":true,"tracking_id":"UA-175654772-1","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Ordiy's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Ordiy's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Just do it!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        
+            
+  <li class="menu-item menu-item-docs"><a href="/docs/" rel="section"><i class="fa fa-book fa-fw"></i>Docs</a></li>
+
+
+      
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E6%99%AF%E7%AE%80%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">背景简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8B%E6%95%85%E5%BC%82%E5%B8%B8%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">事故异常过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HBase-RegionServer-%E7%AA%81%E5%8F%91%E5%BC%82%E5%B8%B8%EF%BC%8C%E5%B9%B6%E5%87%BA%E7%8E%B0%E4%BA%86%E5%AE%95%E6%9C%BA"><span class="nav-number">2.1.</span> <span class="nav-text">HBase RegionServer 突发异常，并出现了宕机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RegionServer-%E6%97%A0%E6%B3%95%E5%A4%84%E7%90%86%E6%B5%81%E9%87%8F%E5%AF%BC%E8%87%B4-RPC-Read-Write%E6%B5%81%E9%87%8F%E5%BC%82%E5%B8%B8%EF%BC%9A"><span class="nav-number">2.1.1.</span> <span class="nav-text">RegionServer 无法处理流量导致 RPC Read&#x2F;Write流量异常：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9RegionServer-%E8%BF%9B%E8%A1%8C%E9%87%8D%E5%90%AF%E5%A4%B1%E8%B4%A5%EF%BC%8C%E5%87%BA%E7%8E%B0%E5%BC%82%E5%B8%B8%EF%BC%9A"><span class="nav-number">2.1.2.</span> <span class="nav-text">对RegionServer 进行重启失败，出现异常：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%BD%8D%E9%97%AE%E9%A2%98"><span class="nav-number">2.2.</span> <span class="nav-text">定位问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98"><span class="nav-number">2.3.</span> <span class="nav-text">解决问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE"><span class="nav-number">2.4.</span> <span class="nav-text">数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0"><span class="nav-number">2.5.</span> <span class="nav-text">原因</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">参考：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Ordiy"
+      src="/images/apple-touch-icon.png">
+  <p class="site-author-name" itemprop="name">Ordiy</p>
+  <div class="site-description" itemprop="description">Stay Hungry.Stay Foolish.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ordiychen" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ordiychen" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ordiymaster_outlook.com" title="E-Mail → mailto:ordiymaster_outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/ordiychen/ordiychen.github.io" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://ordiychen.github.io/posts/2022-02-21-hbase-region-server-error-md/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/apple-touch-icon.png">
+      <meta itemprop="name" content="Ordiy">
+      <meta itemprop="description" content="Stay Hungry.Stay Foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ordiy's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HBase Peer状态异常导致的oldWALs目录文件数异常
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-02-24 17:05:36" itemprop="dateCreated datePublished" datetime="2022-02-24T17:05:36Z">2022-02-24</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-04-02 09:32:03" itemprop="dateModified" datetime="2022-04-02T09:32:03Z">2022-04-02</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">tech</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/tech/HBase/" itemprop="url" rel="index"><span itemprop="name">HBase</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/posts/2022-02-21-hbase-region-server-error-md/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="posts/2022-02-21-hbase-region-server-error-md/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>8.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="背景简述"><a href="#背景简述" class="headerlink" title="背景简述"></a>背景简述</h1><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HBase Version 1.0.0-CDH5.5</span><br><span class="line">集群节点: 50</span><br><span class="line">存储空间：2.2P </span><br><span class="line">QPS 吞吐: PUT 5K QPS , Read 1K QPS</span><br></pre></td></tr></table></figure>
+<p>该集群作为主集群，配置了一个Peer集群，但Peer集群下线后已经进行了<code>disable_peer</code>。</p>
+<h1 id="事故异常过程"><a href="#事故异常过程" class="headerlink" title="事故异常过程"></a>事故异常过程</h1><h2 id="HBase-RegionServer-突发异常，并出现了宕机"><a href="#HBase-RegionServer-突发异常，并出现了宕机" class="headerlink" title="HBase RegionServer 突发异常，并出现了宕机"></a>HBase RegionServer 突发异常，并出现了宕机</h2><h3 id="RegionServer-无法处理流量导致-RPC-Read-Write流量异常："><a href="#RegionServer-无法处理流量导致-RPC-Read-Write流量异常：" class="headerlink" title="RegionServer 无法处理流量导致 RPC Read/Write流量异常："></a>RegionServer 无法处理流量导致 RPC Read/Write流量异常：</h3><p><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220225160713.png"></p>
+<h3 id="对RegionServer-进行重启失败，出现异常："><a href="#对RegionServer-进行重启失败，出现异常：" class="headerlink" title="对RegionServer 进行重启失败，出现异常："></a>对RegionServer 进行重启失败，出现异常：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Feb</span> <span class="number">22</span>, <span class="number">12</span>:<span class="number">01</span>:<span class="number">46.497</span> <span class="variable constant_">PM</span>  <span class="variable constant_">WARN</span>	org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hbase</span>.<span class="property">coordination</span>.<span class="property">SplitLogManagerCoordination</span>	</span><br><span class="line"><span class="title class_">Could</span> not finish splitting <span class="keyword">of</span> log file <span class="title class_">WALs</span>/xxxx-hbase01-node75.<span class="property">xxxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1626321306698</span>-splitting/xxxx-hbase01-node75.<span class="property">xxxxx</span>.<span class="property">com</span>%2C60020%2C1626321306698.<span class="property">null0</span><span class="number">.1645492876384</span></span><br><span class="line">org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">ipc</span>.<span class="title class_">RemoteException</span>(org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hdfs</span>.<span class="property">protocol</span>.<span class="property">FSLimitException$MaxDirectoryItemsExceededException</span>): <span class="title class_">The</span> directory item limit <span class="keyword">of</span> /hbase/oldWALs is <span class="attr">exceeded</span>: limit=<span class="number">1048576</span> items=<span class="number">1048576</span></span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hdfs</span>.<span class="property">server</span>.<span class="property">namenode</span>.<span class="property">FSDirectory</span>.<span class="title function_">verifyMaxDirItems</span>(<span class="title class_">FSDirectory</span>.<span class="property">java</span>:<span class="number">2060</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hdfs</span>.<span class="property">server</span>.<span class="property">namenode</span>.<span class="property">FSDirectory</span>.<span class="title function_">verifyFsLimitsForRename</span>(<span class="title class_">FSDirectory</span>.<span class="property">java</span>:<span class="number">1991</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hdfs</span>.<span class="property">server</span>.<span class="property">namenode</span>.<span class="property">FSDirectory</span>.<span class="title function_">unprotectedRenameTo</span>(<span class="title class_">FSDirectory</span>.<span class="property">java</span>:<span class="number">565</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hdfs</span>.<span class="property">server</span>.<span class="property">namenode</span>.<span class="property">FSDirectory</span>.<span class="title function_">renameTo</span>(<span class="title class_">FSDirectory</span>.<span class="property">java</span>:<span class="number">477</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hdfs</span>.<span class="property">server</span>.<span class="property">namenode</span>.<span class="property">FSNamesystem</span>.<span class="title function_">renameToInternal</span>(<span class="title class_">FSNamesystem</span>.<span class="property">java</span>:<span class="number">3898</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hdfs</span>.<span class="property">server</span>.<span class="property">namenode</span>.<span class="property">FSNamesystem</span>.<span class="title function_">renameToInt</span>(<span class="title class_">FSNamesystem</span>.<span class="property">java</span>:<span class="number">3860</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hdfs</span>.<span class="property">server</span>.<span class="property">namenode</span>.<span class="property">FSNamesystem</span>.<span class="title function_">renameTo</span>(<span class="title class_">FSNamesystem</span>.<span class="property">java</span>:<span class="number">3825</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hdfs</span>.<span class="property">server</span>.<span class="property">namenode</span>.<span class="property">NameNodeRpcServer</span>.<span class="title function_">rename</span>(<span class="title class_">NameNodeRpcServer</span>.<span class="property">java</span>:<span class="number">800</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hdfs</span>.<span class="property">server</span>.<span class="property">namenode</span>.<span class="property">AuthorizationProviderProxyClientProtocol</span>.<span class="title function_">rename</span>(<span class="title class_">AuthorizationProviderProxyClientProtocol</span>.<span class="property">java</span>:<span class="number">266</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hdfs</span>.<span class="property">protocolPB</span>.<span class="property">ClientNamenodeProtocolServerSideTranslatorPB</span>.<span class="title function_">rename</span>(<span class="title class_">ClientNamenodeProtocolServerSideTranslatorPB</span>.<span class="property">java</span>:<span class="number">566</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hdfs</span>.<span class="property">protocol</span>.<span class="property">proto</span>.<span class="property">ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2</span>.<span class="title function_">callBlockingMethod</span>(<span class="title class_">ClientNamenodeProtocolProtos</span>.<span class="property">java</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">ipc</span>.<span class="property">ProtobufRpcEngine$Server$ProtoBufRpcInvoker</span>.<span class="title function_">call</span>(<span class="title class_">ProtobufRpcEngine</span>.<span class="property">java</span>:<span class="number">617</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">ipc</span>.<span class="property">RPC$Server</span>.<span class="title function_">call</span>(<span class="variable constant_">RPC</span>.<span class="property">java</span>:<span class="number">1060</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">ipc</span>.<span class="property">Server$Handler$1</span>.<span class="title function_">run</span>(<span class="title class_">Server</span>.<span class="property">java</span>:<span class="number">2086</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">ipc</span>.<span class="property">Server$Handler$1</span>.<span class="title function_">run</span>(<span class="title class_">Server</span>.<span class="property">java</span>:<span class="number">2082</span>)</span><br><span class="line">  at java.<span class="property">security</span>.<span class="property">AccessController</span>.<span class="title function_">doPrivileged</span>(<span class="title class_">Native</span> <span class="title class_">Method</span>)</span><br><span class="line">  at javax.<span class="property">security</span>.<span class="property">auth</span>.<span class="property">Subject</span>.<span class="title function_">doAs</span>(<span class="title class_">Subject</span>.<span class="property">java</span>:<span class="number">415</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">security</span>.<span class="property">UserGroupInformation</span>.<span class="title function_">doAs</span>(<span class="title class_">UserGroupInformation</span>.<span class="property">java</span>:<span class="number">1671</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">ipc</span>.<span class="property">Server$Handler</span>.<span class="title function_">run</span>(<span class="title class_">Server</span>.<span class="property">java</span>:<span class="number">2080</span>)</span><br><span class="line"></span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">ipc</span>.<span class="property">Client</span>.<span class="title function_">call</span>(<span class="title class_">Client</span>.<span class="property">java</span>:<span class="number">1472</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">ipc</span>.<span class="property">Client</span>.<span class="title function_">call</span>(<span class="title class_">Client</span>.<span class="property">java</span>:<span class="number">1403</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">ipc</span>.<span class="property">ProtobufRpcEngine$Invoker</span>.<span class="title function_">invoke</span>(<span class="title class_">ProtobufRpcEngine</span>.<span class="property">java</span>:<span class="number">230</span>)</span><br><span class="line">  at com.<span class="property">sun</span>.<span class="property">proxy</span>.<span class="property">$Proxy22</span>.<span class="title function_">rename</span>(<span class="title class_">Unknown</span> <span class="title class_">Source</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hdfs</span>.<span class="property">protocolPB</span>.<span class="property">ClientNamenodeProtocolTranslatorPB</span>.<span class="title function_">rename</span>(<span class="title class_">ClientNamenodeProtocolTranslatorPB</span>.<span class="property">java</span>:<span class="number">468</span>)</span><br><span class="line">  at sun.<span class="property">reflect</span>.<span class="property">GeneratedMethodAccessor7</span>.<span class="title function_">invoke</span>(<span class="title class_">Unknown</span> <span class="title class_">Source</span>)</span><br><span class="line">  at sun.<span class="property">reflect</span>.<span class="property">DelegatingMethodAccessorImpl</span>.<span class="title function_">invoke</span>(<span class="title class_">DelegatingMethodAccessorImpl</span>.<span class="property">java</span>:<span class="number">43</span>)</span><br><span class="line">  at java.<span class="property">lang</span>.<span class="property">reflect</span>.<span class="property">Method</span>.<span class="title function_">invoke</span>(<span class="title class_">Method</span>.<span class="property">java</span>:<span class="number">606</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">io</span>.<span class="property">retry</span>.<span class="property">RetryInvocationHandler</span>.<span class="title function_">invokeMethod</span>(<span class="title class_">RetryInvocationHandler</span>.<span class="property">java</span>:<span class="number">252</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">io</span>.<span class="property">retry</span>.<span class="property">RetryInvocationHandler</span>.<span class="title function_">invoke</span>(<span class="title class_">RetryInvocationHandler</span>.<span class="property">java</span>:<span class="number">104</span>)</span><br><span class="line">  at com.<span class="property">sun</span>.<span class="property">proxy</span>.<span class="property">$Proxy23</span>.<span class="title function_">rename</span>(<span class="title class_">Unknown</span> <span class="title class_">Source</span>)</span><br><span class="line">  at sun.<span class="property">reflect</span>.<span class="property">GeneratedMethodAccessor7</span>.<span class="title function_">invoke</span>(<span class="title class_">Unknown</span> <span class="title class_">Source</span>)</span><br><span class="line">  at sun.<span class="property">reflect</span>.<span class="property">DelegatingMethodAccessorImpl</span>.<span class="title function_">invoke</span>(<span class="title class_">DelegatingMethodAccessorImpl</span>.<span class="property">java</span>:<span class="number">43</span>)</span><br><span class="line">  at java.<span class="property">lang</span>.<span class="property">reflect</span>.<span class="property">Method</span>.<span class="title function_">invoke</span>(<span class="title class_">Method</span>.<span class="property">java</span>:<span class="number">606</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hbase</span>.<span class="property">fs</span>.<span class="property">HFileSystem$1</span>.<span class="title function_">invoke</span>(<span class="title class_">HFileSystem</span>.<span class="property">java</span>:<span class="number">279</span>)</span><br><span class="line">  at com.<span class="property">sun</span>.<span class="property">proxy</span>.<span class="property">$Proxy24</span>.<span class="title function_">rename</span>(<span class="title class_">Unknown</span> <span class="title class_">Source</span>)</span><br><span class="line">  at sun.<span class="property">reflect</span>.<span class="property">GeneratedMethodAccessor7</span>.<span class="title function_">invoke</span>(<span class="title class_">Unknown</span> <span class="title class_">Source</span>)</span><br><span class="line">  at sun.<span class="property">reflect</span>.<span class="property">DelegatingMethodAccessorImpl</span>.<span class="title function_">invoke</span>(<span class="title class_">DelegatingMethodAccessorImpl</span>.<span class="property">java</span>:<span class="number">43</span>)</span><br><span class="line">  at java.<span class="property">lang</span>.<span class="property">reflect</span>.<span class="property">Method</span>.<span class="title function_">invoke</span>(<span class="title class_">Method</span>.<span class="property">java</span>:<span class="number">606</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hbase</span>.<span class="property">fs</span>.<span class="property">HFileSystem$1</span>.<span class="title function_">invoke</span>(<span class="title class_">HFileSystem</span>.<span class="property">java</span>:<span class="number">279</span>)</span><br><span class="line">  at com.<span class="property">sun</span>.<span class="property">proxy</span>.<span class="property">$Proxy24</span>.<span class="title function_">rename</span>(<span class="title class_">Unknown</span> <span class="title class_">Source</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hdfs</span>.<span class="property">DFSClient</span>.<span class="title function_">rename</span>(<span class="title class_">DFSClient</span>.<span class="property">java</span>:<span class="number">1954</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hdfs</span>.<span class="property">DistributedFileSystem</span>.<span class="title function_">rename</span>(<span class="title class_">DistributedFileSystem</span>.<span class="property">java</span>:<span class="number">582</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hbase</span>.<span class="property">util</span>.<span class="property">FSUtils</span>.<span class="title function_">renameAndSetModifyTime</span>(<span class="title class_">FSUtils</span>.<span class="property">java</span>:<span class="number">1797</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hbase</span>.<span class="property">wal</span>.<span class="property">WALSplitter</span>.<span class="title function_">archiveLogs</span>(<span class="title class_">WALSplitter</span>.<span class="property">java</span>:<span class="number">494</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hbase</span>.<span class="property">wal</span>.<span class="property">WALSplitter</span>.<span class="title function_">finishSplitLogFile</span>(<span class="title class_">WALSplitter</span>.<span class="property">java</span>:<span class="number">449</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hbase</span>.<span class="property">wal</span>.<span class="property">WALSplitter</span>.<span class="title function_">finishSplitLogFile</span>(<span class="title class_">WALSplitter</span>.<span class="property">java</span>:<span class="number">435</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hbase</span>.<span class="property">coordination</span>.<span class="property">ZKSplitLogManagerCoordination$1</span>.<span class="title function_">finish</span>(<span class="title class_">ZKSplitLogManagerCoordination</span>.<span class="property">java</span>:<span class="number">117</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hbase</span>.<span class="property">coordination</span>.<span class="property">ZKSplitLogManagerCoordination</span>.<span class="title function_">getDataSetWatchSuccess</span>(<span class="title class_">ZKSplitLogManagerCoordination</span>.<span class="property">java</span>:<span class="number">475</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hbase</span>.<span class="property">coordination</span>.<span class="property">ZKSplitLogManagerCoordination</span>.<span class="title function_">access$700</span>(<span class="title class_">ZKSplitLogManagerCoordination</span>.<span class="property">java</span>:<span class="number">75</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hbase</span>.<span class="property">coordination</span>.<span class="property">ZKSplitLogManagerCoordination$GetDataAsyncCallback</span>.<span class="title function_">processResult</span>(<span class="title class_">ZKSplitLogManagerCoordination</span>.<span class="property">java</span>:<span class="number">1037</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">zookeeper</span>.<span class="property">ClientCnxn$EventThread</span>.<span class="title function_">processEvent</span>(<span class="title class_">ClientCnxn</span>.<span class="property">java</span>:<span class="number">561</span>)</span><br><span class="line">  at org.<span class="property">apache</span>.<span class="property">zookeeper</span>.<span class="property">ClientCnxn$EventThread</span>.<span class="title function_">run</span>(<span class="title class_">ClientCnxn</span>.<span class="property">java</span>:<span class="number">498</span>)</span><br><span class="line"><span class="title class_">Feb</span> <span class="number">22</span>, <span class="number">12</span>:<span class="number">01</span>:<span class="number">46.498</span> <span class="variable constant_">PM</span>  <span class="variable constant_">WARN</span>	org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hbase</span>.<span class="property">coordination</span>.<span class="property">SplitLogManagerCoordination</span>	</span><br><span class="line"><span class="title class_">Error</span> splitting /hbase/splitWAL/<span class="title class_">WALs</span>%2Fxxxx-hbase01-node75.<span class="property">xxxxx</span>.<span class="property">com</span>%2C60020%2C1626321306698-splitting%2Fxxxx-hbase01-node75.<span class="property">xxxxx</span>.<span class="property">com</span>%252C60020%252C1626321306698.<span class="property">null0</span><span class="number">.1645492876384</span></span><br><span class="line"></span><br><span class="line">==========</span><br></pre></td></tr></table></figure>
+
+<h2 id="定位问题"><a href="#定位问题" class="headerlink" title="定位问题"></a>定位问题</h2><p>从日志提示看是由于<code>/hbase/oldWALs</code> 目录下的文件数超过了<code>HDFS</code>最大文件限制数<code>10485761</code>，检查该目录:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs -dfs -du -s  /hbase/oldWALs</span><br></pre></td></tr></table></figure>
+<p>这个文件达到了100T, 已经无法统计出该目录下的子文件。目录<code>/hbase/oldWALs</code>的作用是WAL的归档目录，一旦一个WAL文件中记录的所有KV数据确认已经从MemStore持久化到HFile，那么该WAL文件就会被移到该目录。 开启了Peer后，若未复制成功的WAL也会存放在该目录。</p>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>清理<code>/hbase/oldWALs</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">today=<span class="string">`date +&#x27;%s&#x27;`</span></span><br><span class="line">hdfs dfs -ls /hbase/oldWALs | grep <span class="string">&quot;^d&quot;</span> | <span class="keyword">while</span> read line ; <span class="keyword">do</span></span><br><span class="line">dir_date=$(echo $&#123;line&#125; | awk <span class="string">&#x27;&#123;print $6&#125;&#x27;</span>)</span><br><span class="line">difference=$(( ( $&#123;today&#125; - $(date -d $&#123;dir_date&#125; +%s) ) / ( <span class="number">24</span>*<span class="number">60</span>*<span class="number">60</span> ) ))</span><br><span class="line">filePath=$(echo $&#123;line&#125; | awk <span class="string">&#x27;&#123;print $8&#125;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ $&#123;difference&#125; -gt <span class="number">10</span> ]; then</span><br><span class="line">    #hdfs dfs -rm -r $filePath</span><br><span class="line">   echo <span class="string">&quot;===&gt; $filePath&quot;</span></span><br><span class="line">fi</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h2><h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>HLog文件是有生命周期的,HLog生命周期：<br><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220328095759.png"></p>
+<p>默认情况下HBase Master(Active节点)会后台启动一个线程，以<code>hbase.master.cleaner.interval</code>(默认1分钟，HDP3 改为了1h间隔)为间隔检查<code>oldWALs</code>下所有失效的日志问题，确定是否可以删除。<br>确认删除需要达成2个条件：</p>
+<ol>
+<li>HLog 文件是否还在参与主从复制，以及该文件是否还在用于主从复制<code>ReplicationHFileCleaner.getDeletableFiles</code>逻辑</li>
+<li>HLog 文件在oldWALs文件中存在的时间 &gt; <code>hbase.master.logcleaner.ttl</code>(默认值10minutes)<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[<span class="attr">zk</span>: <span class="attr">localhost</span>:<span class="number">2181</span>(<span class="variable constant_">CONNECTED</span>) <span class="number">6</span>] ls /hbase/replication/peers</span><br><span class="line">[]</span><br><span class="line">[<span class="attr">zk</span>: <span class="attr">localhost</span>:<span class="number">2181</span>(<span class="variable constant_">CONNECTED</span>) <span class="number">7</span>] ls /hbase/replication/rs</span><br><span class="line">[xxxx-hbase01-node244.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645515180740</span>, xxxx-hbase01-node238.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396855</span>, xxxx-hbase01-node12.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502395651</span>, xxxx-hbase01-node68.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396574</span>, xxxx-hbase01-node56.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396748</span>, xxxx-hbase01-node57.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502395942</span>, xxxx-hbase01-node66.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396692</span>, xxxx-hbase01-node11.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396175</span>, xxxx-hbase01-node149.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502556596</span>, xxxx-hbase01-node64.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502398389</span>, xxxx-hbase01-node62.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396268</span>, xxxx-hbase01-node59.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645501475468</span>, xxxx-hbase01-node240.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396736</span>, xxxx-hbase01-node75.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396501</span>, xxxx-hbase01-node10.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502395833</span>, xxxx-hbase01-node63.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502397816</span>, xxxx-hbase01-node150.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396480</span>, xxxx-hbase01-node71.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396275</span>, xxxx-hbase01-node49.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396541</span>, xxxx-hbase01-node65.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502398568</span>, xxxx-hbase01-node77.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396304</span>, xxxx-hbase01-node54.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502395830</span>, xxxx-hbase01-node78.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396183</span>, xxxx-hbase01-node55.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396742</span>, xxxx-hbase01-node50.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396573</span>, xxxx-hbase01-node70.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396859</span>, xxxx-hbase01-node72.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502395894</span>, xxxx-hbase01-node242.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396166</span>, xxxx-hbase01-node53.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502395834</span>, xxxx-hbase01-node61.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396141</span>, xxxx-hbase01-node51.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396211</span>, xxxx-hbase01-node148.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396044</span>, xxxx-hbase01-node67.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396172</span>, xxxx-hbase01-node58.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502398506</span>, xxxx-hbase01-node76.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502397094</span>, xxxx-hbase01-node52.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502395760</span>, xxxx-hbase01-node73.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396696</span>, xxxx-hbase01-node60.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396503</span>, xxxx-hbase01-node241.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396087</span>, xxxx-hbase01-node69.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396658</span>, xxxx-hbase01-node151.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396097</span>, xxxx-hbase01-node239.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396421</span>, xxxx-hbase01-node74.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396215</span>, xxxx-hbase01-node61.<span class="property">jpushoa</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1626235982224</span>]</span><br><span class="line">[<span class="attr">zk</span>: <span class="attr">localhost</span>:<span class="number">2181</span>(<span class="variable constant_">CONNECTED</span>) <span class="number">8</span>] rmr /hbase/replication/rs</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h1><ul>
+<li>[1].<a target="_blank" rel="noopener" href="https://community.cloudera.com/t5/Support-Questions/java-io-IOException-Packet-len73388953-is-out-of-range/td-p/327482">https://community.cloudera.com/t5/Support-Questions/java-io-IOException-Packet-len73388953-is-out-of-range/td-p/327482</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/blog/" rel="tag"><i class="fa fa-tag"></i> blog</a>
+              <a href="/tags/HBase/" rel="tag"><i class="fa fa-tag"></i> HBase</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2021-12-01-hbase-meta-table-in-action/" rel="prev" title="HBase Meta使用及故障排查">
+                  <i class="fa fa-chevron-left"></i> HBase Meta使用及故障排查
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2021-02-01-gitbook-macos-cl-error/" rel="next" title="MacOS install GitBook 未成功经验">
+                  MacOS install GitBook 未成功经验 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ordiy</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">137k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">2:05</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"ordiytech-blog","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>
