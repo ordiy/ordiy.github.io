@@ -352,6 +352,34 @@
   </url>
   
   <url>
+    <loc>https://ordiychen.github.io/tags/NGINX/</loc>
+    <lastmod>2022-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/tags/Raspberrypi/</loc>
+    <lastmod>2022-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/tags/Nginx/</loc>
+    <lastmod>2022-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/tags/Nginx-Stream/</loc>
+    <lastmod>2022-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ordiychen.github.io/tags/LRU/</loc>
     <lastmod>2022-04-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -373,28 +401,14 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/tags/Nginx/</loc>
+    <loc>https://ordiychen.github.io/tags/python/</loc>
     <lastmod>2022-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/tags/Nginx-Stream/</loc>
-    <lastmod>2022-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/tags/NGINX/</loc>
-    <lastmod>2022-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/tags/Raspberrypi/</loc>
+    <loc>https://ordiychen.github.io/tags/Statistics/</loc>
     <lastmod>2022-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -416,20 +430,6 @@
   
   <url>
     <loc>https://ordiychen.github.io/tags/Apache/</loc>
-    <lastmod>2022-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/tags/python/</loc>
-    <lastmod>2022-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/tags/Statistics/</loc>
     <lastmod>2022-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -634,20 +634,6 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/categories/tech/algorithm/</loc>
-    <lastmod>2022-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/categories/tech/nginx-stream/</loc>
-    <lastmod>2022-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ordiychen.github.io/categories/tech/ARM/</loc>
     <lastmod>2022-04-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -662,7 +648,14 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/categories/tech/web/</loc>
+    <loc>https://ordiychen.github.io/categories/tech/nginx-stream/</loc>
+    <lastmod>2022-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/categories/tech/algorithm/</loc>
     <lastmod>2022-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -670,6 +663,13 @@
   
   <url>
     <loc>https://ordiychen.github.io/categories/tech/python/</loc>
+    <lastmod>2022-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/categories/tech/web/</loc>
     <lastmod>2022-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
