@@ -105,7 +105,6 @@ cd ./public/
 git add .
 git commit -m "update doc"
 proxychains4 git push -u origin gh-pages
-
 ```
 
 ## Next theme document 

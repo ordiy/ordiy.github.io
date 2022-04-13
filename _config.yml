@@ -123,4 +123,7 @@ permalink_defaults:
   lang: en
 # my config ====
 
-scheme: Gemini
+##next theme config
+social:
+  GitHub: https://github.com/ordiychen || fab fa-github
+  E-Mail: mailto:ordiymaster_outlook.com || fa fa-envelope
