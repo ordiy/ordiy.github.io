@@ -10,7 +10,7 @@
 
 
 #config hexo theme
-theme: next-theme
+theme: next
 # favicon
 theme_config:
   favicon: images/favicon.ico

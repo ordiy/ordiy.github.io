@@ -17,11 +17,8 @@ date: 2021-04-22 14:06:36
 > Web-based notebook that enables data-driven, 
 > interactive data analytics and collaborative documents with SQL, Scala and more.
 
-Architecture
-![](http://zeppelin.apache.org/docs/0.9.0-preview1/assets/themes/zeppelin/img/docs-img/submarine-architecture.png)
-*图片@apache zeppelin*
-
-![](http://zeppelin.apache.org/docs/0.9.0-preview1/assets/themes/zeppelin/img/docs-img/submarine-interpreter.png)
+Architecture: 
+![](https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220413162146.png)
 *图片@apache zeppelin*
 
 

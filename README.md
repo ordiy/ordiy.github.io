@@ -47,8 +47,8 @@ npx hexo generate  && hexo server --watch
 ```shell script
 #安装插件
 npm install hexo-deployer-git --save
-hexo clien
-hexo generate && hexo deploy
+#hexo clien
+#hexo generate && hexo deploy
 ```
 
 ## 创建文章
@@ -77,7 +77,6 @@ hexo publish post
 
 
 ##  构建/启动server/部署-命令
-
 ```shell script
 #generate 
 npx hexo g --watch
@@ -92,10 +91,10 @@ npx  hexo clean && npx hexo g --silent && npx hexo d
 ```
 
  
-#手动deploy
+## 手动deploy
+手动delpoy编译后的文件（只更新改/deloy 改动过的文件)
 ```bash 
 npx hexo g
-
 
 mkdir ./.deplog_git
 cd ./.deplog_git
@@ -107,9 +106,6 @@ git commit -m "update doc"
 proxychains4 git push -u origin gh-pages
 
 ```
-
-
-git rm --cached .deplog_git/public
 
 ## Next theme document 
 https://theme-next.js.org/
