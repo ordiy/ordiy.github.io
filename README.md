@@ -85,9 +85,10 @@ npx hexo g --watch
 npx hexo s --watch
 # server watch 
  npx  hexo clean && npx hexo g --silent && npx hexo s --watch
-# deploy 
 
-npx  hexo clean && npx hexo g --silent && npx hexo d
+#自动 deploy 
+# 不要使用！～～
+#npx  hexo clean && npx hexo g --silent && npx hexo d
 ```
 
  
@@ -96,7 +97,7 @@ npx  hexo clean && npx hexo g --silent && npx hexo d
 ```bash 
 npx hexo g
 
-mkdir ./.deplog_git
+#mkdir ./.deplog_git
 cd ./.deplog_git
 cp -r ../public/* ./public/
 
