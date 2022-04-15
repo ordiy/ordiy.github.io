@@ -40,13 +40,11 @@ HFile Block 的BlockType 类型:
  HFile V2在Boolm Fileter上增加了位数组拆分功能，可以按照Key拆分
 
 ## HFile V3 feature
-
+HFile V3与HFile基本相同，只是增加了对cell的标签功能支持，cell标签为其它与安全相关的功能（cell 级别的ACL和单元级别可见性）提供提供实现框架。 实现： cell关联0个或多个可见性标签，再将可见性与用户关联起来。([一个实践案例](https://mikethomsen.github.io/posts/2018/05/07/hbase-visibility-labels/))    
 |additional info | desc |
 |:----|:----|
-|hfile.MAX_TAGS_LEN |The maximum number of bytes needed to store the serialized tags for any single cell in this hfile (int) |
-|hfile.TAGS_COMPRESSED | Does the block encoder for this hfile compress tags? (boolean) </br>Should only be present if hfile.MAX_TAGS_LEN is also present. |
-
-HFile V3增加的2个特性，似的可以对Column Famliy中的Key和Value使用不同的压缩方法。（目前还没发现有什么具体的实践）
+|hfile.MAX_TAGS_LEN | cell中 存储tags的最大byte 长度 |
+|hfile.TAGS_COMPRESSED | boolean value. 是否压缩TAGS |
 *注[HFile V3](http://devdoc.net/bigdata/hbase-0.98.7-hadoop1/book/hfilev3.html)
 
 版本逻辑结构对比：
@@ -184,6 +182,7 @@ usage: HFile [-a] [-b] [-e] [-f <arg> | -r <arg>] [-h] [-i] [-k] [-m] [-p]
                           row only
 
 ```
+
 
 
 # 参考

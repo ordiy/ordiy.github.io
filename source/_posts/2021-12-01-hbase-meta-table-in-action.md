@@ -1,6 +1,7 @@
 ---
 layout: post
 title: HBase Meta使用及故障排查
+indexing: true
 categories:
   - tech
   - Hadoop
@@ -111,7 +112,6 @@ ROW                                                                             
 ```
 
 # `hbase:meta` 更新逻辑
-
 
 ## client `MetaCache`
 在hbase-client(以2.0.0为例）,tableName 于对应的region使用了一个`ConcurrentMap<TableName, ConcurrentNavigableMap<byte[], RegionLocations>>`的数据结构进行存储，值得注意的是`NavigableMap`是继承于SortedMap的接口,可以"获取大于/等于某对象的键值对"、“获取小于/等于某对象的键值对”,很适合用于使用`Row`查询对应的`RegionLocations`。`NavigableMap`使用的数据结构-跳跃表（SkipList)，SkipList示意图：

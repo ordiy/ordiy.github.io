@@ -2,6 +2,7 @@
 layout:  post
 title:  常用缓存算法——LRU
 date:  2017-01-01 00:00 +08:00
+indexing: true
 categories:  
   - tech
   - algorithm
@@ -13,11 +14,11 @@ tags:
 excerpt: LRU是一种常用的缓存算法，可以使用Java LinkedHashMap模拟实现。
 ---
 
-### LRU算法
+## LRU算法
 [Least recently used（LRU）](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU))一种常用的缓存算法,通过首先丢弃最近最少使用的记录。LRU算法需要跟踪何时使用了什么，并确保算法始终丢弃最近最少使用的记录。
 LRU算法及其实现-以LinkedHashMap为例：
 
-### LRU 使用`LinkedHashMap`代码实现
+## LRU 使用`LinkedHashMap`代码实现
 ```java
 package com.github.ordiy.map;
 
@@ -83,10 +84,10 @@ key1=1 hashCode: 3288499 , key2=2 hashCode: 3288497 , key4=4 hashCode: 3288497 ,
 **分布式场景可以用 Redis 等组件实现 **
 
 
-### 总结
+## 总结
 LRU缓存有其局限性，在类似于双11这样的场景，流量/活跃用户突然大增时会出现缓存击穿问题。
 
-### 参考:
+## 参考:
 [https://juejin.im/post/5a4b433b6fb9a0451705916f](https://juejin.im/post/5a4b433b6fb9a0451705916f)
 [LinkedHashMap 源码详细分](https://segmentfault.com/a/1190000012964859)
 [oracle doc LinkedHashMap](https://docs.oracle.com/javase/8/docs/api/java/util/LinkedHashMap.html)

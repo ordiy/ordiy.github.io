@@ -35,6 +35,10 @@ npx hexo new post tech 2021-12-2-hbase-meta-opt
 hexo new tech :year-:month-:day-:title
 ```
 
+## 使用指定config进行调试
+```
+hexo server --config custom.yml
+```
 
 ##  构建/启动server/部署-命令
 ```shell script
