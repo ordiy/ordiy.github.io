@@ -18,8 +18,8 @@
   
   <entry>
     <title>HBase修复Region Holes和meta问题</title>
-    <link href="https://ordiychen.github.io/2022/04/01/2022-02-hbase-region-hole-fix/"/>
-    <id>https://ordiychen.github.io/2022/04/01/2022-02-hbase-region-hole-fix/</id>
+    <link href="https://ordiychen.github.io/posts/2022-02-hbase-region-hole-fix/"/>
+    <id>https://ordiychen.github.io/posts/2022-02-hbase-region-hole-fix/</id>
     <published>2022-03-31T17:19:54.000Z</published>
     <updated>2022-04-14T10:24:49.434Z</updated>
     
@@ -41,8 +41,8 @@
   
   <entry>
     <title>HBase Meta使用及故障排查</title>
-    <link href="https://ordiychen.github.io/2022/03/23/2021-12-01-hbase-meta-table-in-action/"/>
-    <id>https://ordiychen.github.io/2022/03/23/2021-12-01-hbase-meta-table-in-action/</id>
+    <link href="https://ordiychen.github.io/posts/2021-12-01-hbase-meta-table-in-action/"/>
+    <id>https://ordiychen.github.io/posts/2021-12-01-hbase-meta-table-in-action/</id>
     <published>2022-03-23T15:00:31.000Z</published>
     <updated>2022-04-14T10:24:41.898Z</updated>
     
@@ -70,8 +70,8 @@
   
   <entry>
     <title>HBase Peer状态异常导致的oldWALs目录文件数异常</title>
-    <link href="https://ordiychen.github.io/2022/02/25/2022-02-21-hbase-region-server-error-md/"/>
-    <id>https://ordiychen.github.io/2022/02/25/2022-02-21-hbase-region-server-error-md/</id>
+    <link href="https://ordiychen.github.io/posts/2022-02-21-hbase-region-server-error-md/"/>
+    <id>https://ordiychen.github.io/posts/2022-02-21-hbase-region-server-error-md/</id>
     <published>2022-02-24T17:05:36.000Z</published>
     <updated>2022-04-14T10:24:45.592Z</updated>
     
@@ -95,8 +95,8 @@
   
   <entry>
     <title>MacOS install GitBook 未成功经验</title>
-    <link href="https://ordiychen.github.io/2021/07/02/2021-02-01-gitbook-macos-cl-error/"/>
-    <id>https://ordiychen.github.io/2021/07/02/2021-02-01-gitbook-macos-cl-error/</id>
+    <link href="https://ordiychen.github.io/posts/2021-02-01-gitbook-macos-cl-error/"/>
+    <id>https://ordiychen.github.io/posts/2021-02-01-gitbook-macos-cl-error/</id>
     <published>2021-07-01T18:18:45.000Z</published>
     <updated>2022-04-14T10:17:24.803Z</updated>
     
@@ -118,8 +118,8 @@
   
   <entry>
     <title>HBase Region Move 批量操作</title>
-    <link href="https://ordiychen.github.io/2021/06/24/2021-06-11-hbase-region-move-md/"/>
-    <id>https://ordiychen.github.io/2021/06/24/2021-06-11-hbase-region-move-md/</id>
+    <link href="https://ordiychen.github.io/posts/2021-06-11-hbase-region-move-md/"/>
+    <id>https://ordiychen.github.io/posts/2021-06-11-hbase-region-move-md/</id>
     <published>2021-06-23T17:15:58.000Z</published>
     <updated>2022-04-14T11:24:20.012Z</updated>
     
@@ -147,8 +147,8 @@
   
   <entry>
     <title>HBase2 YCSB benchmark test</title>
-    <link href="https://ordiychen.github.io/2021/05/21/2021-04-11-hbase-ycsb-benchamark-test-1/"/>
-    <id>https://ordiychen.github.io/2021/05/21/2021-04-11-hbase-ycsb-benchamark-test-1/</id>
+    <link href="https://ordiychen.github.io/posts/2021-04-11-hbase-ycsb-benchamark-test-1/"/>
+    <id>https://ordiychen.github.io/posts/2021-04-11-hbase-ycsb-benchamark-test-1/</id>
     <published>2021-05-21T11:09:29.000Z</published>
     <updated>2021-06-04T11:12:37.000Z</updated>
     
@@ -172,8 +172,8 @@
   
   <entry>
     <title>HBase HFile 基本概念</title>
-    <link href="https://ordiychen.github.io/2021/05/02/2021-05-01-hbase-hfile/"/>
-    <id>https://ordiychen.github.io/2021/05/02/2021-05-01-hbase-hfile/</id>
+    <link href="https://ordiychen.github.io/posts/2021-05-01-hbase-hfile/"/>
+    <id>https://ordiychen.github.io/posts/2021-05-01-hbase-hfile/</id>
     <published>2021-05-01T18:18:45.000Z</published>
     <updated>2022-04-14T13:05:31.586Z</updated>
     
@@ -197,8 +197,8 @@
   
   <entry>
     <title>Zeppelin In Action</title>
-    <link href="https://ordiychen.github.io/2021/04/22/2021-04-22-zeppelin-inaction-1/"/>
-    <id>https://ordiychen.github.io/2021/04/22/2021-04-22-zeppelin-inaction-1/</id>
+    <link href="https://ordiychen.github.io/posts/2021-04-22-zeppelin-inaction-1/"/>
+    <id>https://ordiychen.github.io/posts/2021-04-22-zeppelin-inaction-1/</id>
     <published>2021-04-22T14:06:36.000Z</published>
     <updated>2022-04-13T08:23:46.011Z</updated>
     
@@ -222,8 +222,8 @@
   
   <entry>
     <title>搭建HTTP内网文件服务器-以NGINX为例</title>
-    <link href="https://ordiychen.github.io/2021/02/01/2021-02-01-nginx-file-server/"/>
-    <id>https://ordiychen.github.io/2021/02/01/2021-02-01-nginx-file-server/</id>
+    <link href="https://ordiychen.github.io/posts/2021-02-01-nginx-file-server/"/>
+    <id>https://ordiychen.github.io/posts/2021-02-01-nginx-file-server/</id>
     <published>2021-02-01T14:14:55.000Z</published>
     <updated>2021-04-21T03:05:10.000Z</updated>
     
@@ -249,8 +249,8 @@
   
   <entry>
     <title>HAProxy多协议反向代理以及TLS加密传输</title>
-    <link href="https://ordiychen.github.io/2021/01/11/2021-01-11-haproxy-tls-mulit-sni-md/"/>
-    <id>https://ordiychen.github.io/2021/01/11/2021-01-11-haproxy-tls-mulit-sni-md/</id>
+    <link href="https://ordiychen.github.io/posts/2021-01-11-haproxy-tls-mulit-sni-md/"/>
+    <id>https://ordiychen.github.io/posts/2021-01-11-haproxy-tls-mulit-sni-md/</id>
     <published>2021-01-11T12:04:53.000Z</published>
     <updated>2022-04-14T10:24:52.986Z</updated>
     
@@ -270,8 +270,8 @@
   
   <entry>
     <title>TLS握手过程</title>
-    <link href="https://ordiychen.github.io/2020/01/02/2020-01-01-tls-study-md/"/>
-    <id>https://ordiychen.github.io/2020/01/02/2020-01-01-tls-study-md/</id>
+    <link href="https://ordiychen.github.io/posts/2020-01-01-tls-study-md/"/>
+    <id>https://ordiychen.github.io/posts/2020-01-01-tls-study-md/</id>
     <published>2020-01-01T22:24:11.000Z</published>
     <updated>2020-08-18T07:23:35.000Z</updated>
     
@@ -299,8 +299,8 @@
   
   <entry>
     <title>HTTP2 TLS加密通信理解与应用</title>
-    <link href="https://ordiychen.github.io/2020/01/02/2020-01-01-tls-truststores-md/"/>
-    <id>https://ordiychen.github.io/2020/01/02/2020-01-01-tls-truststores-md/</id>
+    <link href="https://ordiychen.github.io/posts/2020-01-01-tls-truststores-md/"/>
+    <id>https://ordiychen.github.io/posts/2020-01-01-tls-truststores-md/</id>
     <published>2020-01-01T22:23:54.000Z</published>
     <updated>2020-08-18T07:23:30.000Z</updated>
     
@@ -324,8 +324,8 @@
   
   <entry>
     <title>Apache Http-Client5 基本使用</title>
-    <link href="https://ordiychen.github.io/2020/01/01/2020-01-01-apache-http-client5/"/>
-    <id>https://ordiychen.github.io/2020/01/01/2020-01-01-apache-http-client5/</id>
+    <link href="https://ordiychen.github.io/posts/2020-01-01-apache-http-client5/"/>
+    <id>https://ordiychen.github.io/posts/2020-01-01-apache-http-client5/</id>
     <published>2020-01-01T00:00:00.000Z</published>
     <updated>2021-09-23T04:00:18.000Z</updated>
     
@@ -353,8 +353,8 @@
   
   <entry>
     <title>Python 使用绘制统计图</title>
-    <link href="https://ordiychen.github.io/2019/11/14/2020-05-python-count/"/>
-    <id>https://ordiychen.github.io/2019/11/14/2020-05-python-count/</id>
+    <link href="https://ordiychen.github.io/posts/2020-05-python-count/"/>
+    <id>https://ordiychen.github.io/posts/2020-05-python-count/</id>
     <published>2019-11-14T15:29:51.000Z</published>
     <updated>2021-05-24T08:43:45.000Z</updated>
     
@@ -378,8 +378,8 @@
   
   <entry>
     <title>记一次DNS异常导致的`ECONNREFUSED`问题</title>
-    <link href="https://ordiychen.github.io/2019/10/22/nodejs-DNS-error/"/>
-    <id>https://ordiychen.github.io/2019/10/22/nodejs-DNS-error/</id>
+    <link href="https://ordiychen.github.io/posts/nodejs-DNS-error/"/>
+    <id>https://ordiychen.github.io/posts/nodejs-DNS-error/</id>
     <published>2019-10-21T19:04:00.000Z</published>
     <updated>2020-08-18T07:23:11.000Z</updated>
     
@@ -405,8 +405,8 @@
   
   <entry>
     <title>Python 计算圆周率(译)</title>
-    <link href="https://ordiychen.github.io/2019/07/23/2019-10-11-python-calc-pi-1/"/>
-    <id>https://ordiychen.github.io/2019/07/23/2019-10-11-python-calc-pi-1/</id>
+    <link href="https://ordiychen.github.io/posts/2019-10-11-python-calc-pi-1/"/>
+    <id>https://ordiychen.github.io/posts/2019-10-11-python-calc-pi-1/</id>
     <published>2019-07-22T21:00:37.000Z</published>
     <updated>2021-05-24T08:43:45.000Z</updated>
     
@@ -430,8 +430,8 @@
   
   <entry>
     <title>Servlet In Action</title>
-    <link href="https://ordiychen.github.io/2019/01/01/2019-01-01-servlet-action/"/>
-    <id>https://ordiychen.github.io/2019/01/01/2019-01-01-servlet-action/</id>
+    <link href="https://ordiychen.github.io/posts/2019-01-01-servlet-action/"/>
+    <id>https://ordiychen.github.io/posts/2019-01-01-servlet-action/</id>
     <published>2019-01-01T00:00:02.000Z</published>
     <updated>2022-04-14T10:24:59.578Z</updated>
     
@@ -455,8 +455,8 @@
   
   <entry>
     <title>使用log4j2 JsonLayout自定义JSON格式日志</title>
-    <link href="https://ordiychen.github.io/2019/01/01/2019-01-01-log4j2-json-layout/"/>
-    <id>https://ordiychen.github.io/2019/01/01/2019-01-01-log4j2-json-layout/</id>
+    <link href="https://ordiychen.github.io/posts/2019-01-01-log4j2-json-layout/"/>
+    <id>https://ordiychen.github.io/posts/2019-01-01-log4j2-json-layout/</id>
     <published>2019-01-01T00:00:00.000Z</published>
     <updated>2021-07-12T09:00:31.000Z</updated>
     
@@ -484,8 +484,8 @@
   
   <entry>
     <title>使用supervisord管理进程</title>
-    <link href="https://ordiychen.github.io/2019/01/01/2019-01-01-supervisord-init-md/"/>
-    <id>https://ordiychen.github.io/2019/01/01/2019-01-01-supervisord-init-md/</id>
+    <link href="https://ordiychen.github.io/posts/2019-01-01-supervisord-init-md/"/>
+    <id>https://ordiychen.github.io/posts/2019-01-01-supervisord-init-md/</id>
     <published>2019-01-01T00:00:00.000Z</published>
     <updated>2022-04-14T10:24:56.434Z</updated>
     
@@ -511,8 +511,8 @@
   
   <entry>
     <title>Nginx Stream L4 负载均衡</title>
-    <link href="https://ordiychen.github.io/2018/04/12/2018-04-12-nginx-l4-loadblance-md/"/>
-    <id>https://ordiychen.github.io/2018/04/12/2018-04-12-nginx-l4-loadblance-md/</id>
+    <link href="https://ordiychen.github.io/posts/2018-04-12-nginx-l4-loadblance-md/"/>
+    <id>https://ordiychen.github.io/posts/2018-04-12-nginx-l4-loadblance-md/</id>
     <published>2018-04-12T00:00:00.000Z</published>
     <updated>2020-08-18T07:27:12.000Z</updated>
     

@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://ordiychen.github.io/2017/01/01/2018-01-01-LRU-algorithms/</loc>
+    <loc>https://ordiychen.github.io/posts/2018-01-01-LRU-algorithms/</loc>
     
     <lastmod>2022-04-15</lastmod>
     
@@ -11,7 +11,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2021/05/02/2021-05-01-hbase-hfile/</loc>
+    <loc>https://ordiychen.github.io/posts/2021-05-01-hbase-hfile/</loc>
     
     <lastmod>2022-04-14</lastmod>
     
@@ -20,7 +20,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2021/06/24/2021-06-11-hbase-region-move-md/</loc>
+    <loc>https://ordiychen.github.io/posts/2021-06-11-hbase-region-move-md/</loc>
     
     <lastmod>2022-04-14</lastmod>
     
@@ -29,7 +29,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2019/01/01/2019-01-01-servlet-action/</loc>
+    <loc>https://ordiychen.github.io/posts/2019-01-01-servlet-action/</loc>
     
     <lastmod>2022-04-14</lastmod>
     
@@ -38,7 +38,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2019/01/01/2019-01-01-supervisord-init-md/</loc>
+    <loc>https://ordiychen.github.io/posts/2019-01-01-supervisord-init-md/</loc>
     
     <lastmod>2022-04-14</lastmod>
     
@@ -47,7 +47,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2021/01/11/2021-01-11-haproxy-tls-mulit-sni-md/</loc>
+    <loc>https://ordiychen.github.io/posts/2021-01-11-haproxy-tls-mulit-sni-md/</loc>
     
     <lastmod>2022-04-14</lastmod>
     
@@ -56,7 +56,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2022/04/01/2022-02-hbase-region-hole-fix/</loc>
+    <loc>https://ordiychen.github.io/posts/2022-02-hbase-region-hole-fix/</loc>
     
     <lastmod>2022-04-14</lastmod>
     
@@ -65,7 +65,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2022/02/25/2022-02-21-hbase-region-server-error-md/</loc>
+    <loc>https://ordiychen.github.io/posts/2022-02-21-hbase-region-server-error-md/</loc>
     
     <lastmod>2022-04-14</lastmod>
     
@@ -74,7 +74,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2022/03/23/2021-12-01-hbase-meta-table-in-action/</loc>
+    <loc>https://ordiychen.github.io/posts/2021-12-01-hbase-meta-table-in-action/</loc>
     
     <lastmod>2022-04-14</lastmod>
     
@@ -83,7 +83,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2021/07/02/2021-02-01-gitbook-macos-cl-error/</loc>
+    <loc>https://ordiychen.github.io/posts/2021-02-01-gitbook-macos-cl-error/</loc>
     
     <lastmod>2022-04-14</lastmod>
     
@@ -92,7 +92,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2021/04/22/2021-04-22-zeppelin-inaction-1/</loc>
+    <loc>https://ordiychen.github.io/posts/2021-04-22-zeppelin-inaction-1/</loc>
     
     <lastmod>2022-04-13</lastmod>
     
@@ -101,7 +101,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2020/01/01/2020-01-01-apache-http-client5/</loc>
+    <loc>https://ordiychen.github.io/posts/2020-01-01-apache-http-client5/</loc>
     
     <lastmod>2021-09-23</lastmod>
     
@@ -110,7 +110,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2019/01/01/2019-01-01-log4j2-json-layout/</loc>
+    <loc>https://ordiychen.github.io/posts/2019-01-01-log4j2-json-layout/</loc>
     
     <lastmod>2021-07-12</lastmod>
     
@@ -155,7 +155,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2021/05/21/2021-04-11-hbase-ycsb-benchamark-test-1/</loc>
+    <loc>https://ordiychen.github.io/posts/2021-04-11-hbase-ycsb-benchamark-test-1/</loc>
     
     <lastmod>2021-06-04</lastmod>
     
@@ -164,7 +164,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2019/07/23/2019-10-11-python-calc-pi-1/</loc>
+    <loc>https://ordiychen.github.io/posts/2019-10-11-python-calc-pi-1/</loc>
     
     <lastmod>2021-05-24</lastmod>
     
@@ -173,7 +173,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2019/11/14/2020-05-python-count/</loc>
+    <loc>https://ordiychen.github.io/posts/2020-05-python-count/</loc>
     
     <lastmod>2021-05-24</lastmod>
     
@@ -182,7 +182,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2018/03/11/2018-03-11-arm-compile-nginx/</loc>
+    <loc>https://ordiychen.github.io/posts/2018-03-11-arm-compile-nginx/</loc>
     
     <lastmod>2021-04-25</lastmod>
     
@@ -191,7 +191,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2021/02/01/2021-02-01-nginx-file-server/</loc>
+    <loc>https://ordiychen.github.io/posts/2021-02-01-nginx-file-server/</loc>
     
     <lastmod>2021-04-21</lastmod>
     
@@ -209,7 +209,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2014/01/01/ieee-code-of-ethics/</loc>
+    <loc>https://ordiychen.github.io/posts/ieee-code-of-ethics/</loc>
     
     <lastmod>2020-12-22</lastmod>
     
@@ -227,7 +227,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2017/03/28/2017-03-28-mysql-show-table-status/</loc>
+    <loc>https://ordiychen.github.io/posts/2017-03-28-mysql-show-table-status/</loc>
     
     <lastmod>2020-08-18</lastmod>
     
@@ -236,7 +236,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2018/04/12/2018-04-12-nginx-l4-loadblance-md/</loc>
+    <loc>https://ordiychen.github.io/posts/2018-04-12-nginx-l4-loadblance-md/</loc>
     
     <lastmod>2020-08-18</lastmod>
     
@@ -245,7 +245,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2017/01/01/java-dns/</loc>
+    <loc>https://ordiychen.github.io/posts/java-dns/</loc>
     
     <lastmod>2020-08-18</lastmod>
     
@@ -254,7 +254,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2015/02/03/centos-ntp/</loc>
+    <loc>https://ordiychen.github.io/posts/centos-ntp/</loc>
     
     <lastmod>2020-08-18</lastmod>
     
@@ -263,7 +263,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2020/01/02/2020-01-01-tls-study-md/</loc>
+    <loc>https://ordiychen.github.io/posts/2020-01-01-tls-study-md/</loc>
     
     <lastmod>2020-08-18</lastmod>
     
@@ -272,7 +272,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2020/01/02/2020-01-01-tls-truststores-md/</loc>
+    <loc>https://ordiychen.github.io/posts/2020-01-01-tls-truststores-md/</loc>
     
     <lastmod>2020-08-18</lastmod>
     
@@ -281,7 +281,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/2019/10/22/nodejs-DNS-error/</loc>
+    <loc>https://ordiychen.github.io/posts/nodejs-DNS-error/</loc>
     
     <lastmod>2020-08-18</lastmod>
     
