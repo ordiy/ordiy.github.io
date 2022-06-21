@@ -25,7 +25,8 @@ sudo chown app -R /opt/app
 
 #supervisor install
 # 指定为用户安装可以使用pip install supervisord --user
-sudo pip install supervisord
+# 遇到 connection 或者 supervisord 找不到，请价差pip.conf 或者pip source 配置
+sudo pip install supervisor
 sudo echo_supervisord_conf > /opt/app/supervisord.conf
 
 #修改文件权限
