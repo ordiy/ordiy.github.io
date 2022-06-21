@@ -78,4 +78,9 @@ hbase hbck xxx_table -details
 ```
 
 
+## 参考
+- [1] [Hbase修复工具Hbck](https://developer.aliyun.com/article/899875)
+- [2]  [HBase原理与实践]
+
+
 
