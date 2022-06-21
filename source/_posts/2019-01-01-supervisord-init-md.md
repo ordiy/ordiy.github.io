@@ -226,6 +226,8 @@ sudo journalctl -u supervisord.service -b
 ExecStart=/bin/bash -c "PATH=/home/someUser/bin:$PATH exec /usr/bin/php /some/path/to/a/script.php"
 ```
 
+# 拓展
+可以结合ansible 和 CI工具,进行自动化部署和重启。
 
 # 参考
 - [supervisord](http://supervisord.org/index.html)
