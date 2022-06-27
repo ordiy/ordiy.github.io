@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/function%20()%20%7B%0A%20%20%20%20%20%20for%20(var%20_len2%20=%20arguments.length,%20args%20=%20new%20Array(_len2),%20_key2%20=%200;%20_key2%20%3C%20_len2;%20_key2++)%20%7B%0A%20%20%20%20%20%20%20%20args%5B_key2%5D%20=%20arguments%5B_key2%5D;%0A%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20return%20obj%5Bval%5D.apply(obj,%20args);%0A%20%20%20%20%7D">
+  <meta name="google-site-verification" content="STAcFkvSF49fRv3p9O9gm962auBfI64EX85Z7NIb3j4">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiychen.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="MacOS 上安装GitBook遇到的各种问题，最终没有正常安装，选择使用&#96;honkit&#96;的悲伤故事">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MacOS install GitBook 未成功经验">
+<meta property="og:url" content="https://ordiychen.github.io/posts/2021-02-01-gitbook-macos-cl-error/index.html">
+<meta property="og:site_name" content="Ordiy&#39;s Blog">
+<meta property="og:description" content="MacOS 上安装GitBook遇到的各种问题，最终没有正常安装，选择使用&#96;honkit&#96;的悲伤故事">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-01T18:18:45.000Z">
+<meta property="article:modified_time" content="2022-04-14T10:17:24.803Z">
+<meta property="article:author" content="Ordiy">
+<meta property="article:tag" content="tools">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://ordiychen.github.io/posts/2021-02-01-gitbook-macos-cl-error/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://ordiychen.github.io/posts/2021-02-01-gitbook-macos-cl-error/","path":"posts/2021-02-01-gitbook-macos-cl-error/","title":"MacOS install GitBook 未成功经验"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>MacOS install GitBook 未成功经验 | Ordiy's Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Ordiy's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ordiy's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Just do it!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85GitBook%E9%81%87%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">安装GitBook遇到的各种问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8honkit"><span class="nav-number">2.</span> <span class="nav-text">使用honkit</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ordiy</p>
+  <div class="site-description" itemprop="description">Stay Hungry.Stay Foolish.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ordiychen" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ordiychen" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ordiymaster_outlook.com" title="E-Mail → mailto:ordiymaster_outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://ordiychen.github.io/posts/2021-02-01-gitbook-macos-cl-error/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ordiy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ordiy's Blog">
+      <meta itemprop="description" content="Stay Hungry.Stay Foolish.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="MacOS install GitBook 未成功经验 | Ordiy's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MacOS install GitBook 未成功经验
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-01 18:18:45" itemprop="dateCreated datePublished" datetime="2021-07-01T18:18:45Z">2021-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-04-14 10:17:24" itemprop="dateModified" datetime="2022-04-14T10:17:24Z">2022-04-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">tech</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/tech/tools/" itemprop="url" rel="index"><span itemprop="name">tools</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/posts/2021-02-01-gitbook-macos-cl-error/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="posts/2021-02-01-gitbook-macos-cl-error/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="安装GitBook遇到的各种问题"><a href="#安装GitBook遇到的各种问题" class="headerlink" title="安装GitBook遇到的各种问题"></a>安装GitBook遇到的各种问题</h1><ul>
+<li><p>环境信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Node.js v14.17.1</span><br><span class="line">ruby 2.5.8p224 (2020-03-31 revision 67882) [x86_64-darwin18]</span><br><span class="line">MacOS Catalina 10.15.7 (19H1217)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装遇到的问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm install gitbook-cli -g</span><br><span class="line"><span class="built_in">mkdir</span> book-test</span><br><span class="line"></span><br><span class="line"><span class="comment"># install </span></span><br><span class="line">$ gitbook server</span><br></pre></td></tr></table></figure>
+<p>出现异常：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Installing GitBook 3.2.3</span><br><span class="line">(node:90003) [DEP0150] DeprecationWarning: Setting process.config is deprecated. In the future the property will be read-only.</span><br><span class="line">(Use `node --trace-deprecation ...` to show <span class="built_in">where</span> the warning was created)</span><br><span class="line">xcode-select: error: tool <span class="string">&#x27;xcodebuild&#x27;</span> requires Xcode, but active developer directory <span class="string">&#x27;/Library/Developer/CommandLineTools&#x27;</span> is a <span class="built_in">command</span> line tools instance</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.CLTools_Executables&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.DeveloperToolsCLILeo&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.DeveloperToolsCLI&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">gyp: No Xcode or CLT version detected!</span><br><span class="line">(node:90043) [DEP0150] DeprecationWarning: Setting process.config is deprecated. In the future the property will be read-only.</span><br><span class="line">(Use `node --trace-deprecation ...` to show <span class="built_in">where</span> the warning was created)</span><br><span class="line">xcode-select: error: tool <span class="string">&#x27;xcodebuild&#x27;</span> requires Xcode, but active developer directory <span class="string">&#x27;/Library/Developer/CommandLineTools&#x27;</span> is a <span class="built_in">command</span> line tools instance</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.CLTools_Executables&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.DeveloperToolsCLILeo&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">No receipt <span class="keyword">for</span> <span class="string">&#x27;com.apple.pkg.DeveloperToolsCLI&#x27;</span> found at <span class="string">&#x27;/&#x27;</span>.</span><br><span class="line">gyp: No Xcode or CLT version detected!</span><br><span class="line">/usr/local/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:287</span><br><span class="line">      <span class="keyword">if</span> (cb) cb.apply(this, arguments)</span><br><span class="line">                 ^</span><br><span class="line">TypeError: cb.apply is not a <span class="keyword">function</span></span><br><span class="line">    at /usr/local/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:287:18</span><br><span class="line">    at FSReqCallback.oncomplete (node:fs:196:5)</span><br></pre></td></tr></table></figure>
+<p>修复问题：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#cli pkg noxexits</span></span><br><span class="line">$ /usr/sbin/pkgutil --packages | grep CL</span><br><span class="line"></span><br><span class="line"><span class="comment"># reinstall xcode-select</span></span><br><span class="line">$ sudo <span class="built_in">rm</span> -rf $(xcode-select -print-path)</span><br><span class="line">$ xcode-select --install</span><br><span class="line">$ /usr/sbin/pkgutil --packages | grep CL</span><br><span class="line">$ sudo npm install -g node-gyp</span><br></pre></td></tr></table></figure>
+<p>异常日志：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Installing GitBook 3.2.3</span><br><span class="line">  SOLINK_MODULE(target) Release/.node</span><br><span class="line">  CXX(target) Release/obj.target/fse/fsevents.o</span><br><span class="line">/usr/local/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:287</span><br><span class="line">      <span class="keyword">if</span> (cb) cb.apply(this, arguments)</span><br><span class="line">                 ^</span><br><span class="line">TypeError: cb.apply is not a <span class="keyword">function</span></span><br><span class="line">    at /usr/local/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:287:1</span><br></pre></td></tr></table></figure>
+<p>修复：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /usr/local/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/</span><br><span class="line">$ npm install graceful-fs@latest --save</span><br></pre></td></tr></table></figure>
+<p>参考：<br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/64211386/gitbook-cli-install-error-typeerror-cb-apply-is-not-a-function-inside-graceful">gitbook-cli-install-error-typeerror-cb-apply-is-not-a-function-inside-graceful</a></p>
+</li>
+<li><p>启动服务异常</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动</span></span><br><span class="line">$ gitbook serve  --lrport 13244 --port 4002 book-blog</span><br></pre></td></tr></table></figure>
+<p> 还是遇到异常：</p>
+ <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">Live reload server started on port: 13244</span><br><span class="line">Press CTRL+C to quit ...</span><br><span class="line"></span><br><span class="line">info: 7 plugins are installed</span><br><span class="line">info: loading plugin &quot;livereload&quot;... OK</span><br><span class="line">info: loading plugin &quot;highlight&quot;... OK</span><br><span class="line">info: loading plugin &quot;search&quot;... OK</span><br><span class="line">info: loading plugin &quot;lunr&quot;... OK</span><br><span class="line">info: loading plugin &quot;sharing&quot;... OK</span><br><span class="line">info: loading plugin &quot;fontsettings&quot;... OK</span><br><span class="line">info: loading plugin &quot;theme-default&quot;... OK</span><br><span class="line">info: found 1 pages</span><br><span class="line">info: found 0 asset files</span><br><span class="line">internal/streams/readable.js:630</span><br><span class="line">  if (state.pipes.length === 1) &#123;</span><br><span class="line">            ^</span><br><span class="line">TypeError: Cannot read property &#x27;pipes&#x27; of undefined</span><br><span class="line">    at ReadStream.Readable.pipe (internal/streams/readable.js:630:13)</span><br><span class="line">    at /Users/ordiy/.gitbook/versions/3.2.3/node_modules/cpr/lib/index.js:163:22</span><br><span class="line">    at callback (/usr/local/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:299:20)</span><br><span class="line">    at FSReqCallback.oncomplete (fs.js:192:21)</span><br><span class="line">➜  isun-blog-book git:(master) ✗ gitbook serve  --lrport 13244 --port 4002 book-blog</span><br><span class="line">➜  isun-blog-book git:(master) ✗ npm install cpr</span><br><span class="line">npm WARN saveError ENOENT: no such file or directory, open &#x27;/opt/ordiy/px03-private-project/isun-blog-book/package.json&#x27;</span><br><span class="line">npm notice created a lockfile as package-lock.json. You should commit this file.</span><br><span class="line">npm WARN enoent ENOENT: no such file or directory, open &#x27;/opt/ordiy/px03-private-project/isun-blog-book/package.json&#x27;</span><br><span class="line">npm WARN isun-blog-book No description</span><br><span class="line">npm WARN isun-blog-book No repository field.</span><br><span class="line">npm WARN isun-blog-book No README data</span><br><span class="line">npm WARN isun-blog-book No license field.</span><br><span class="line"></span><br><span class="line">+ cpr@3.0.1</span><br><span class="line">added 16 packages from 15 contributors and audited 16 packages in 4.371s</span><br><span class="line">1 package is looking for funding</span><br><span class="line">  run `npm fund` for details</span><br><span class="line">found 0 vulnerabilities</span><br><span class="line">   ╭────────────────────────────────────────────────────────────────╮</span><br><span class="line">   │                                                                │</span><br><span class="line">   │      New major version of npm available! 6.14.13 → 7.19.0      │</span><br><span class="line">   │   Changelog: https://github.com/npm/cli/releases/tag/v7.19.0   │</span><br><span class="line">   │               Run npm install -g npm to update!                │</span><br><span class="line">   │                                                                │</span><br><span class="line">   ╰────────────────────────────────────────────────────────────────╯</span><br></pre></td></tr></table></figure>
+<p> 吼吼.... 的node.js 小白水平，放弃了。</p>
+</li>
+</ul>
+<h1 id="使用honkit"><a href="#使用honkit" class="headerlink" title="使用honkit"></a>使用honkit</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#install </span></span><br><span class="line">$ npm init --<span class="built_in">yes</span></span><br><span class="line">$ npm install honkit --save-dev</span><br><span class="line"></span><br><span class="line"><span class="comment">#create book &amp; start </span></span><br><span class="line">$ npx honkit init</span><br><span class="line">$ npx honkit serve</span><br></pre></td></tr></table></figure>
+<p>OK 搞定了</p>
+<ul>
+<li>参考：<br> <a target="_blank" rel="noopener" href="https://github.com/honkit/honkit">honkit</a></li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p> 出现失败的问题可能是 gitbook 依赖的组件版本有问题，导致执行出现问题，在尝试了多次为能找到问题，选择使用honkitz作为替代方案</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/tools/" rel="tag"># tools</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2021-06-11-hbase-region-move-md/" rel="prev" title="HBase Region Move 批量操作">
+                  <i class="fa fa-chevron-left"></i> HBase Region Move 批量操作
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2021-12-02-mvn-trouable-debug/" rel="next" title="Maven Trouble Debug I —— JDK error">
+                  Maven Trouble Debug I —— JDK error <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ordiy</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"ordiytech-blog","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>
