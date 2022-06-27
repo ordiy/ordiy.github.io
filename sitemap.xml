@@ -458,13 +458,6 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/tags/supervisord/</loc>
-    <lastmod>2022-06-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ordiychen.github.io/tags/python/</loc>
     <lastmod>2022-06-27</lastmod>
     <changefreq>weekly</changefreq>
@@ -473,6 +466,13 @@
   
   <url>
     <loc>https://ordiychen.github.io/tags/Statistics/</loc>
+    <lastmod>2022-06-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/tags/supervisord/</loc>
     <lastmod>2022-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -521,7 +521,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/tags/python-plot/</loc>
+    <loc>https://ordiychen.github.io/tags/tools/</loc>
     <lastmod>2022-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -529,6 +529,13 @@
   
   <url>
     <loc>https://ordiychen.github.io/tags/YCSB/</loc>
+    <lastmod>2022-06-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/tags/python-plot/</loc>
     <lastmod>2022-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -549,7 +556,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/tags/tools/</loc>
+    <loc>https://ordiychen.github.io/tags/JMX/</loc>
     <lastmod>2022-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -570,21 +577,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/tags/JMX/</loc>
-    <lastmod>2022-06-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ordiychen.github.io/tags/Maven/</loc>
-    <lastmod>2022-06-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/tags/Meta/</loc>
     <lastmod>2022-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -598,7 +591,28 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/tags/JDK/</loc>
+    <loc>https://ordiychen.github.io/tags/Meta/</loc>
+    <lastmod>2022-06-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/tags/OS/</loc>
+    <lastmod>2022-06-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/tags/Centos/</loc>
+    <lastmod>2022-06-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiychen.github.io/tags/NTP/</loc>
     <lastmod>2022-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -633,21 +647,7 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/tags/OS/</loc>
-    <lastmod>2022-06-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/tags/Centos/</loc>
-    <lastmod>2022-06-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiychen.github.io/tags/NTP/</loc>
+    <loc>https://ordiychen.github.io/tags/JDK/</loc>
     <lastmod>2022-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -740,14 +740,14 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/categories/tech/tools/</loc>
+    <loc>https://ordiychen.github.io/categories/tech/python/</loc>
     <lastmod>2022-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/categories/tech/python/</loc>
+    <loc>https://ordiychen.github.io/categories/tech/tools/</loc>
     <lastmod>2022-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -796,14 +796,14 @@
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/categories/tech/values/</loc>
+    <loc>https://ordiychen.github.io/categories/tech/OS/</loc>
     <lastmod>2022-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ordiychen.github.io/categories/tech/OS/</loc>
+    <loc>https://ordiychen.github.io/categories/tech/values/</loc>
     <lastmod>2022-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
