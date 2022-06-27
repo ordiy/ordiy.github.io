@@ -27,7 +27,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220323150645.png">
 <meta property="article:published_time" content="2022-03-23T15:00:31.000Z">
-<meta property="article:modified_time" content="2022-04-14T10:24:41.898Z">
+<meta property="article:modified_time" content="2022-06-22T10:36:57.373Z">
 <meta property="article:author" content="Ordiy">
 <meta property="article:tag" content="blog">
 <meta property="article:tag" content="HBase">
@@ -157,18 +157,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -251,7 +251,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-04-14 10:24:41" itemprop="dateModified" datetime="2022-04-14T10:24:41Z">2022-04-14</time>
+      <time title="Modified: 2022-06-22 10:36:57" itemprop="dateModified" datetime="2022-06-22T10:36:57Z">2022-06-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -312,8 +312,8 @@
     <div class="post-body" itemprop="articleBody">
         <h1 id="HBase-Meta-表"><a href="#HBase-Meta-表" class="headerlink" title="HBase Meta 表"></a>HBase Meta 表</h1><p>HBas的表由多个<code>Region</code>组成， 而<code>Region</code>又分布在不同的<code>RegionServer</code>上。Client在做任何操作时，都要去人数据在那个<code>Region</code>上，然后根据<code>Region</code>关联的<code>RegionServer</code>信息，确定对应的RegionServer 节点上读取数据，因此HBase系统内部设计了一张特殊的表————<code>hbase:meta</code>表（hbase是系统表统一的namespace,meta是表名）。</p>
 <h2 id="如何定位到hbase-meta表"><a href="#如何定位到hbase-meta表" class="headerlink" title="如何定位到hbase:meta表"></a>如何定位到<code>hbase:meta</code>表</h2><p>client 需要预先获取到hbase:meta表所在的RegionServer才能，才能获取到hbase:meta中的信息。<br><code>hbase:meta</code>所在RegionServer会存在放Zookpeer Server中的<code>$&#123;hbase_home&#125;/meta-region-server</code> path下的ZNode,如下所示：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">zookeeper-client</span></span><br><span class="line">[zk: localhost:2181(CONNECTED) 1] get /hbase/meta-region-server</span><br><span class="line">�master:16000��0��r�</span><br><span class="line">                    PBUF</span><br><span class="line">+</span><br><span class="line">xxxx-hbase02-node20.xxxx.com�&#125;����/</span><br><span class="line">cZxid = 0x50000aaf6</span><br><span class="line">ctime = Thu Aug 19 16:34:29 CST 2021</span><br><span class="line">mZxid = 0xa00033637</span><br><span class="line">mtime = Thu Jan 13 12:04:13 CST 2022</span><br><span class="line">pZxid = 0x50000aaf6</span><br><span class="line">cversion = 0</span><br><span class="line">dataVersion = 17</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 78</span><br><span class="line">numChildren = 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>这里表示<code>hbase:meta</code>所在的<code>RegionServer</code>是<code>xxxx-hbase02-node20.xxxx.com�&#125;����/</code> ( 这里显示有一些乱码，是zk client 由于decode不对导致的，实际是没问题的)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">zookeeper-client</span></span><br><span class="line">[zk: localhost:2181(CONNECTED) 1] get /hbase/meta-region-server</span><br><span class="line">master:16000</span><br><span class="line">                    PBUF</span><br><span class="line">+</span><br><span class="line">xxxx-hbase02-node20.xxxx.com</span><br><span class="line">cZxid = 0x50000aaf6</span><br><span class="line">ctime = Thu Aug 19 16:34:29 CST 2021</span><br><span class="line">mZxid = 0xa00033637</span><br><span class="line">mtime = Thu Jan 13 12:04:13 CST 2022</span><br><span class="line">pZxid = 0x50000aaf6</span><br><span class="line">cversion = 0</span><br><span class="line">dataVersion = 17</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 78</span><br><span class="line">numChildren = 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这里表示<code>hbase:meta</code>所在的<code>RegionServer</code>是<code>xxxx-hbase02-node20.xxxx.com</code> ( 这里显示有一些乱码，是zk client 由于decode不对导致的，实际是没问题的)</p>
 <h1 id="hbase-meta表结构"><a href="#hbase-meta表结构" class="headerlink" title="hbase:meta表结构"></a><code>hbase:meta</code>表结构</h1><p>在<code>hbase:meta</code>表中一个rowkey对应一个Region，rowkey由TableName(用户创建的表)、StartRow(region split key/ 启始row),Timestamp( Region创建的时间戳)，EncondeName(前面三字字段进行MD5 Hex得到，具体计算方法：md5sum(String.join(&quot;,&quot;, TableName, StartRow, Timestamp, ，EncondeName)))。 一行数据分为多个列，如下展示：</p>
 <h2 id="1-x版本hbase-meta表结构："><a href="#1-x版本hbase-meta表结构：" class="headerlink" title="1.x版本hbase:meta表结构："></a>1.x版本<code>hbase:meta</code>表结构：</h2><ul>
 <li><p>1.x版本<code>hbase:meta</code>表结构</p>
@@ -432,13 +432,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">142k</span>
+    <span title="Symbols count total">224k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:09</span>
+    <span title="Reading time total">3:24</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
