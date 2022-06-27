@@ -14,7 +14,6 @@ theme: next
 # favicon
 theme_config:
   favicon: images/favicon.ico
-  scheme: Gemini
   darkmode: false
 
 # URL
@@ -126,7 +125,7 @@ search:
   content: true
   template: ./search.xml
 
-#permalink: posts/:title/
+permalink: posts/:title/
 permalink_defaults:
   lang: en
 # my config ====

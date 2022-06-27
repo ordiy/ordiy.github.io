@@ -12,11 +12,13 @@ _book
 themes
 themes/**
 *.log
-
+._deploy_tmp_dir
 
 package-lock.json
 netlify.toml
 ruby
 run.log
 next-source
+_multiconfig.yml
+db.json
 

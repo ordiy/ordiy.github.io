@@ -23,10 +23,10 @@ client 需要预先获取到hbase:meta表所在的RegionServer才能，才能获
 ```shell
 $ zookeeper-client
 [zk: localhost:2181(CONNECTED) 1] get /hbase/meta-region-server
-�master:16000��0��r�
+master:16000
                     PBUF
 +
-xxxx-hbase02-node20.xxxx.com�}����/
+xxxx-hbase02-node20.xxxx.com
 cZxid = 0x50000aaf6
 ctime = Thu Aug 19 16:34:29 CST 2021
 mZxid = 0xa00033637
@@ -40,7 +40,7 @@ dataLength = 78
 numChildren = 0
 
 ```
-这里表示`hbase:meta`所在的`RegionServer`是`xxxx-hbase02-node20.xxxx.com�}����/` ( 这里显示有一些乱码，是zk client 由于decode不对导致的，实际是没问题的)
+这里表示`hbase:meta`所在的`RegionServer`是`xxxx-hbase02-node20.xxxx.com` ( 这里显示有一些乱码，是zk client 由于decode不对导致的，实际是没问题的)
 
 # `hbase:meta`表结构
 在`hbase:meta`表中一个rowkey对应一个Region，rowkey由TableName(用户创建的表)、StartRow(region split key/ 启始row),Timestamp( Region创建的时间戳)，EncondeName(前面三字字段进行MD5 Hex得到，具体计算方法：md5sum(String.join(",", TableName, StartRow, Timestamp, ，EncondeName)))。 一行数据分为多个列，如下展示：
@@ -127,5 +127,3 @@ hbase hbck -fixAssignments -fixMeta -fixHdfsHoles xxx_table
 
 # 参考
 - [] 胡争,范欣欣. HBase原理与实践 (Chinese Edition). Kindle 版本. 
-
-

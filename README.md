@@ -8,6 +8,11 @@ $ npm update --save
 $ hexo v
 ```
 
+## hexo 使用指定了两个自定义配置文件
+```
+hexo generate --config _config.yml,_config.next.yml
+```
+
 ## 创建文章
 
 ## draf文章
@@ -30,7 +35,7 @@ hexo hexo publish '2021-04-11-kerberos-guide'
 #
 #hexo new 2021-02-01-nginx-file-server.md
 # post tech 模板创建文章
-npx hexo new post tech 2021-12-2-hbase-meta-opt
+npx hexo new post tech 2021-12-02-hbase-meta-opt
 
 hexo new tech :year-:month-:day-:title
 ```
@@ -48,7 +53,7 @@ npx hexo g --watch
 #server 
 npx hexo s --watch
 # server watch 
- npx  hexo clean && npx hexo g --silent && npx hexo server --port 14000 --watch --open
+ npx  hexo clean && npx hexo g --debug && npx hexo server --port 14000 --watch --open
 
 #自动 deploy 
 # 不要使用！～～
@@ -59,7 +64,7 @@ npx hexo s --watch
 ## 手动deploy
 手动delpoy编译后的文件（只更新改/deloy 改动过的文件)
 ```bash 
-npx hexo g
+npx hexo clean && npx hexo g
 
 #mkdir ./.deplog_git
 cd ./.deplog_git

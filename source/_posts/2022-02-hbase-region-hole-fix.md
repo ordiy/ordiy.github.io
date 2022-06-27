@@ -4,11 +4,13 @@ title: HBase修复Region Holes和meta问题
 indexing: true
 categories:
   - tech
+  - HBase
 tags:
   - blog
   - HBase
+  - Meta
 date: 2022-03-31 17:19:54
-excerpt: HBase RIT 终端导致Region Holes和meta问题，进行修复
+excerpt: HBase RIT 终端导致Region Holes和meta问题，进行修复.
 ---
 
 # 问题
