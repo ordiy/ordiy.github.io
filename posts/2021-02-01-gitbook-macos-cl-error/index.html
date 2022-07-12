@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
 
 
   <link rel="icon" type="image/png" sizes="16x16" href="/function%20()%20%7B%0A%20%20%20%20%20%20for%20(var%20_len2%20=%20arguments.length,%20args%20=%20new%20Array(_len2),%20_key2%20=%200;%20_key2%20%3C%20_len2;%20_key2++)%20%7B%0A%20%20%20%20%20%20%20%20args%5B_key2%5D%20=%20arguments%5B_key2%5D;%0A%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20return%20obj%5Bval%5D.apply(obj,%20args);%0A%20%20%20%20%7D">
@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiychen.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiychen.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="MacOS 上安装GitBook遇到的各种问题，最终没有正常安装，选择使用&#96;honkit&#96;的悲伤故事">
 <meta property="og:type" content="article">
@@ -153,7 +153,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -164,7 +164,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -278,21 +278,6 @@
   </span>
   
   
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>4.7k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
 </div>
 
         </div>
@@ -304,7 +289,8 @@
     <div class="post-body" itemprop="articleBody">
         <h1 id="安装GitBook遇到的各种问题"><a href="#安装GitBook遇到的各种问题" class="headerlink" title="安装GitBook遇到的各种问题"></a>安装GitBook遇到的各种问题</h1><ul>
 <li><p>环境信息</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Node.js v14.17.1</span><br><span class="line">ruby 2.5.8p224 (2020-03-31 revision 67882) [x86_64-darwin18]</span><br><span class="line">MacOS Catalina 10.15.7 (19H1217)</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Node.js v14.17.1</span><br><span class="line">ruby 2.5.8p224 (2020-03-31 revision 67882) [x86_64-darwin18]</span><br><span class="line">MacOS Catalina 10.15.7 (19H1217)</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>安装遇到的问题</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm install gitbook-cli -g</span><br><span class="line"><span class="built_in">mkdir</span> book-test</span><br><span class="line"></span><br><span class="line"><span class="comment"># install </span></span><br><span class="line">$ gitbook server</span><br></pre></td></tr></table></figure>
 <p>出现异常：</p>
@@ -319,9 +305,9 @@
 </li>
 <li><p>启动服务异常</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动</span></span><br><span class="line">$ gitbook serve  --lrport 13244 --port 4002 book-blog</span><br></pre></td></tr></table></figure>
-<p>还是遇到异常：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">Live reload server started on port: 13244</span><br><span class="line">Press CTRL+C to quit ...</span><br><span class="line"></span><br><span class="line">info: 7 plugins are installed</span><br><span class="line">info: loading plugin &quot;livereload&quot;... OK</span><br><span class="line">info: loading plugin &quot;highlight&quot;... OK</span><br><span class="line">info: loading plugin &quot;search&quot;... OK</span><br><span class="line">info: loading plugin &quot;lunr&quot;... OK</span><br><span class="line">info: loading plugin &quot;sharing&quot;... OK</span><br><span class="line">info: loading plugin &quot;fontsettings&quot;... OK</span><br><span class="line">info: loading plugin &quot;theme-default&quot;... OK</span><br><span class="line">info: found 1 pages</span><br><span class="line">info: found 0 asset files</span><br><span class="line">internal/streams/readable.js:630</span><br><span class="line">  if (state.pipes.length === 1) &#123;</span><br><span class="line">            ^</span><br><span class="line">TypeError: Cannot read property &#x27;pipes&#x27; of undefined</span><br><span class="line">    at ReadStream.Readable.pipe (internal/streams/readable.js:630:13)</span><br><span class="line">    at /Users/ordiy/.gitbook/versions/3.2.3/node_modules/cpr/lib/index.js:163:22</span><br><span class="line">    at callback (/usr/local/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:299:20)</span><br><span class="line">    at FSReqCallback.oncomplete (fs.js:192:21)</span><br><span class="line">➜  isun-blog-book git:(master) ✗ gitbook serve  --lrport 13244 --port 4002 book-blog</span><br><span class="line">➜  isun-blog-book git:(master) ✗ npm install cpr</span><br><span class="line">npm WARN saveError ENOENT: no such file or directory, open &#x27;/opt/ordiy/px03-private-project/isun-blog-book/package.json&#x27;</span><br><span class="line">npm notice created a lockfile as package-lock.json. You should commit this file.</span><br><span class="line">npm WARN enoent ENOENT: no such file or directory, open &#x27;/opt/ordiy/px03-private-project/isun-blog-book/package.json&#x27;</span><br><span class="line">npm WARN isun-blog-book No description</span><br><span class="line">npm WARN isun-blog-book No repository field.</span><br><span class="line">npm WARN isun-blog-book No README data</span><br><span class="line">npm WARN isun-blog-book No license field.</span><br><span class="line"></span><br><span class="line">+ cpr@3.0.1</span><br><span class="line">added 16 packages from 15 contributors and audited 16 packages in 4.371s</span><br><span class="line">1 package is looking for funding</span><br><span class="line">  run `npm fund` for details</span><br><span class="line">found 0 vulnerabilities</span><br><span class="line">   ╭────────────────────────────────────────────────────────────────╮</span><br><span class="line">   │                                                                │</span><br><span class="line">   │      New major version of npm available! 6.14.13 → 7.19.0      │</span><br><span class="line">   │   Changelog: https://github.com/npm/cli/releases/tag/v7.19.0   │</span><br><span class="line">   │               Run npm install -g npm to update!                │</span><br><span class="line">   │                                                                │</span><br><span class="line">   ╰────────────────────────────────────────────────────────────────╯</span><br></pre></td></tr></table></figure>
-<p>吼吼.... 的node.js 小白水平，放弃了。</p>
+<p> 还是遇到异常：</p>
+ <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">Live reload server started on port: 13244</span><br><span class="line">Press CTRL+C to quit ...</span><br><span class="line"></span><br><span class="line">info: 7 plugins are installed</span><br><span class="line">info: loading plugin &quot;livereload&quot;... OK</span><br><span class="line">info: loading plugin &quot;highlight&quot;... OK</span><br><span class="line">info: loading plugin &quot;search&quot;... OK</span><br><span class="line">info: loading plugin &quot;lunr&quot;... OK</span><br><span class="line">info: loading plugin &quot;sharing&quot;... OK</span><br><span class="line">info: loading plugin &quot;fontsettings&quot;... OK</span><br><span class="line">info: loading plugin &quot;theme-default&quot;... OK</span><br><span class="line">info: found 1 pages</span><br><span class="line">info: found 0 asset files</span><br><span class="line">internal/streams/readable.js:630</span><br><span class="line">  if (state.pipes.length === 1) &#123;</span><br><span class="line">            ^</span><br><span class="line">TypeError: Cannot read property &#x27;pipes&#x27; of undefined</span><br><span class="line">    at ReadStream.Readable.pipe (internal/streams/readable.js:630:13)</span><br><span class="line">    at /Users/ordiy/.gitbook/versions/3.2.3/node_modules/cpr/lib/index.js:163:22</span><br><span class="line">    at callback (/usr/local/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:299:20)</span><br><span class="line">    at FSReqCallback.oncomplete (fs.js:192:21)</span><br><span class="line">➜  isun-blog-book git:(master) ✗ gitbook serve  --lrport 13244 --port 4002 book-blog</span><br><span class="line">➜  isun-blog-book git:(master) ✗ npm install cpr</span><br><span class="line">npm WARN saveError ENOENT: no such file or directory, open &#x27;/opt/ordiy/px03-private-project/isun-blog-book/package.json&#x27;</span><br><span class="line">npm notice created a lockfile as package-lock.json. You should commit this file.</span><br><span class="line">npm WARN enoent ENOENT: no such file or directory, open &#x27;/opt/ordiy/px03-private-project/isun-blog-book/package.json&#x27;</span><br><span class="line">npm WARN isun-blog-book No description</span><br><span class="line">npm WARN isun-blog-book No repository field.</span><br><span class="line">npm WARN isun-blog-book No README data</span><br><span class="line">npm WARN isun-blog-book No license field.</span><br><span class="line"></span><br><span class="line">+ cpr@3.0.1</span><br><span class="line">added 16 packages from 15 contributors and audited 16 packages in 4.371s</span><br><span class="line">1 package is looking for funding</span><br><span class="line">  run `npm fund` for details</span><br><span class="line">found 0 vulnerabilities</span><br><span class="line">   ╭────────────────────────────────────────────────────────────────╮</span><br><span class="line">   │                                                                │</span><br><span class="line">   │      New major version of npm available! 6.14.13 → 7.19.0      │</span><br><span class="line">   │   Changelog: https://github.com/npm/cli/releases/tag/v7.19.0   │</span><br><span class="line">   │               Run npm install -g npm to update!                │</span><br><span class="line">   │                                                                │</span><br><span class="line">   ╰────────────────────────────────────────────────────────────────╯</span><br></pre></td></tr></table></figure>
+<p> 吼吼.... 的node.js 小白水平，放弃了。</p>
 </li>
 </ul>
 <h1 id="使用honkit"><a href="#使用honkit" class="headerlink" title="使用honkit"></a>使用honkit</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#install </span></span><br><span class="line">$ npm init --<span class="built_in">yes</span></span><br><span class="line">$ npm install honkit --save-dev</span><br><span class="line"></span><br><span class="line"><span class="comment">#create book &amp; start </span></span><br><span class="line">$ npx honkit init</span><br><span class="line">$ npx honkit serve</span><br></pre></td></tr></table></figure>
@@ -384,20 +370,6 @@
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Ordiy</span>
-</div>
-<div class="wordcount">
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-line"></i>
-    </span>
-    <span title="Symbols count total">224k</span>
-  </span>
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-    <span title="Reading time total">3:24</span>
-  </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
   </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
 
 
   <link rel="icon" type="image/png" sizes="16x16" href="/function%20()%20%7B%0A%20%20%20%20%20%20for%20(var%20_len2%20=%20arguments.length,%20args%20=%20new%20Array(_len2),%20_key2%20=%200;%20_key2%20%3C%20_len2;%20_key2++)%20%7B%0A%20%20%20%20%20%20%20%20args%5B_key2%5D%20=%20arguments%5B_key2%5D;%0A%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20return%20obj%5Bval%5D.apply(obj,%20args);%0A%20%20%20%20%7D">
@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiychen.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiychen.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="总结Nginx Stream进行反向代理实现负载均衡，以及配置集群的高可用、A&#x2F;B测试、SSL&#x2F;TLS加密和日志排查等场景，总结了使用过程中遇到的一些问题，及改进方面。">
 <meta property="og:type" content="article">
@@ -147,7 +147,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9C%80%E6%B1%82"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%8E%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">实现与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-Stream-%E5%AE%89%E8%A3%85"><span class="nav-number">2.1.</span> <span class="nav-text">Nginx Stream 安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-Stream-L4-%E8%B4%9F%E8%BD%BD%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">Nginx Stream L4 负载基本配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx-Stream-%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.1.</span> <span class="nav-text">Nginx Stream 配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.2.</span> <span class="nav-text">负载均衡方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Stream-%E6%B5%81%E9%87%8F%E9%95%9C%E5%83%8F"><span class="nav-number">2.2.3.</span> <span class="nav-text">Stream 流量镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Stream-A-B%E6%B5%8B%E8%AF%95"><span class="nav-number">2.2.4.</span> <span class="nav-text">Stream A&#x2F;B测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEStream-TLS-SSL"><span class="nav-number">2.2.5.</span> <span class="nav-text">配置Stream TLS&#x2F;SSL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEStream-log"><span class="nav-number">2.2.6.</span> <span class="nav-text">配置Stream log</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%A4%9A%E6%B4%BB"><span class="nav-number">2.3.</span> <span class="nav-text">配置多活</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-Stream-L4-%E4%BB%A3%E7%90%86%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.4.</span> <span class="nav-text">Nginx Stream L4 代理遇到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Health-Check"><span class="nav-number">2.4.1.</span> <span class="nav-text">Health Check</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8E%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%B9%B3%E6%BB%91%E5%8D%87%E7%BA%A7%E4%BC%9A%E5%87%BA%E7%8E%B0-TCP%E9%93%BE%E6%8E%A5%E6%96%AD%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.4.2.</span> <span class="nav-text">后端服务平滑升级会出现 TCP链接断开的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98"><span class="nav-number">2.4.3.</span> <span class="nav-text">参数优化问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%81%E9%87%8F%E9%95%9C%E5%83%8F%E7%9A%84%E6%93%8D%E4%BD%9C%E9%9D%9E%E5%B8%B8%E4%B8%8D%E6%96%B9%E4%BE%BF"><span class="nav-number">2.4.4.</span> <span class="nav-text">流量镜像的操作非常不方便</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E6%96%B9%E9%9D%A2"><span class="nav-number">2.4.5.</span> <span class="nav-text">性能方面</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.5.</span> <span class="nav-text">参考</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%84%E5%BD%95-Nginx-%E5%AE%89%E8%A3%85"><span class="nav-number">3.</span> <span class="nav-text">附录 Nginx 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5openssl-%E7%89%88%E6%9C%AC"><span class="nav-number">3.1.</span> <span class="nav-text">检查openssl 版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%87%E7%BA%A7openssl"><span class="nav-number">3.2.</span> <span class="nav-text">升级openssl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E5%92%8C%E5%8D%87%E7%BA%A7zlib"><span class="nav-number">3.3.</span> <span class="nav-text">检查和升级zlib</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PCRE"><span class="nav-number">3.4.</span> <span class="nav-text">PCRE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85-nginx"><span class="nav-number">3.5.</span> <span class="nav-text">编译安装 nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99"><span class="nav-number">3.6.</span> <span class="nav-text">设置防火墙</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8nc-%E6%B5%8B%E8%AF%95stream"><span class="nav-number">3.6.1.</span> <span class="nav-text">使用nc 测试stream</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9C%80%E6%B1%82"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%8E%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">实现与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-Stream-%E5%AE%89%E8%A3%85"><span class="nav-number">2.1.</span> <span class="nav-text">Nginx Stream 安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-Stream-L4-%E8%B4%9F%E8%BD%BD%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">Nginx Stream L4 负载基本配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx-Stream-%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.1.</span> <span class="nav-text">Nginx Stream 配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.2.</span> <span class="nav-text">负载均衡方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Stream-%E6%B5%81%E9%87%8F%E9%95%9C%E5%83%8F"><span class="nav-number">2.2.3.</span> <span class="nav-text">Stream 流量镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Stream-A-x2F-B%E6%B5%8B%E8%AF%95"><span class="nav-number">2.2.4.</span> <span class="nav-text">Stream A&#x2F;B测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEStream-TLS-x2F-SSL"><span class="nav-number">2.2.5.</span> <span class="nav-text">配置Stream TLS&#x2F;SSL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEStream-log"><span class="nav-number">2.2.6.</span> <span class="nav-text">配置Stream log</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%A4%9A%E6%B4%BB"><span class="nav-number">2.3.</span> <span class="nav-text">配置多活</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-Stream-L4-%E4%BB%A3%E7%90%86%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.4.</span> <span class="nav-text">Nginx Stream L4 代理遇到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Health-Check"><span class="nav-number">2.4.1.</span> <span class="nav-text">Health Check</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8E%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%B9%B3%E6%BB%91%E5%8D%87%E7%BA%A7%E4%BC%9A%E5%87%BA%E7%8E%B0-TCP%E9%93%BE%E6%8E%A5%E6%96%AD%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.4.2.</span> <span class="nav-text">后端服务平滑升级会出现 TCP链接断开的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98"><span class="nav-number">2.4.3.</span> <span class="nav-text">参数优化问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%81%E9%87%8F%E9%95%9C%E5%83%8F%E7%9A%84%E6%93%8D%E4%BD%9C%E9%9D%9E%E5%B8%B8%E4%B8%8D%E6%96%B9%E4%BE%BF"><span class="nav-number">2.4.4.</span> <span class="nav-text">流量镜像的操作非常不方便</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E6%96%B9%E9%9D%A2"><span class="nav-number">2.4.5.</span> <span class="nav-text">性能方面</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.5.</span> <span class="nav-text">参考</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%84%E5%BD%95-Nginx-%E5%AE%89%E8%A3%85"><span class="nav-number">3.</span> <span class="nav-text">附录 Nginx 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5openssl-%E7%89%88%E6%9C%AC"><span class="nav-number">3.1.</span> <span class="nav-text">检查openssl 版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%87%E7%BA%A7openssl"><span class="nav-number">3.2.</span> <span class="nav-text">升级openssl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E5%92%8C%E5%8D%87%E7%BA%A7zlib"><span class="nav-number">3.3.</span> <span class="nav-text">检查和升级zlib</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PCRE"><span class="nav-number">3.4.</span> <span class="nav-text">PCRE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85-nginx"><span class="nav-number">3.5.</span> <span class="nav-text">编译安装 nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99"><span class="nav-number">3.6.</span> <span class="nav-text">设置防火墙</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8nc-%E6%B5%8B%E8%AF%95stream"><span class="nav-number">3.6.1.</span> <span class="nav-text">使用nc 测试stream</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -160,7 +160,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -171,7 +171,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -285,21 +285,6 @@
   </span>
   
   
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>7.6k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>7 mins.</span>
-    </span>
 </div>
 
         </div>
@@ -310,8 +295,8 @@
     
     <div class="post-body" itemprop="articleBody">
         <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>使用Nginx Stream实现反向代理（通信协议：TCP），并结合DNS、keepalived 和VIP ，实现Nginx Stream的多活和高可用。<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20200814175544.png"></p>
-<h2 id="实现与配置"><a href="#实现与配置" class="headerlink" title="实现与配置"></a>实现与配置</h2><h3 id="Nginx-Stream-安装"><a href="#Nginx-Stream-安装" class="headerlink" title="Nginx Stream 安装"></a>Nginx Stream 安装</h3><p>Nginx Stream 编译安装，参照本文 <a href="./">附录一 Nignx Stream 安装</a><br>注意: 在centos7 OS上通过yum安装的nginx-all-modules 已经包含Nginx Stream module,可以直接使用<a target="_blank" rel="noopener" href="http://nginx.org/en/linux_packages.html#RHEL-CentOS">cenots/RHEL yum install nginx</a></p>
-<h3 id="Nginx-Stream-L4-负载基本配置"><a href="#Nginx-Stream-L4-负载基本配置" class="headerlink" title="Nginx Stream L4 负载基本配置"></a>Nginx Stream L4 负载基本配置</h3><h4 id="Nginx-Stream-配置"><a href="#Nginx-Stream-配置" class="headerlink" title="Nginx Stream 配置"></a>Nginx Stream 配置</h4><p>Nginx Stream 使用过程中可能还会遇到需要进行负载均衡方式调整、A/B测试、流量镜像、使用TLS加密、记录日志和配置多活等。</p>
+<h2 id="实现与配置"><a href="#实现与配置" class="headerlink" title="实现与配置"></a>实现与配置</h2><h3 id="Nginx-Stream-安装"><a href="#Nginx-Stream-安装" class="headerlink" title="Nginx Stream 安装"></a>Nginx Stream 安装</h3><p>Nginx Stream 编译安装，参照本文 <a href="./">附录一 Nignx Stream 安装</a><br>注意: 在centos7 OS上通过yum安装的nginx-all-modules 已经包含Nginx Stream module,可以直接使用<a target="_blank" rel="noopener" href="http://nginx.org/en/linux_packages.html#RHEL-CentOS">cenots&#x2F;RHEL yum install nginx</a></p>
+<h3 id="Nginx-Stream-L4-负载基本配置"><a href="#Nginx-Stream-L4-负载基本配置" class="headerlink" title="Nginx Stream L4 负载基本配置"></a>Nginx Stream L4 负载基本配置</h3><h4 id="Nginx-Stream-配置"><a href="#Nginx-Stream-配置" class="headerlink" title="Nginx Stream 配置"></a>Nginx Stream 配置</h4><p>Nginx Stream 使用过程中可能还会遇到需要进行负载均衡方式调整、A&#x2F;B测试、流量镜像、使用TLS加密、记录日志和配置多活等。</p>
 <h4 id="负载均衡方法"><a href="#负载均衡方法" class="headerlink" title="负载均衡方法"></a>负载均衡方法</h4><p>在upstream 的几种负载均衡方法：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">upstream backend_ods &#123;</span><br><span class="line">     <span class="built_in">hash</span> $remote_addr<span class="variable">$remote_port</span> consistent;</span><br><span class="line">     server 10.224.17.246:10091;</span><br><span class="line">     server 10.224.17.246:10092;</span><br><span class="line">     server 10.224.17.246:10093;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 <table>
@@ -323,11 +308,11 @@
 </thead>
 <tbody><tr>
 <td align="left"><code>hash $remote_addr consistent</code></td>
-<td align="left">按client ip(ipv4/ipv6) addrees进行hash和取模（计算可以表示为： mod(hash($remote_addr),upstream_size)), 同一个client的所有会被分发给一个后端节点。问题：单个cleint的并发很高时，会造后端服务节点的负载不均衡。好处：方便跟踪日志和抓包</td>
+<td align="left">按client ip(ipv4&#x2F;ipv6) addrees进行hash和取模（计算可以表示为： mod(hash($remote_addr),upstream_size)), 同一个client的所有会被分发给一个后端节点。问题：单个cleint的并发很高时，会造后端服务节点的负载不均衡。好处：方便跟踪日志和抓包</td>
 </tr>
 <tr>
 <td align="left"><code>hash $remote_addr$remote_port  consistent</code></td>
-<td align="left">按client ip(ipv4/ipv6) addrees + client port进行hash和取模，可以更好的实现后端节点的负载均衡</td>
+<td align="left">按client ip(ipv4&#x2F;ipv6) addrees + client port进行hash和取模，可以更好的实现后端节点的负载均衡</td>
 </tr>
 <tr>
 <td align="left"><code>hash $connection  consistent</code></td>
@@ -338,15 +323,15 @@
 <p>Nginx Stream其它负载均衡方法：<code>least_conn</code>,<code>least_time</code>,<code>random</code>。</p>
 <h4 id="Stream-流量镜像"><a href="#Stream-流量镜像" class="headerlink" title="Stream 流量镜像"></a>Stream 流量镜像</h4><p>将生产环境的一部分流量转发到指定节点进行压力测试或者灰度测试， 因为nginx 的mirro module是不支持stream模式下的流量复制，这里需要借助使用<code>iptables</code>实现。<br>实现复制10.224.18.34：9443的进站流量到<code>10.224.17.246:10095</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -t mangle -A PREROUTING -d 10.224.18.34 -dport 9443 -j TEE --gateway 10.224.17.246:10095</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>这里需要配置<a target="_blank" rel="noopener" href="https://www.linode.com/docs/security/firewalls/control-network-traffic-with-iptables/"><code>iptables-servcie</code></a>和<br><a target="_blank" rel="noopener" href="https://forums.centos.org/viewtopic.php?f=50&t=67768">Mirroring outbound https traffic w/ iptables</a><br>注意：如果是TLS加密数据，镜像后的流量需要解密。</p>
-<h4 id="Stream-A-B测试"><a href="#Stream-A-B测试" class="headerlink" title="Stream A/B测试"></a>Stream A/B测试</h4><p>将流量进行切分，执行A/B测试的场景。<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20200814172223.png"></p>
+<p>这里需要配置<a target="_blank" rel="noopener" href="https://www.linode.com/docs/security/firewalls/control-network-traffic-with-iptables/"><code>iptables-servcie</code></a>和<br><a target="_blank" rel="noopener" href="https://forums.centos.org/viewtopic.php?f=50&t=67768">Mirroring outbound https traffic w&#x2F; iptables</a><br>注意：如果是TLS加密数据，镜像后的流量需要解密。</p>
+<h4 id="Stream-A-x2F-B测试"><a href="#Stream-A-x2F-B测试" class="headerlink" title="Stream A&#x2F;B测试"></a>Stream A&#x2F;B测试</h4><p>将流量进行切分，执行A&#x2F;B测试的场景。<br><img src="https://raw.githubusercontent.com/ordiychen/study_notes/master/res/image/node_image/blog_20200814172223.png"></p>
 <p>配置文件：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">stream &#123;</span><br><span class="line">   upstream backend_ods &#123;</span><br><span class="line">      <span class="built_in">hash</span> <span class="variable">$connection</span> consistent;</span><br><span class="line">      server 10.224.17.246:10091 ;</span><br><span class="line">      server 10.224.17.245:10091  ;</span><br><span class="line">   &#125;</span><br><span class="line">   upstream test_ods&#123;</span><br><span class="line">       server 10.224.17.242:10092;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#20% 流量用于验证 test_ods group upstream </span></span><br><span class="line">    split_clients <span class="string">&quot;<span class="variable">$&#123;remote_addr&#125;</span>AAA&quot;</span> <span class="variable">$upstream</span> &#123;</span><br><span class="line">                  80%                backend_ods;</span><br><span class="line">                  *                  test_ods;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   server &#123;</span><br><span class="line">        listen 9443 so_keepalive=on so_keepalive=30m::10;</span><br><span class="line">        <span class="comment">#后端节点链接超时时间，如果所有后端节点存在异常，应快速断开，避免数据堆积</span></span><br><span class="line">        proxy_connect_timeout 10s;</span><br><span class="line">        proxy_timeout 30m;</span><br><span class="line">        proxy_pass <span class="variable">$upstream</span>;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li><code>split_clients</code>分流算法使用<code>MurmurHash2</code></li>
 <li>详情参考<a target="_blank" rel="noopener" href="http://nginx.org/en/docs/stream/ngx_stream_split_clients_module.html">ngx_stream_split_clients_module</a></li>
 </ul>
-<h4 id="配置Stream-TLS-SSL"><a href="#配置Stream-TLS-SSL" class="headerlink" title="配置Stream TLS/SSL"></a>配置Stream TLS/SSL</h4><p>如果程序涉及的数据比较机密或者或者网络环境不可信时，需要使用<code>stream_ssl_preread_module</code>配置TLS 证书进行加密,配置如下：</p>
+<h4 id="配置Stream-TLS-x2F-SSL"><a href="#配置Stream-TLS-x2F-SSL" class="headerlink" title="配置Stream TLS&#x2F;SSL"></a>配置Stream TLS&#x2F;SSL</h4><p>如果程序涉及的数据比较机密或者或者网络环境不可信时，需要使用<code>stream_ssl_preread_module</code>配置TLS 证书进行加密,配置如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen     9443;</span><br><span class="line">    proxy_pass backend_ods;</span><br><span class="line">    proxy_ssl  on;</span><br><span class="line">    ssl_certificate        /etc/ssl/certs/server.crt;</span><br><span class="line">    ssl_certificate_key    /etc/ssl/certs/server.key;</span><br><span class="line">    proxy_ssl_trusted_certificate /etc/ssl/certs/trusted_ca_cert.crt;</span><br><span class="line">    ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">    ssl_ciphers    HIGH:!aNULL:!MD5;</span><br><span class="line">    <span class="comment"># default 60s</span></span><br><span class="line">    ssl_handshake_timeout 10s;</span><br><span class="line">    ssl_session_cache shared:SSL:1m;</span><br><span class="line">    ssl_session_timeout 4h;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>可能涉及配置证书等操作，请参照<a href="https://ordiychen.github.io/2020-01-01-tls-truststores-md/">HTTP2 TLS加密通信理解与应用</a></li>
@@ -364,7 +349,7 @@
 <ul>
 <li>安装于配置<a target="_blank" rel="noopener" href="https://access.redhat.com/discussions/3007011">keepalived multiple vips</a></li>
 </ul>
-<h3 id="Nginx-Stream-L4-代理遇到的问题"><a href="#Nginx-Stream-L4-代理遇到的问题" class="headerlink" title="Nginx Stream L4 代理遇到的问题"></a>Nginx Stream L4 代理遇到的问题</h3><h4 id="Health-Check"><a href="#Health-Check" class="headerlink" title="Health Check"></a>Health Check</h4><p>Nginx Stream 官方的health check(<a target="_blank" rel="noopener" href="http://nginx.org/en/docs/stream/ngx_stream_upstream_hc_module.html#health_check">ngx_stream_upstream_hc_module</a>)需要使用商业订阅, $2500/Year起。社区有一些替代方案：<br><a target="_blank" rel="noopener" href="https://github.com/lusis/ngx_stream_upstream_check_module">ngx_stream_upstream_health_check</a>  </p>
+<h3 id="Nginx-Stream-L4-代理遇到的问题"><a href="#Nginx-Stream-L4-代理遇到的问题" class="headerlink" title="Nginx Stream L4 代理遇到的问题"></a>Nginx Stream L4 代理遇到的问题</h3><h4 id="Health-Check"><a href="#Health-Check" class="headerlink" title="Health Check"></a>Health Check</h4><p>Nginx Stream 官方的health check(<a target="_blank" rel="noopener" href="http://nginx.org/en/docs/stream/ngx_stream_upstream_hc_module.html#health_check">ngx_stream_upstream_hc_module</a>)需要使用商业订阅, $2500&#x2F;Year起。社区有一些替代方案：<br><a target="_blank" rel="noopener" href="https://github.com/lusis/ngx_stream_upstream_check_module">ngx_stream_upstream_health_check</a>  </p>
 <ul>
 <li>注意 ngx_stream_upstream_health_check 方案需要后端程序提供http port （对于微服务很适用)</li>
 <li>吐槽 PS:  HaProxy Health Check 在社区版本是免费提供</li>
@@ -392,7 +377,8 @@
 <p>使用以下步骤修复该问题：</p>
 <ul>
 <li><p>Create links to libssl:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/local/lib64/libssl.so.1.1 /usr/lib64/</span><br><span class="line">sudo ln -s /usr/local/lib64/libcrypto.so.1.1 /usr/lib64/</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/local/lib64/libssl.so.1.1 /usr/lib64/</span><br><span class="line">sudo ln -s /usr/local/lib64/libcrypto.so.1.1 /usr/lib64/</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>Finally create link to new openssl</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">ln</span> -s /usr/local/bin/openssl /usr/bin/openssl_latest</span><br></pre></td></tr></table></figure></li>
 <li><p>测试版本</p>
@@ -481,20 +467,6 @@
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Ordiy</span>
-</div>
-<div class="wordcount">
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-line"></i>
-    </span>
-    <span title="Symbols count total">224k</span>
-  </span>
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-    <span title="Reading time total">3:24</span>
-  </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
   </div>
