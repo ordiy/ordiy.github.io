@@ -9,4 +9,4 @@ Disallow: /js
 Disallow: /css
 
 #site 
-Sitemap: https://ordiychen.github.io/sitemap.xml
+Sitemap: https://ordiy.github.io/sitemap.xml
