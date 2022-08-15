@@ -20,7 +20,7 @@
 
     <meta name="description" content="JVM jstat-Java Virtual Machine Statistics Monitoring Tool,use guide.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JVM jstat command">
+<meta property="og:title" content="JVM jstat jcmd command">
 <meta property="og:url" content="https://ordiy.github.io/posts/2019-01-01-jvm-jstat/index.html">
 <meta property="og:site_name" content="Ordiy&#39;s Blog">
 <meta property="og:description" content="JVM jstat-Java Virtual Machine Statistics Monitoring Tool,use guide.">
@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220630164501.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220630165623.png">
 <meta property="article:published_time" content="2019-01-01T00:00:11.000Z">
-<meta property="article:modified_time" content="2022-07-14T06:34:18.038Z">
+<meta property="article:modified_time" content="2022-07-20T09:48:09.961Z">
 <meta property="article:author" content="Ordiy">
 <meta property="article:tag" content="blog">
 <meta property="article:tag" content="JVM">
@@ -40,10 +40,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":"","permalink":"https://ordiy.github.io/posts/2019-01-01-jvm-jstat/","path":"posts/2019-01-01-jvm-jstat/","title":"JVM jstat command"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":"","permalink":"https://ordiy.github.io/posts/2019-01-01-jvm-jstat/","path":"posts/2019-01-01-jvm-jstat/","title":"JVM jstat jcmd command"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>JVM jstat command | Ordiy's Blog</title>
+<title>JVM jstat jcmd command | Ordiy's Blog</title>
   
 
 
@@ -144,7 +144,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#jstat-%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">jstat 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jstat-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">jstat 常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#jstat-gc"><span class="nav-number">2.1.</span> <span class="nav-text">jstat gc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E5%AE%83%E5%87%A0%E4%B8%AA%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text">其它几个命令使用</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#jstat-%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">jstat 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jstat-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">jstat 常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#jstat-gc"><span class="nav-number">2.1.</span> <span class="nav-text">jstat gc</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jcmd"><span class="nav-number">3.</span> <span class="nav-text">jcmd</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E5%AE%83%E5%87%A0%E4%B8%AA%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">其它几个命令使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -157,7 +157,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">36</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -168,7 +168,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">53</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -228,12 +228,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="JVM jstat command | Ordiy's Blog">
+      <meta itemprop="name" content="JVM jstat jcmd command | Ordiy's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          JVM jstat command
+          JVM jstat jcmd command
         </h1>
 
         <div class="post-meta-container">
@@ -251,7 +251,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-07-14 06:34:18" itemprop="dateModified" datetime="2022-07-14T06:34:18Z">2022-07-14</time>
+      <time title="Modified: 2022-07-20 09:48:09" itemprop="dateModified" datetime="2022-07-20T09:48:09Z">2022-07-20</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -445,7 +445,20 @@ CMS/serial/parallel Collector:
 <ul>
 <li>参考<a target="_blank" rel="noopener" href="https://www.oracle.com/technetwork/tutorials/tutorials-1876574.html">Oracle GC Doc</a></li>
 </ul>
-<h2 id="其它几个命令使用"><a href="#其它几个命令使用" class="headerlink" title="其它几个命令使用"></a>其它几个命令使用</h2><p> 参照 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/yjd_hycf_space/p/7755633.html"> jstat命令查看jvm的GC情况</a></p>
+<h1 id="jcmd"><a href="#jcmd" class="headerlink" title="jcmd"></a>jcmd</h1><p><code>jcmd</code>用于向JVM发送<code>diagnostic command </code>（JDK8及以上）.</p>
+<ul>
+<li>heap dump<br>dump 进程的heap.<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># jcmd 7891 GC.heap_dump filename=./7891_gc_dump.dump</span></span><br><span class="line">$ jcmd &lt;JAVA_PID&gt; GC.heap_dump filename=&lt;FILE&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">#通过浏览器查看 dump文件 http://hostname:7000</span></span><br><span class="line"><span class="comment"># jhat ./7891_gc_dump.hbin</span></span><br></pre></td></tr></table></figure></li>
+<li>VM classload<br>java 进程启动的信息<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># java 进程启动信息</span></span><br><span class="line"><span class="comment"># VM.flags 可以查看设置的参数</span></span><br><span class="line">$ jcmd 17995 VM.command_line</span><br></pre></td></tr></table></figure></li>
+<li>Troubleshoot with jcmd Utility<br>使用jcmd启动、停止<code>Troubleshoot Tool</code>.<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 强制 对进程执行GC</span></span><br><span class="line">$ jcmd  <span class="variable">$PID</span>  GC.run</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动/停止 ManagementAgent </span></span><br><span class="line"><span class="comment"># 可以使用JMXAgent 工具JConsole 观察JVM运行状况和运行的参数（GC、Heap信息）</span></span><br><span class="line">$ jcmd <span class="variable">$PID</span> ManagementAgent.start jmxremote.port=10333 jmxremote.authenticate=<span class="literal">false</span> jmxremote.ssl=<span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># agent stop</span></span><br><span class="line">$ jcmd  <span class="variable">$PID</span>  ManagementAgent.stop</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="其它几个命令使用"><a href="#其它几个命令使用" class="headerlink" title="其它几个命令使用"></a>其它几个命令使用</h1><ul>
+<li>参照 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/yjd_hycf_space/p/7755633.html"> jstat命令查看jvm的GC情况</a></li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr006.html">jcmd</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/9/tools/jcmd.htm">JDK 9 jcmd</a></li>
+<li><a target="_blank" rel="noopener" href="http://hg.openjdk.java.net/jdk8u/jdk8u/hotspot/file/e765322578aa/src/share/vm/runtime/perfData.hpp">JVM CounterNS</a></li>
+</ul>
 
     </div>
 
