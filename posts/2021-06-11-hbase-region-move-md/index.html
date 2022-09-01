@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="对一个PB级的hbase进行RegionServer和DataNode的滚动重启，使用将RegionServer的Region move到一个空闲的RegionServer上，再执行对RegionServer的重启，有效控制在重启过程中对业务的RPC 调用造成影响的问题。">
 <meta property="og:type" content="article">
@@ -80,46 +80,15 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
 
 
 
-<nav class="site-nav">
-  <ul class="main-menu menu">
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
-        </a>
-      </li>
-  </ul>
-</nav>
 
 
 
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="Searching..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
 
 </div>
         
@@ -302,13 +271,20 @@
     <div class="post-body" itemprop="articleBody">
         <h1 id="背景说明"><a href="#背景说明" class="headerlink" title="背景说明"></a>背景说明</h1><p>公司的HBase集群部分RegionServer需要进行重启， 每个RegionServer上有1000个左右的RegionServer，单表的容量1T+, 为将RegionServer重启的过程对业务RPC的影响降低最少，需要在重启前将Region移到别的RegionServer上。</p>
 <h1 id="HBase-Region-和-Region-move-说明"><a href="#HBase-Region-和-Region-move-说明" class="headerlink" title="HBase Region 和 Region move 说明"></a>HBase Region 和 Region move 说明</h1><ul>
-<li><p>HBase Region<br>HBase 表(Table)根据 rowkey 的范围被水平拆分成若干个 region。每个 region 都包含了这个region 的 start key 和 end key 之间的所有行(row)。Regions 被分配给集群中的某些节点来管理，即 Region Server，由它们来负责处理数据的读写请求。<br>Region 目录结构：</p>
+<li><p>HBase Region 
+HBase 表(Table)根据 rowkey 的范围被水平拆分成若干个 region。每个 region 都包含了这个region 的 start key 和 end key 之间的所有行(row)。Regions 被分配给集群中的某些节点来管理，即 Region Server，由它们来负责处理数据的读写请求。
+Region 目录结构：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Table                    (HBase table)</span><br><span class="line">    Region               (Regions for the table)</span><br><span class="line">        Store            (Store per ColumnFamily for each Region for the table)</span><br><span class="line">            MemStore     (MemStore for each Store for each Region for the table)</span><br><span class="line">            StoreFile    (StoreFiles for each Store for each Region for the table)</span><br><span class="line">                Block    (Blocks within a StoreFile within a Store for each Region for the table)</span><br></pre></td></tr></table></figure>
 <p>注：Region是数据表的分片，是RegionServer管理的主要对象。一个Region由一个或多个Store构成（Store数量取决于Column famliy 的个数)。</p>
 </li>
-<li><p>region move 过程<br>Region move 是一个region assign的过程（这里还没找到具体的资料，后续确定了再补充）<br><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210623181233.png"></p>
+<li><p>region move 过程
+Region move 是一个region assign的过程（这里还没找到具体的资料，后续确定了再补充）
+<img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210623181233.png"></p>
 </li>
-<li><p>使用场景<br> 主要用于RPC 流量和Region都非常多的HBase集群，避免在RegionServer重启时，部分Region不可用的问题。比如需要迁移&#x2F;增加ZK节点需要重启RegionServer&#x2F;DataNode等，但是又要保证业务不受影响。<br> Client Scan获取Region信息示意图：<br> <img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210623180933.png"></p>
+<li><p>使用场景
+ 主要用于RPC 流量和Region都非常多的HBase集群，避免在RegionServer重启时，部分Region不可用的问题。比如需要迁移&#x2F;增加ZK节点需要重启RegionServer&#x2F;DataNode等，但是又要保证业务不受影响。
+ Client Scan获取Region信息示意图：
+ <img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210623180933.png"></p>
 </li>
 </ul>
 <h1 id="Region-move-操作"><a href="#Region-move-操作" class="headerlink" title="Region move 操作"></a>Region move 操作</h1><h2 id="HBase-region-信息获取"><a href="#HBase-region-信息获取" class="headerlink" title="HBase region 信息获取"></a>HBase region 信息获取</h2><p>HBase Region 信息存储在hbase:mata表中，具体可以通过以下方式获取：</p>
@@ -321,7 +297,10 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &lt;&lt; <span class="string">EOF &gt; node99-shell.sh </span></span><br><span class="line"><span class="string">#!/bin/shell</span></span><br><span class="line"><span class="string">node_name=&quot;node99&quot;</span></span><br><span class="line"><span class="string">move_host=&quot;hbase01-\$&#123;node_name&#125;.xxxxx.com:60020&quot;</span></span><br><span class="line"><span class="string">#目标RegionServer</span></span><br><span class="line"><span class="string">target_host=&quot;hbase01-node235.xxxxx.com,60020,1624259325292&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">echo \$node_name</span></span><br><span class="line"><span class="string">echo \$move_host</span></span><br><span class="line"><span class="string">echo \$target_host</span></span><br><span class="line"><span class="string">echo \$move_hsed</span></span><br><span class="line"><span class="string">mkdir \$node_name</span></span><br><span class="line"><span class="string">cd \$node_name </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">hbase shell ～/test.txt &gt; &quot;\$&#123;node_name&#125;-before-region-info.txt&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#wget convert jar </span></span><br><span class="line"><span class="string">#这个jar包只解析了HBase1.x 的Region信息</span></span><br><span class="line"><span class="string">wget https://github.com/ordiy/study_notes/blob/master/build-cmd-script.jar</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># shell </span></span><br><span class="line"><span class="string">/home/xx/jdk1.8.0_181/bin/java -jar build-cmd-script.jar  ～/\$node_name/\$&#123;node_name&#125;-before-region-info.txt \$move_host \$target_host </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># test </span></span><br><span class="line"><span class="string">echo -n &quot;exit&quot; &gt;&gt;  &quot;\$&#123;move_host&#125;-move\$&#123;target_host&#125;.txt&quot;</span></span><br><span class="line"><span class="string">echo &quot;\$&#123;move_host&#125;-move\$&#123;target_host&#125;.txt&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">echo &quot; hbase shell  \$&#123;move_host&#125;-move\$&#123;target_host&#125;.txt &quot;</span></span><br><span class="line"><span class="string">echo &quot; ====&gt; &quot;</span></span><br><span class="line"><span class="string">hbase shell &quot;\$&#123;move_host&#125;-move\$&#123;target_host&#125;.txt&quot;</span></span><br><span class="line"><span class="string">echo  &quot;success move ,please use cm restart RegionServer and DataNode&quot;</span></span><br><span class="line"><span class="string">echo &quot;node is : \$&#123;move_host&#125;&quot;</span></span><br><span class="line"><span class="string">echo &quot; cat \$&#123;move_host&#125;-move\$&#123;target_host&#125;.txt | sed &#x27;s/\$&#123;target_host&#125;/&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
 
 
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>提前移动Region和不移动Region，本地化率变化对比：<br><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210730154803.png"><br>预先move Region，集群的HFile本地化率，更加稳定。<br>Region 的状态机变换机制复杂，这里只是进行了一个简要的介绍，侧重在于应用层面。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>提前移动Region和不移动Region，本地化率变化对比：
+<img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210730154803.png">
+预先move Region，集群的HFile本地化率，更加稳定。
+Region 的状态机变换机制复杂，这里只是进行了一个简要的介绍，侧重在于应用层面。</p>
 <h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ul>
 <li>《HBase原理与实践》</li>
 <li><a target="_blank" rel="noopener" href="https://hbase.apache.org/2.2/book.html#regions.arch">HBase Book Guide Regions </a></li>
@@ -393,8 +372,6 @@
 <script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
-<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
 
 
 

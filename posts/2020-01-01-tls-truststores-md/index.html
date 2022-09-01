@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="通过TLS实现端对端的加密场景的实现过程及原理">
 <meta property="og:type" content="article">
@@ -79,46 +79,15 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
 
 
 
-<nav class="site-nav">
-  <ul class="main-menu menu">
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
-        </a>
-      </li>
-  </ul>
-</nav>
 
 
 
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="Searching..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
 
 </div>
         
@@ -313,7 +282,8 @@
 <p>result print:</p>
 <figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">TLS_AES_256_GCM_SHA384  TLSv1.3 Kx=any      Au=any  Enc=AESGCM(256) Mac=AEAD</span><br><span class="line">TLS_CHACHA20_POLY1305_SHA256 TLSv1.3 Kx=any      Au=any  Enc=CHACHA20/POLY1305(256) Mac=AEAD</span><br><span class="line">TLS_AES_128_GCM_SHA256  TLSv1.3 Kx=any      Au=any  Enc=AESGCM(128) Mac=AEAD</span><br><span class="line">ECDHE-ECDSA-AES256-GCM-SHA384 TLSv1.2 Kx=ECDH     Au=ECDSA Enc=AESGCM(256) Mac=AEAD</span><br><span class="line">ECDHE-ECDSA-CHACHA20-POLY1305 TLSv1.2 Kx=ECDH     Au=ECDSA Enc=CHACHA20/POLY1305(256) Mac=AEAD</span><br><span class="line">ECDHE-ECDSA-AES256-CCM8 TLSv1.2 Kx=ECDH     Au=ECDSA Enc=AESCCM8(256) Mac=AEAD</span><br><span class="line">ECDHE-ECDSA-AES256-CCM  TLSv1.2 Kx=ECDH     Au=ECDSA Enc=AESCCM(256) Mac=AEAD</span><br><span class="line">ECDHE-ECDSA-ARIA256-GCM-SHA384 TLSv1.2 Kx=ECDH     Au=ECDSA Enc=ARIAGCM(256) Mac=AEAD</span><br><span class="line">ECDHE-ECDSA-AES128-GCM-SHA256 TLSv1.2 Kx=ECDH     Au=ECDSA Enc=AESGCM(128) Mac=AEAD</span><br><span class="line">ECDHE-ECDSA-AES128-CCM8 TLSv1.2 Kx=ECDH     Au=ECDSA Enc=AESCCM8(128) Mac=AEAD</span><br><span class="line">ECDHE-ECDSA-AES128-CCM  TLSv1.2 Kx=ECDH     Au=ECDSA Enc=AESCCM(128) Mac=AEAD</span><br><span class="line">ECDHE-ECDSA-ARIA128-GCM-SHA256 TLSv1.2 Kx=ECDH     Au=ECDSA Enc=ARIAGCM(128) Mac=AEAD</span><br><span class="line">ECDHE-ECDSA-AES256-SHA384 TLSv1.2 Kx=ECDH     Au=ECDSA Enc=AES(256)  Mac=SHA384</span><br><span class="line">ECDHE-ECDSA-AES128-SHA256 TLSv1.2 Kx=ECDH     Au=ECDSA Enc=AES(128)  Mac=SHA256</span><br><span class="line">ECDHE-ECDSA-AES256-SHA  TLSv1 Kx=ECDH     Au=ECDSA Enc=AES(256)  Mac=SHA1</span><br><span class="line">ECDHE-ECDSA-AES128-SHA  TLSv1 Kx=ECDH     Au=ECDSA Enc=AES(128)  Mac=SHA1</span><br><span class="line">DHE-RSA-AES256-GCM-SHA384 TLSv1.2 Kx=DH       Au=RSA  Enc=AESGCM(256) Mac=AEAD</span><br><span class="line">DHE-RSA-CHACHA20-POLY1305 TLSv1.2 Kx=DH       Au=RSA  Enc=CHACHA20/POLY1305(256) Mac=AEAD</span><br><span class="line">DHE-RSA-AES256-CCM8     TLSv1.2 Kx=DH       Au=RSA  Enc=AESCCM8(256) Mac=AEAD</span><br><span class="line">DHE-RSA-AES256-CCM      TLSv1.2 Kx=DH       Au=RSA  Enc=AESCCM(256) Mac=AEAD</span><br><span class="line">DHE-RSA-ARIA256-GCM-SHA384 TLSv1.2 Kx=DH       Au=RSA  Enc=ARIAGCM(256) Mac=AEAD</span><br><span class="line">DHE-RSA-AES128-GCM-SHA256 TLSv1.2 Kx=DH       Au=RSA  Enc=AESGCM(128) Mac=AEAD</span><br><span class="line">DHE-RSA-AES128-CCM8     TLSv1.2 Kx=DH       Au=RSA  Enc=AESCCM8(128) Mac=AEAD</span><br><span class="line">DHE-RSA-AES128-CCM      TLSv1.2 Kx=DH       Au=RSA  Enc=AESCCM(128) Mac=AEAD</span><br><span class="line">DHE-RSA-ARIA128-GCM-SHA256 TLSv1.2 Kx=DH       Au=RSA  Enc=ARIAGCM(128) Mac=AEAD</span><br><span class="line">DHE-RSA-AES256-SHA256   TLSv1.2 Kx=DH       Au=RSA  Enc=AES(256)  Mac=SHA256</span><br><span class="line">DHE-RSA-AES128-SHA256   TLSv1.2 Kx=DH       Au=RSA  Enc=AES(128)  Mac=SHA256</span><br><span class="line">DHE-RSA-AES256-SHA      SSLv3 Kx=DH       Au=RSA  Enc=AES(256)  Mac=SHA1</span><br><span class="line">DHE-RSA-AES128-SHA      SSLv3 Kx=DH       Au=RSA  Enc=AES(128)  Mac=SHA1</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>名称映射关系说明：<br> OpenSSL的加密算法与IANA的映射关系，可参照<a target="_blank" rel="noopener" href="https://testssl.sh/openssl-iana.mapping.html">OPENSSL-IANA.MAPPING</a>，以下是一个部分示例：</p>
+<li><p>名称映射关系说明：
+ OpenSSL的加密算法与IANA的映射关系，可参照<a target="_blank" rel="noopener" href="https://testssl.sh/openssl-iana.mapping.html">OPENSSL-IANA.MAPPING</a>，以下是一个部分示例：</p>
 <figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Cipher Suite  Name (OpenSSL)	KeyExch.	Encryption	Bits	Cipher Suite Name (IANA)</span><br><span class="line">[0x1301]  TLS_AES_128_GCM_SHA256	ECDH	AESGCM	128	TLS_AES_128_GCM_SHA256</span><br><span class="line">[0x1303]  TLS_CHACHA20_POLY1305_SHA256	ECDH	ChaCha20-Poly1305	256	TLS_CHACHA20_POLY1305_SHA256</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h3 id="OpenSSL-生成Root-CA-根证书"><a href="#OpenSSL-生成Root-CA-根证书" class="headerlink" title="OpenSSL 生成Root-CA 根证书"></a>OpenSSL 生成Root-CA 根证书</h3><p>生成一个长期有效的<code>Root-CA</code>用于签发其它证书。</p>
@@ -350,16 +320,19 @@
 <figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Certificate:</span><br><span class="line">    Data:</span><br><span class="line">        Version: 1 (0x0)</span><br><span class="line">        Serial Number:</span><br><span class="line">            70:59:08:36:95:fc:34:35:8b:55:11:db:27:2c:4c:46:6a:eb:c7:70</span><br><span class="line">        Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">        Issuer: C = SG, ST = SG, L = SG, O = Sg 17xyx Tech.Ltd, OU = Ltd, CN = 17xyx.app, emailAddress = it@17xyx.app</span><br><span class="line">        Validity</span><br><span class="line">            Not Before: Jul 31 06:00:02 2020 GMT</span><br><span class="line">            Not After : Aug 30 06:00:02 2020 GMT</span><br><span class="line">        Subject: C = SG, ST = SG, L = SG, O = Singapoe Dev ltd, OU = Ltd, CN = dev-local.17xyx.app, emailAddress = it@17xyx.app</span><br><span class="line">        Subject Public Key Info:</span><br><span class="line">            Public Key Algorithm: id-ecPublicKey</span><br><span class="line">                Public-Key: (256 bit)</span><br><span class="line">                pub:</span><br><span class="line">                    04:52:36:25:ca:e7:5c:84:f4:44:d5:b4:a8:58:21:</span><br><span class="line">                    ....</span><br><span class="line">                    c2:73:b0:2e:34:eb:01:b1:27:03:62:52:28:5a:0f:</span><br><span class="line">                    e2:9b:da:01:a8</span><br><span class="line">                ASN1 OID: prime256v1</span><br><span class="line">                NIST CURVE: P-256</span><br><span class="line">    Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">         8a:e0:43:dd:52:55:e9:c0:de:98:bf:04:ed:70:eb:39:6b:37:</span><br><span class="line">         .....</span><br><span class="line">         99:c5:47:5b:d4:d4:d3:60:2d:20:c5:6a:32:f9:0a:44:f4:05:</span><br><span class="line">         bc:60:00:f1:9b:a3:a8:9e</span><br></pre></td></tr></table></figure>
 
 <h2 id="证书应用"><a href="#证书应用" class="headerlink" title="证书应用"></a>证书应用</h2><p>注意：生产环境使用的是中间证书，原理一样，这里直接使用Root-CA证书做示例:</p>
-<h3 id="导入root-ca-导入到JVM信任库"><a href="#导入root-ca-导入到JVM信任库" class="headerlink" title="导入root-ca 导入到JVM信任库"></a>导入root-ca 导入到JVM信任库</h3><p>TLS协议证书验证时需要使用根证书对Server的证书进行验证，Java JKS(java KeyStore)会读取本地配置Root-CA证书。<br>-方法1 使用JVM System Properties</p>
+<h3 id="导入root-ca-导入到JVM信任库"><a href="#导入root-ca-导入到JVM信任库" class="headerlink" title="导入root-ca 导入到JVM信任库"></a>导入root-ca 导入到JVM信任库</h3><p>TLS协议证书验证时需要使用根证书对Server的证书进行验证，Java JKS(java KeyStore)会读取本地配置Root-CA证书。
+-方法1 使用JVM System Properties</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java -Djavax.net.ssl.trustStore=samplecacerts \</span><br><span class="line">     -Djavax.net.ssl.trustStorePassword=changeit Application</span><br></pre></td></tr></table></figure>
 <p>使用<code>JVM System Properties</code>设置JKS比较灵活</p>
 <ul>
 <li>方法2 将Root-CA导入到JVM信任库：<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">macOS 为例</span></span><br><span class="line">keytool -importcert -alias startssl -keystore &quot;$JAVA_HOME/lib/security/cacerts&quot; -storepass changeit -file root-ca.der</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看root ca( 也可导入&lt;java-home&gt;/lib/security/jssecacerts,或使用启动参数导入)</span></span><br><span class="line">keytool -keystore &quot;$JAVA_HOME/lib/security/cacerts&quot; -storepass changeit -list | grep startssl</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h3 id="导入根证书到系统证书目录"><a href="#导入根证书到系统证书目录" class="headerlink" title="导入根证书到系统证书目录"></a>导入根证书到系统证书目录</h3><p>使用浏览器或者PostMan测试，程序无法读取到JKS中证书信息，所以需要将Root-CA导入到系统的证书目录下。<br>在开发阶段为方便调试，如果遇到证书验证失败，调试时可以直接将Root-CA导入到系统的证书目录下（生产上实际不要这个操作)：</p>
+<h3 id="导入根证书到系统证书目录"><a href="#导入根证书到系统证书目录" class="headerlink" title="导入根证书到系统证书目录"></a>导入根证书到系统证书目录</h3><p>使用浏览器或者PostMan测试，程序无法读取到JKS中证书信息，所以需要将Root-CA导入到系统的证书目录下。
+在开发阶段为方便调试，如果遇到证书验证失败，调试时可以直接将Root-CA导入到系统的证书目录下（生产上实际不要这个操作)：</p>
 <figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">macos 操作命令：</span></span><br><span class="line">sudo sudo security add-trusted-cert -d -r trustRoot -k &quot;/Library/Keychains/System.keychain&quot; root-ca.cert.pem</span><br></pre></td></tr></table></figure>
 
-<h3 id="Java应用程序使用-签署的CA证书"><a href="#Java应用程序使用-签署的CA证书" class="headerlink" title="Java应用程序使用 签署的CA证书"></a>Java应用程序使用 签署的CA证书</h3><p>JKS(java KeyStore)用于为SSL&#x2F;TLS配置的组件之间的通信加密,JKS支持导入<code>.jks</code>格式的文件。需要将CA 证书进行格式转换：<br>Openssl PEM格式转换为JKS格式，转换过程：</p>
+<h3 id="Java应用程序使用-签署的CA证书"><a href="#Java应用程序使用-签署的CA证书" class="headerlink" title="Java应用程序使用 签署的CA证书"></a>Java应用程序使用 签署的CA证书</h3><p>JKS(java KeyStore)用于为SSL&#x2F;TLS配置的组件之间的通信加密,JKS支持导入<code>.jks</code>格式的文件。需要将CA 证书进行格式转换：
+Openssl PEM格式转换为JKS格式，转换过程：</p>
 <figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Openssl PEM format --&gt; pkcs12 format  --&gt; jks format</span><br></pre></td></tr></table></figure>
 <p>执行命令：</p>
 <figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">opensll pem --&lt; pkcs12 （需要设置密码)</span></span><br><span class="line">openssl pkcs12 -export -in dev-ecdh-cert.pem -inkey ecdhkey.pem  -CAfile ../root_ca/root-ca.cert.pem -out dev-17xyx-app.ca.p12</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">pkcs12 --&gt; jks （需要输入 上一步设置的密码)</span></span><br><span class="line">keytool -importkeystore -srckeystore dev-17xyx-app.ca.p12 -srcstoretype pkcs12 -destkeystore dev-17xyx-app.ca.jks</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看文件目录</span></span><br><span class="line">dev-17xyx-app.ca.jks   # jks 文件</span><br><span class="line">dev-17xyx-app.ca.p12   </span><br><span class="line">dev-ecdh-cert.der</span><br><span class="line">dev-ecdh-cert.pem</span><br><span class="line">ecdhkey.pem</span><br><span class="line">ecdhpubkey.pem</span><br><span class="line">ecdhrsacsr.pem</span><br><span class="line">ecparam.pem</span><br><span class="line">rsakey.pem</span><br></pre></td></tr></table></figure>
@@ -442,8 +415,6 @@
 <script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
-<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
 
 
 

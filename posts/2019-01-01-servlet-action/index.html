@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="对于日新月异的Web技术来说，Servlet可以说是一个诞生历史非常悠久的技术了。2020-08-13 Java Servlet 从4.0.3之后正式更名为Jakarta Servlet（PS：Oracle拒绝出让Java商标给Eclipse基金会)，这里重新学习一下Servlet的知识。">
 <meta property="og:type" content="article">
@@ -84,46 +84,15 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
 
 
 
-<nav class="site-nav">
-  <ul class="main-menu menu">
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
-        </a>
-      </li>
-  </ul>
-</nav>
 
 
 
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="Searching..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
 
 </div>
         
@@ -296,19 +265,29 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="Instroduction"><a href="#Instroduction" class="headerlink" title="Instroduction"></a>Instroduction</h1><p>在早期，Web服务器提供对用户请求无动于衷的静态内容。 Java servlet是服务器端程序（在Web服务器内运行），用于处理客户端的请求并返回每个请求的自定义或动态响应。 动态响应可以基于用户的输入（例如，搜索，在线购物，在线交易），其中数据库或其他应用程序或时间敏感数据（例如新闻和股票价格）。<br>Java Servlet通常在HTTP协议上运行。HTTP是一种不对称的请求 - 响应协议。 客户端向服务器发送请求消息，服务器返回如图所示的响应消息。<br><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210712213022.png"></p>
+        <h1 id="Instroduction"><a href="#Instroduction" class="headerlink" title="Instroduction"></a>Instroduction</h1><p>在早期，Web服务器提供对用户请求无动于衷的静态内容。 Java servlet是服务器端程序（在Web服务器内运行），用于处理客户端的请求并返回每个请求的自定义或动态响应。 动态响应可以基于用户的输入（例如，搜索，在线购物，在线交易），其中数据库或其他应用程序或时间敏感数据（例如新闻和股票价格）。
+Java Servlet通常在HTTP协议上运行。HTTP是一种不对称的请求 - 响应协议。 客户端向服务器发送请求消息，服务器返回如图所示的响应消息。
+<img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210712213022.png"></p>
 <ul>
-<li>Server-Side Technologies<br>有许多（竞争）服务器端技术可用：基于Java（Servlet，JSP，JSF，Struts，Spring，Hibernate），ASP，PHP，CGI脚本和许多其他技术。<br>Java Servlet是Java服务器端技术的基础，JSP（JavaServer Pages），JSF（JavaServer Faces），Struts，Spring，Hibernate、WebSocket，是Servlet技术的扩展。</li>
+<li>Server-Side Technologies
+有许多（竞争）服务器端技术可用：基于Java（Servlet，JSP，JSF，Struts，Spring，Hibernate），ASP，PHP，CGI脚本和许多其他技术。
+Java Servlet是Java服务器端技术的基础，JSP（JavaServer Pages），JSF（JavaServer Faces），Struts，Spring，Hibernate、WebSocket，是Servlet技术的扩展。</li>
 </ul>
-<h1 id="Abount-Servlet"><a href="#Abount-Servlet" class="headerlink" title="Abount Servlet"></a>Abount Servlet</h1><p>Servlet 定义了一个服务器端API，用于处理HTTP请求和响应。（So Servlet也称为Servlet API)<br>Containers, 有时称为servlet引擎，是提供servlet功能的WebServer扩展。<br>Servlet通过Servlet Containers 实现的 Request&#x2F;Response 范型与Web客户端交互.</p>
+<h1 id="Abount-Servlet"><a href="#Abount-Servlet" class="headerlink" title="Abount Servlet"></a>Abount Servlet</h1><p>Servlet 定义了一个服务器端API，用于处理HTTP请求和响应。（So Servlet也称为Servlet API)
+Containers, 有时称为servlet引擎，是提供servlet功能的WebServer扩展。
+Servlet通过Servlet Containers 实现的 Request&#x2F;Response 范型与Web客户端交互.</p>
 <ul>
-<li><p>Servlet 的版本历史<br><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210712212516.png"></p>
+<li><p>Servlet 的版本历史
+<img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210712212516.png"></p>
 </li>
-<li><p>Servlet 过程<br><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210712205335.png" alt="image"></p>
+<li><p>Servlet 过程
+<img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210712205335.png" alt="image"></p>
 </li>
-<li><p>Servlet Containers Life Cycle<br><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210712205423.png" alt="image"></p>
+<li><p>Servlet Containers Life Cycle
+<img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210712205423.png" alt="image"></p>
 </li>
-<li><p>Servlet init&#x2F;service&#x2F;destroy 过程<br><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210712211431.png" alt="image"></p>
+<li><p>Servlet init&#x2F;service&#x2F;destroy 过程
+<img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210712211431.png" alt="image"></p>
 </li>
 </ul>
 <h1 id="Servlet-组件"><a href="#Servlet-组件" class="headerlink" title="Servlet 组件"></a>Servlet 组件</h1><h2 id="Session-Tracking-session"><a href="#Session-Tracking-session" class="headerlink" title="Session Tracking(session)"></a>Session Tracking(session)</h2><p>HTTP是一个无状态协议，换句话说，当前请求不知道在先前请求中已经完成了什么。这为运行多种请求的应用程序创造了问题，例如在线购物（或购物车）。 您需要维护所谓的会话以在多个请求之间传递数据。</p>
@@ -326,12 +305,15 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">HttpSession</span> <span class="variable">session</span> <span class="operator">=</span> request.getSession(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>Session 过程：<br><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210712213309.png"></li>
+<li>Session 过程：
+<img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210712213309.png"></li>
 </ul>
 <h2 id="Spring-Web-MVC"><a href="#Spring-Web-MVC" class="headerlink" title="Spring Web MVC"></a>Spring Web MVC</h2><p>Spring Web MVC 是Servlet API上构建的原始Web框架. 主要特性：DispatcherServlet、Filters、Annotated Controllers、Function Endpoints、Web Security、CORS</p>
-<h3 id="ServletContext"><a href="#ServletContext" class="headerlink" title="ServletContext"></a>ServletContext</h3><p>ServletContext对象的创建是在服务器启动时完成的<br>ServletContext对象的销毁是在服务器关闭时完成的</p>
+<h3 id="ServletContext"><a href="#ServletContext" class="headerlink" title="ServletContext"></a>ServletContext</h3><p>ServletContext对象的创建是在服务器启动时完成的
+ServletContext对象的销毁是在服务器关闭时完成的</p>
 <ul>
-<li>ServletContext 与Tomcat Servlet容器的初始化和Request&#x2F;Response过程<br><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210712210858.png" alt="image"></li>
+<li>ServletContext 与Tomcat Servlet容器的初始化和Request&#x2F;Response过程
+<img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210712210858.png" alt="image"></li>
 </ul>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
 <li><a target="_blank" rel="noopener" href="https://projects.eclipse.org/projects/ee4j.servlet">Servlet Projects </a></li>
@@ -357,8 +339,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/2019-01-01-jar-package-edit/" rel="prev" title="Jar Package 编辑技巧">
-                  <i class="fa fa-chevron-left"></i> Jar Package 编辑技巧
+                <a href="/posts/2019-01-01-jvm-jstack/" rel="prev" title="2019-01-01-jvm-jstack">
+                  <i class="fa fa-chevron-left"></i> 2019-01-01-jvm-jstack
                 </a>
             </div>
             <div class="post-nav-item">
@@ -407,8 +389,6 @@
 <script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
-<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
 
 
 

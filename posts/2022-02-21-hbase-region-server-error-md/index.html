@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="RegionServer 在设置Replication（Peer)集群后，主集群的WAL会通过同步&#x2F;异步的方式，拷贝到Peer集群，之后Peer集群重放WAL中的WALEdit(预写日志条目)来完成。当Peer集群异常情况下，主集群会将未能完成复制的WAL放到oldWALs(WAL归档目录)。Peer集群长期异常，会导致oldWALs目录下文件无限膨胀，导致集群存储异常或者宕机。">
 <meta property="og:type" content="article">
@@ -79,46 +79,15 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
 
 
 
-<nav class="site-nav">
-  <ul class="main-menu menu">
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
-        </a>
-      </li>
-  </ul>
-</nav>
 
 
 
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="Searching..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
 
 </div>
         
@@ -302,8 +271,10 @@
 <h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>清理<code>/hbase/oldWALs</code></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">today=<span class="string">`date +&#x27;%s&#x27;`</span></span><br><span class="line">hdfs dfs -ls /hbase/oldWALs | grep <span class="string">&quot;^d&quot;</span> | <span class="keyword">while</span> read line ; <span class="keyword">do</span></span><br><span class="line">dir_date=$(echo $&#123;line&#125; | awk <span class="string">&#x27;&#123;print $6&#125;&#x27;</span>)</span><br><span class="line">difference=$(( ( $&#123;today&#125; - $(date -d $&#123;dir_date&#125; +%s) ) / ( <span class="number">24</span>*<span class="number">60</span>*<span class="number">60</span> ) ))</span><br><span class="line">filePath=$(echo $&#123;line&#125; | awk <span class="string">&#x27;&#123;print $8&#125;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ $&#123;difference&#125; -gt <span class="number">10</span> ]; then</span><br><span class="line">    #hdfs dfs -rm -r $filePath</span><br><span class="line">   echo <span class="string">&quot;===&gt; $filePath&quot;</span></span><br><span class="line">fi</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
 
-<h2 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h2><h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>HLog文件是有生命周期的,HLog生命周期：<br><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220328095759.png"></p>
-<p>默认情况下HBase Master(Active节点)会后台启动一个线程，以<code>hbase.master.cleaner.interval</code>(默认1分钟，HDP3 改为了1h间隔)为间隔检查<code>oldWALs</code>下所有失效的日志问题，确定是否可以删除。<br>确认删除需要达成2个条件：</p>
+<h2 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h2><h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>HLog文件是有生命周期的,HLog生命周期：
+<img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220328095759.png"></p>
+<p>默认情况下HBase Master(Active节点)会后台启动一个线程，以<code>hbase.master.cleaner.interval</code>(默认1分钟，HDP3 改为了1h间隔)为间隔检查<code>oldWALs</code>下所有失效的日志问题，确定是否可以删除。
+确认删除需要达成2个条件：</p>
 <ol>
 <li>HLog 文件是否还在参与主从复制，以及该文件是否还在用于主从复制<code>ReplicationHFileCleaner.getDeletableFiles</code>逻辑</li>
 <li>HLog 文件在oldWALs文件中存在的时间 &gt; <code>hbase.master.logcleaner.ttl</code>(默认值10minutes)<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[<span class="attr">zk</span>: <span class="attr">localhost</span>:<span class="number">2181</span>(<span class="variable constant_">CONNECTED</span>) <span class="number">6</span>] ls /hbase/replication/peers</span><br><span class="line">[]</span><br><span class="line">[<span class="attr">zk</span>: <span class="attr">localhost</span>:<span class="number">2181</span>(<span class="variable constant_">CONNECTED</span>) <span class="number">7</span>] ls /hbase/replication/rs</span><br><span class="line">[xxxx-hbase01-node244.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645515180740</span>, xxxx-hbase01-node238.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396855</span>, xxxx-hbase01-node12.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502395651</span>, xxxx-hbase01-node68.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396574</span>, xxxx-hbase01-node56.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396748</span>, xxxx-hbase01-node57.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502395942</span>, xxxx-hbase01-node66.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396692</span>, xxxx-hbase01-node11.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396175</span>, xxxx-hbase01-node149.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502556596</span>, xxxx-hbase01-node64.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502398389</span>, xxxx-hbase01-node62.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396268</span>, xxxx-hbase01-node59.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645501475468</span>, xxxx-hbase01-node240.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396736</span>, xxxx-hbase01-node75.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396501</span>, xxxx-hbase01-node10.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502395833</span>, xxxx-hbase01-node63.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502397816</span>, xxxx-hbase01-node150.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396480</span>, xxxx-hbase01-node71.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396275</span>, xxxx-hbase01-node49.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396541</span>, xxxx-hbase01-node65.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502398568</span>, xxxx-hbase01-node77.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396304</span>, xxxx-hbase01-node54.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502395830</span>, xxxx-hbase01-node78.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396183</span>, xxxx-hbase01-node55.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396742</span>, xxxx-hbase01-node50.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396573</span>, xxxx-hbase01-node70.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396859</span>, xxxx-hbase01-node72.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502395894</span>, xxxx-hbase01-node242.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396166</span>, xxxx-hbase01-node53.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502395834</span>, xxxx-hbase01-node61.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396141</span>, xxxx-hbase01-node51.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396211</span>, xxxx-hbase01-node148.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396044</span>, xxxx-hbase01-node67.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396172</span>, xxxx-hbase01-node58.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502398506</span>, xxxx-hbase01-node76.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502397094</span>, xxxx-hbase01-node52.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502395760</span>, xxxx-hbase01-node73.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396696</span>, xxxx-hbase01-node60.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396503</span>, xxxx-hbase01-node241.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396087</span>, xxxx-hbase01-node69.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396658</span>, xxxx-hbase01-node151.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396097</span>, xxxx-hbase01-node239.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396421</span>, xxxx-hbase01-node74.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1645502396215</span>, xxxx-hbase01-node61.<span class="property">xxxx</span>.<span class="property">com</span>,<span class="number">60020</span>,<span class="number">1626235982224</span>]</span><br><span class="line">[<span class="attr">zk</span>: <span class="attr">localhost</span>:<span class="number">2181</span>(<span class="variable constant_">CONNECTED</span>) <span class="number">8</span>] rmr /hbase/replication/rs</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
@@ -378,8 +349,6 @@
 <script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
-<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
 
 
 

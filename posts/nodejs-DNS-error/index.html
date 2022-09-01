@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="使用工具排查DNS异常">
 <meta property="og:type" content="article">
@@ -80,46 +80,15 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
 
 
 
-<nav class="site-nav">
-  <ul class="main-menu menu">
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
-        </a>
-      </li>
-  </ul>
-</nav>
 
 
 
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="Searching..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
 
 </div>
         
@@ -292,8 +261,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p><code>node.js</code> 程序出现 <code> Error: connect ECONNREFUSED</code>  和 <code>getaddrinfo ENOTFOUND</code> 。<br><code>ENOTFOUND</code> 官方定义 :  (DNS lookup failed): Indicates a DNS failure of either EAI_NODATA or EAI_NONAME. This is not a standard POSIX error.<br>这个问题一般是DNS 查询失败导致的。</p>
-<p><code>ECONNREFUSED</code>: (Connection refused): No connection could be made because the target machine actively refused it. This usually results from trying to connect to a service that is inactive on the foreign host.<br>无法建立连接，因为目标计算机主动拒绝了该连接。 这通常是由于尝试连接到外部主机上处于非活动状态的服务而导致的。 (这个也可能是DNS解析的 IP地址不对，导致远程主机无法连接)</p>
+        <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p><code>node.js</code> 程序出现 <code> Error: connect ECONNREFUSED</code>  和 <code>getaddrinfo ENOTFOUND</code> 。
+<code>ENOTFOUND</code> 官方定义 :  (DNS lookup failed): Indicates a DNS failure of either EAI_NODATA or EAI_NONAME. This is not a standard POSIX error.
+这个问题一般是DNS 查询失败导致的。</p>
+<p><code>ECONNREFUSED</code>: (Connection refused): No connection could be made because the target machine actively refused it. This usually results from trying to connect to a service that is inactive on the foreign host.
+无法建立连接，因为目标计算机主动拒绝了该连接。 这通常是由于尝试连接到外部主机上处于非活动状态的服务而导致的。 (这个也可能是DNS解析的 IP地址不对，导致远程主机无法连接)</p>
 <p>详细日志如下：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2020</span>-<span class="number">04</span>-<span class="number">21</span> <span class="number">11</span>:<span class="number">26</span>:<span class="number">19</span> [<span class="title class_">PicGo</span> <span class="variable constant_">ERROR</span>] <span class="title class_">RequestError</span>: <span class="title class_">Error</span>: connect <span class="variable constant_">ECONNREFUSED</span> <span class="number">13.250</span><span class="number">.168</span><span class="number">.23</span>:<span class="number">443</span></span><br><span class="line">------<span class="title class_">Error</span> <span class="title class_">Stack</span> <span class="title class_">Begin</span>------</span><br><span class="line"><span class="title class_">RequestError</span>: <span class="title class_">Error</span>: connect <span class="variable constant_">ECONNREFUSED</span> <span class="number">13.250</span><span class="number">.168</span><span class="number">.23</span>:<span class="number">443</span></span><br><span class="line">    at <span class="keyword">new</span> <span class="title class_">RequestError</span> (<span class="regexp">/Applications/</span><span class="title class_">PicGo</span>.<span class="property">app</span>/<span class="title class_">Contents</span>/<span class="title class_">Resources</span>/app.<span class="property">asar</span>/node_modules/request-promise-core/lib/errors.<span class="property">js</span>:<span class="number">14</span>:<span class="number">15</span>)</span><br><span class="line">    at <span class="title class_">Request</span>.<span class="property">plumbing</span>.<span class="property">callback</span> (<span class="regexp">/Applications/</span><span class="title class_">PicGo</span>.<span class="property">app</span>/<span class="title class_">Contents</span>/<span class="title class_">Resources</span>/app.<span class="property">asar</span>/node_modules/request-promise-core/lib/plumbing.<span class="property">js</span>:<span class="number">87</span>:<span class="number">29</span>)</span><br><span class="line">    at <span class="title class_">Request</span>.<span class="property">RP$callback</span> [<span class="keyword">as</span> _callback] (<span class="regexp">/Applications/</span><span class="title class_">PicGo</span>.<span class="property">app</span>/<span class="title class_">Contents</span>/<span class="title class_">Resources</span>/app.<span class="property">asar</span>/node_modules/request-promise-core/lib/plumbing.<span class="property">js</span>:<span class="number">46</span>:<span class="number">31</span>)</span><br><span class="line">    at self.<span class="property">callback</span> (<span class="regexp">/Applications/</span><span class="title class_">PicGo</span>.<span class="property">app</span>/<span class="title class_">Contents</span>/<span class="title class_">Resources</span>/app.<span class="property">asar</span>/node_modules/request/request.<span class="property">js</span>:<span class="number">185</span>:<span class="number">22</span>)</span><br><span class="line">    at <span class="title class_">Request</span>.<span class="property">emit</span> (events.<span class="property">js</span>:<span class="number">182</span>:<span class="number">13</span>)</span><br><span class="line">    at <span class="title class_">Request</span>.<span class="property">onRequestError</span> (<span class="regexp">/Applications/</span><span class="title class_">PicGo</span>.<span class="property">app</span>/<span class="title class_">Contents</span>/<span class="title class_">Resources</span>/app.<span class="property">asar</span>/node_modules/request/request.<span class="property">js</span>:<span class="number">881</span>:<span class="number">8</span>)</span><br><span class="line">    at <span class="title class_">ClientRequest</span>.<span class="property">emit</span> (events.<span class="property">js</span>:<span class="number">182</span>:<span class="number">13</span>)</span><br><span class="line">    at <span class="title class_">TLSSocket</span>.<span class="property">socketErrorListener</span> (_http_client.<span class="property">js</span>:<span class="number">391</span>:<span class="number">9</span>)</span><br><span class="line">    at <span class="title class_">TLSSocket</span>.<span class="property">emit</span> (events.<span class="property">js</span>:<span class="number">182</span>:<span class="number">13</span>)</span><br><span class="line">    at emitErrorNT (internal/streams/destroy.<span class="property">js</span>:<span class="number">82</span>:<span class="number">8</span>)</span><br><span class="line">-------<span class="title class_">Error</span> <span class="title class_">Stack</span> <span class="title class_">End</span>-------</span><br></pre></td></tr></table></figure>
 
@@ -306,16 +278,20 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#公司 设置公网DNS是： 114.114.115.115，可以从 lan 的状态上看到</span><br><span class="line">dig @114.114.115.115 api.github.com +trace</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/img_20_img_20200519094710.png" alt="image"></p>
-<p>解析到的<code>13.250.168.23</code> 这个IP，实际是不可访问的,<code>ping </code>和<code>telnet </code>都不通。<br>指定DNS<code>119.29.29.29</code>进行排查:</p>
+<p>解析到的<code>13.250.168.23</code> 这个IP，实际是不可访问的,<code>ping </code>和<code>telnet </code>都不通。
+指定DNS<code>119.29.29.29</code>进行排查:</p>
 <p><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/img_20_img_20200519095335.png" alt="image"></p>
 <p>修改本地<code>hosts</code> 文件，进行测试，问题修复。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ sudo echo &quot;54.169.195.247 api.github.com&quot; &gt;&gt; /etc/hosts</span><br><span class="line">#或者在 /etc/hosts 添加一行:54.169.195.247 api.github.com</span><br><span class="line"></span><br><span class="line">$ curl https://api.github.com</span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">date: Tue, 19 May 2020 01:57:31 GMT</span><br><span class="line">content-type: application/json; charset=utf-8</span><br></pre></td></tr></table></figure>
 
-<h3 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h3><p>DNS有问题，排查起来比较耗时间，Mianland CN , 建议使用 119.29.29.29 （ 腾讯） ， 海外用google DNS：8.8.8.8很稳妥。<br>另外家中的路由器也建议不要使用ISP提供的默认DNS，减少ISP广告的也更稳定。</p>
+<h3 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h3><p>DNS有问题，排查起来比较耗时间，Mianland CN , 建议使用 119.29.29.29 （ 腾讯） ， 海外用google DNS：8.8.8.8很稳妥。
+另外家中的路由器也建议不要使用ISP提供的默认DNS，减少ISP广告的也更稳定。</p>
 <h3 id="补充命令"><a href="#补充命令" class="headerlink" title="补充命令"></a>补充命令</h3><p>使用<code>traceroute</code> 可以进行路由跟踪，产看完成的路由表</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ traceroute api.github.com</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="%5Bhttps://nodejs.org/api/fs.html">node.jd Document Error List</a><br><a target="_blank" rel="noopener" href="https://linux.die.net/man/1/dig">dig man</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/sparkdev/p/7777871.html">linux dig 命令</a></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="%5Bhttps://nodejs.org/api/fs.html">node.jd Document Error List</a>
+<a target="_blank" rel="noopener" href="https://linux.die.net/man/1/dig">dig man</a>
+<a target="_blank" rel="noopener" href="https://www.cnblogs.com/sparkdev/p/7777871.html">linux dig 命令</a></p>
 
     </div>
 
@@ -384,8 +360,6 @@
 <script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
-<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
 
 
 

@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="学习python 绘制基本的折线图、对散点图进行拟合、使用快速傅立叶变换对周期性矩形波(方波)信号记性分解（分解出频率、时域图)">
 <meta property="og:type" content="article">
@@ -78,46 +78,15 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
 
 
 
-<nav class="site-nav">
-  <ul class="main-menu menu">
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
-        </a>
-      </li>
-  </ul>
-</nav>
 
 
 
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="Searching..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
 
 </div>
         
@@ -290,7 +259,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p><a target="_blank" rel="noopener" href="https://matplotlib.org/">Matplotlib is a comprehensive library for creating static, animated, and interactive visualizations in Python. </a><br><code>Matplotlib</code>是常用的数据可视化工具之一(灵活、功能强大)</p>
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p><a target="_blank" rel="noopener" href="https://matplotlib.org/">Matplotlib is a comprehensive library for creating static, animated, and interactive visualizations in Python. </a>
+<code>Matplotlib</code>是常用的数据可视化工具之一(灵活、功能强大)</p>
 <p>安装包：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#url 国内下载速度较慢 可以使用proxychain + 梯</span></span><br><span class="line">pip install matplotlib</span><br><span class="line">pip install scipy</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -300,7 +270,8 @@
 <h3 id="python-拟合"><a href="#python-拟合" class="headerlink" title="python 拟合"></a>python 拟合</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#python3</span></span><br><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.font_manager</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">x = np.arange(<span class="number">1</span>, <span class="number">17</span>, <span class="number">1</span>)</span><br><span class="line">y = np.array([<span class="number">4.00</span>, <span class="number">6.40</span>, <span class="number">8.00</span>, <span class="number">8.80</span>, <span class="number">9.22</span>, <span class="number">9.50</span>, <span class="number">9.70</span>, <span class="number">9.86</span>, <span class="number">10.00</span>, <span class="number">10.20</span>, <span class="number">10.32</span>, <span class="number">10.42</span>, <span class="number">10.50</span>, <span class="number">10.55</span>, <span class="number">10.58</span>, <span class="number">10.60</span>])</span><br><span class="line">z1 = np.polyfit(x, y, <span class="number">4</span>) <span class="comment"># 用4次多项式拟合</span></span><br><span class="line">p1 = np.poly1d(z1)</span><br><span class="line"><span class="built_in">print</span>(p1) <span class="comment">#print log </span></span><br><span class="line">yvals=p1(x) <span class="comment"># 也可以使用yvals=np.polyval(z1,x)</span></span><br><span class="line">plot1=plt.plot(x, y, <span class="string">&#x27;*&#x27;</span>,label=<span class="string">&#x27;original values&#x27;</span>)</span><br><span class="line">plot2=plt.plot(x, yvals, <span class="string">&#x27;r&#x27;</span>,label=<span class="string">&#x27;polyfit values&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;x axis&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;y axis&#x27;</span>)</span><br><span class="line">plt.legend(loc=<span class="number">4</span>) <span class="comment">#</span></span><br><span class="line">plt.title(<span class="string">&#x27;polyfitting&#x27;</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h3 id="傅立叶变换"><a href="#傅立叶变换" class="headerlink" title="傅立叶变换"></a>傅立叶变换</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#python3</span></span><br><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> matplotlib.font_manager</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> fftpack,signal</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">b = <span class="number">30</span></span><br><span class="line">f_s = <span class="number">80</span></span><br><span class="line">N = <span class="number">8000</span></span><br><span class="line">t = np.linspace(<span class="number">0</span>, <span class="number">10</span>, N, endpoint=<span class="literal">False</span>)</span><br><span class="line">sq = signal.square(<span class="number">2</span> * np.pi * <span class="number">5</span> * t)</span><br><span class="line"></span><br><span class="line">F = fftpack.fft(sq)</span><br><span class="line">f = fftpack.fftfreq(N, <span class="number">1.0</span>/f_s)</span><br><span class="line"></span><br><span class="line">F_filtered = F * (<span class="built_in">abs</span>(f) &lt; <span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span> <span class="string">&quot;F_filtered&quot;</span>, F_filtered</span><br><span class="line">ift = fftpack.ifft(F_filtered)</span><br><span class="line">mask = np.where(f &gt;= <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">fig, axes = plt.subplots(<span class="number">4</span>,<span class="number">1</span>)</span><br><span class="line">axes[<span class="number">0</span>].plot(t, sq)</span><br><span class="line">axes[<span class="number">0</span>].set_ylim(-<span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line">axes[<span class="number">1</span>].plot(f[mask], <span class="built_in">abs</span>(F[mask])/N, label=<span class="string">&quot;freq&quot;</span>)</span><br><span class="line">axes[<span class="number">2</span>].plot(t,ift.real, label=<span class="string">&quot;all&quot;</span>)</span><br><span class="line">axes[<span class="number">3</span>].plot(t,ift.real, label=<span class="string">&quot;zoom&quot;</span>)</span><br><span class="line">axes[<span class="number">3</span>].set_xlim(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<p>绘图效果<br><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20200714163112.png" alt="images"></p>
+<p>绘图效果
+<img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20200714163112.png" alt="images"></p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="http://liao.cpython.org/scipytutorial18/">Scipy Tutorial- 方波傅里叶分解与合成</a></p>
 
     </div>
@@ -369,8 +340,6 @@
 <script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
-<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
 
 
 

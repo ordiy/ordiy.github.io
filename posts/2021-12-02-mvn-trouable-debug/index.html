@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="Maven 编译遇到的JDK问题汇总">
 <meta property="og:type" content="article">
@@ -75,46 +75,15 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
 
 
 
-<nav class="site-nav">
-  <ul class="main-menu menu">
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
-        </a>
-      </li>
-  </ul>
-</nav>
 
 
 
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="Searching..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
 
 </div>
         
@@ -291,7 +260,8 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[<span class="variable constant_">ERROR</span>] /home/gitlab-runner/builds/7zQqv6_Q/<span class="number">0</span>/data-platform/hbase-management/hbase-region-manager/src/main/java/cn/isunapp/dp/hbase/service/<span class="title class_">BootstrapServer</span>.<span class="property">java</span>:[<span class="number">40</span>,<span class="number">36</span>] diamond operator is not supported <span class="keyword">in</span> -source <span class="number">1.5</span></span><br><span class="line">  (use -source <span class="number">7</span> or higher to enable diamond operator)</span><br><span class="line">[<span class="variable constant_">ERROR</span>] /home/gitlab-runner/builds/7zQqv6_Q/<span class="number">0</span>/data-platform/hbase-management/hbase-region-manager/src/main/java/cn/isunapp/dp/hbase/service/<span class="title class_">BootstrapServer</span>.<span class="property">java</span>:[<span class="number">53</span>,<span class="number">36</span>] lambda expressions are not supported <span class="keyword">in</span> -source <span class="number">1.5</span></span><br><span class="line">  (use -source <span class="number">8</span> or higher to enable lambda expressions)</span><br><span class="line">[<span class="variable constant_">INFO</span>] <span class="number">7</span> errors </span><br><span class="line">[<span class="variable constant_">INFO</span>] -------------------------------------------------------------</span><br><span class="line">[<span class="variable constant_">INFO</span>] ------------------------------------------------------------------------</span><br><span class="line">[<span class="variable constant_">INFO</span>] <span class="variable constant_">BUILD</span> <span class="variable constant_">FAILURE</span></span><br><span class="line">[<span class="variable constant_">INFO</span>] ------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
 
 
-<h1 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h1><p>遇到该问题是因为GitLab Runner Compiler Server默认JDK版本是1.7,而应用程序是Java8 编写的.<br>按最小化修改原则，这里只需指定程序的编译JDK即可</p>
+<h1 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h1><p>遇到该问题是因为GitLab Runner Compiler Server默认JDK版本是1.7,而应用程序是Java8 编写的.
+按最小化修改原则，这里只需指定程序的编译JDK即可</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Runner CI script </span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">JAVA_HOME=&#123;&#123;JDK8_HOME&#125;&#125; &amp;&amp; mvn -Dmaven.compile.fork=<span class="literal">true</span> -Dmaven.compiler.executable=&#123;&#123;JDK8_HOME&#125;&#125;/bin/javac clean package</span><br></pre></td></tr></table></figure>
 
 <h1 id="其它解决方法"><a href="#其它解决方法" class="headerlink" title="其它解决方法"></a>其它解决方法</h1><h2 id="制定自定义settings文件"><a href="#制定自定义settings文件" class="headerlink" title="制定自定义settings文件"></a>制定自定义settings文件</h2><p>在不修改全局setting文件的情况下，copy一个自定义的settings文件：</p>
@@ -372,8 +342,6 @@
 <script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
-<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
 
 
 

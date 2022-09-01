@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="Zeppelin Install and config，并使用Zeppelin 对MySQL数据进行可视化分析。">
 <meta property="og:type" content="article">
@@ -81,46 +81,15 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
 
 
 
-<nav class="site-nav">
-  <ul class="main-menu menu">
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
-        </a>
-      </li>
-  </ul>
-</nav>
 
 
 
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="Searching..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
 
 </div>
         
@@ -295,9 +264,12 @@
     <div class="post-body" itemprop="articleBody">
         <h1 id="About-Zeppelin"><a href="#About-Zeppelin" class="headerlink" title="About Zeppelin"></a>About Zeppelin</h1><p>基于Web的笔记本，可通过SQL，Scala等实现数据驱动的交互式数据分析和协作文档。</p>
 <blockquote>
-<p>Web-based notebook that enables data-driven,<br>interactive data analytics and collaborative documents with SQL, Scala and more.</p>
+<p>Web-based notebook that enables data-driven, 
+interactive data analytics and collaborative documents with SQL, Scala and more.</p>
 </blockquote>
-<p>Architecture:<br><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220413162146.png"><br><em>图片@apache zeppelin</em></p>
+<p>Architecture: 
+<img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220413162146.png">
+<em>图片@apache zeppelin</em></p>
 <h1 id="Install-and-config"><a href="#Install-and-config" class="headerlink" title="Install and config"></a>Install and config</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">环境：</span><br><span class="line">Centos 7.5</span><br><span class="line">JDK1.8</span><br><span class="line">zeppelin-0.9.0</span><br><span class="line">网络：局域网使用</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>install 过程：</p>
@@ -305,7 +277,8 @@
 
 
 <h1 id="配置一个interpreter"><a href="#配置一个interpreter" class="headerlink" title="配置一个interpreter"></a>配置一个interpreter</h1><p>备注：建议增加一个内网的maven 私服 repostory 地址，便于jar依赖下载</p>
-<p>interperter增加 interpreter<br><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210425115420.png"></p>
+<p>interperter增加 interpreter
+<img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210425115420.png"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">default.url:   jdbc:mysql://172.17.8.85:3306/</span><br><span class="line">default.user  root	</span><br><span class="line">default.password  ***	 </span><br><span class="line">default.driver  com.mysql.jdbc.Driver</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Dependencies:</span><br><span class="line">mysql:mysql-connector-java:5.1.49  </span><br></pre></td></tr></table></figure>
 
 <p><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210425120338.png"></p>
@@ -316,8 +289,10 @@
 
 
 <h1 id="zeppline-进行数据可视化分析"><a href="#zeppline-进行数据可视化分析" class="headerlink" title="zeppline 进行数据可视化分析"></a>zeppline 进行数据可视化分析</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">%mysql </span><br><span class="line">select tab2.user_name,count(*) as auth_obj_num from  tb_dp_hero_auth_info as tab1 left join tb_dp_hero_user_info tab2 on tab1.user_id = tab2.id  group by tab1.user_id ;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>分析用户的授权对象个数：<br><img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210425143319.png"></p>
-<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a target="_blank" rel="noopener" href="http://zeppelin.apache.org/docs/0.9.0/usage/interpreter/installation.html">zeppelin interpreter</a><br><a target="_blank" rel="noopener" href="http://zeppelin.apache.org/docs/0.9.0-preview1/interpreter/submarine.html#architecture">zeppelin architecture</a></p>
+<p>分析用户的授权对象个数：
+<img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210425143319.png"></p>
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a target="_blank" rel="noopener" href="http://zeppelin.apache.org/docs/0.9.0/usage/interpreter/installation.html">zeppelin interpreter</a>
+<a target="_blank" rel="noopener" href="http://zeppelin.apache.org/docs/0.9.0-preview1/interpreter/submarine.html#architecture">zeppelin architecture</a></p>
 
     </div>
 
@@ -385,8 +360,6 @@
 <script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
-<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
 
 
 
