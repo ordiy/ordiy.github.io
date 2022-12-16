@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="HBase RIT 终端导致Region Holes和meta问题，进行修复.">
 <meta property="og:type" content="article">
@@ -26,7 +26,7 @@
 <meta property="og:description" content="HBase RIT 终端导致Region Holes和meta问题，进行修复.">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-03-31T17:19:54.000Z">
-<meta property="article:modified_time" content="2022-07-14T06:34:18.047Z">
+<meta property="article:modified_time" content="2022-10-11T08:23:19.210Z">
 <meta property="article:author" content="Ordiy">
 <meta property="article:tag" content="blog">
 <meta property="article:tag" content="HBase">
@@ -77,15 +77,46 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
 
 
 
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </div>
         
@@ -111,7 +142,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3"><span class="nav-number">2.</span> <span class="nav-text">解决</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E4%BF%A1%E6%81%AF"><span class="nav-number">1.1.</span> <span class="nav-text">环境信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.2.</span> <span class="nav-text">问题描述</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3"><span class="nav-number">2.</span> <span class="nav-text">解决</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -124,18 +155,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">42</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -218,7 +249,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-07-14 06:34:18" itemprop="dateModified" datetime="2022-07-14T06:34:18Z">2022-07-14</time>
+      <time title="Modified: 2022-10-11 08:23:19" itemprop="dateModified" datetime="2022-10-11T08:23:19Z">2022-10-11</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -258,7 +289,9 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>HBase集群因吞吐量太大，导致IO Limit耗尽，必须进行重启，重启后部分表出RIT问题，手动解决了RIT问题后,对表进行<code>snapshot</code>失败，并且发现表存在Region Holes和meta不一致的情况</p>
+        <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><h2 id="环境信息"><a href="#环境信息" class="headerlink" title="环境信息"></a>环境信息</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hbase version: HBase 1.2.0-CDHCDH5.9.0</span><br><span class="line">OS: Centos7.x</span><br><span class="line">部署方式：私有化部署</span><br></pre></td></tr></table></figure>
+
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>HBase集群因吞吐量太大，导致IO Limit耗尽，必须进行重启，重启后部分表出RIT问题，手动解决了RIT问题后,对表进行<code>snapshot</code>失败，并且发现表存在Region Holes和meta不一致的情况</p>
 <ul>
 <li><p><code>snapshot</code>失败：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">hbase(main):006:0&gt; snapshot &#x27;xxx_table&#x27;,&#x27;snap_xxx_table&#x27;</span><br><span class="line"></span><br><span class="line">ERROR: org.apache.hadoop.hbase.snapshot.HBaseSnapshotException: Snapshot &#123; ss=snap_xxx_table table=xxx_table type=FLUSH &#125; had an error.  Procedure snap_xxx_table &#123; waiting=[] done=[xxxx-hbase01-node242.idc01.com,60020,1647068132556, xxxx-hbase01-node240.idc01.com,60020,1647067851041, xxxx-hbase01-node241.idc01.com,60020,1646967561168, xxxx-hbase01-node151.idc01.com,60020,1647070546831, xxxx-hbase01-node77.idc01.com,60020,1645502396304, xxxx-hbase01-node59.idc01.com,60020,1645501475468, xxxx-hbase01-node150.idc01.com,60020,1645502396480, xxxx-hbase01-node52.idc01.com,60020,1647079382281, xxxx-hbase01-node69.idc01.com,60020,1647074328442, xxxx-hbase01-node65.idc01.com,60020,1647077291810, xxxx-hbase01-node67.idc01.com,60020,1647077617774, xxxx-hbase01-node49.idc01.com,60020,1647068745578, xxxx-hbase01-node62.idc01.com,60020,1647075997299, xxxx-hbase01-node61.idc01.com,60020,1647071762915, xxxx-hbase01-node72.idc01.com,60020,1647075869766, xxxx-hbase01-node12.idc01.com,60020,1647070206456, xxxx-hbase01-node76.idc01.com,60020,1647072963065, xxxx-hbase01-node66.idc01.com,60020,1647077055538, xxxx-hbase01-node238.idc01.com,60020,1647074861970, xxxx-hbase01-node56.idc01.com,60020,1645502396748, xxxx-hbase01-node63.idc01.com,60020,1645502397816, xxxx-hbase01-node70.idc01.com,60020,1645502396859, xxxx-hbase01-node68.idc01.com,60020,1647069787140, xxxx-hbase01-node148.idc01.com,60020,1647067131840, xxxx-hbase01-node11.idc01.com,60020,1647066555077, xxxx-hbase01-node149.idc01.com,60020,1647069186054, xxxx-hbase01-node53.idc01.com,60020,1647069998692, xxxx-hbase01-node244.idc01.com,60020,1646797902036, xxxx-hbase01-node71.idc01.com,60020,1647075256801, xxxx-hbase01-node78.idc01.com,60020,1647076192048, xxxx-hbase01-node58.idc01.com,60020,1645502398506, xxxx-hbase01-node60.idc01.com,60020,1647071434665, xxxx-hbase01-node74.idc01.com,60020,1647072760278, xxxx-hbase01-node75.idc01.com,60020,1647076919846, xxxx-hbase01-node55.idc01.com,60020,1647071170284, xxxx-hbase01-node64.idc01.com,60020,1647076141961, xxxx-hbase01-node57.idc01.com,60020,1645502395942, xxxx-hbase01-node239.idc01.com,60020,1647067519317, xxxx-hbase01-node54.idc01.com,60020,1647074700145, xxxx-hbase01-node73.idc01.com,60020,1647076545514, xxxx-hbase01-node51.idc01.com,60020,1647065772433, xxxx-hbase01-node50.idc01.com,60020,1647070897706, xxxx-hbase01-node10.idc01.com,60020,1647069855452] &#125;</span><br><span class="line">  at org.apache.hadoop.hbase.master.snapshot.SnapshotManager.isSnapshotDone(SnapshotManager.java:342)</span><br><span class="line">  at org.apache.hadoop.hbase.master.MasterRpcServices.isSnapshotDone(MasterRpcServices.java:944)</span><br><span class="line">  at org.apache.hadoop.hbase.protobuf.generated.MasterProtos$MasterService$2.callBlockingMethod(MasterProtos.java:44263)</span><br><span class="line">  at org.apache.hadoop.hbase.ipc.RpcServer.call(RpcServer.java:2034)</span><br><span class="line">  at org.apache.hadoop.hbase.ipc.CallRunner.run(CallRunner.java:107)</span><br><span class="line">  at org.apache.hadoop.hbase.ipc.RpcExecutor.consumerLoop(RpcExecutor.java:130)</span><br><span class="line">  at org.apache.hadoop.hbase.ipc.RpcExecutor$1.run(RpcExecutor.java:107)</span><br><span class="line">  at java.lang.Thread.run(Thread.java:745)</span><br><span class="line">Caused by: org.apache.hadoop.hbase.errorhandling.ForeignException$ProxyThrowable via xxxx-hbase01-node151.idc01.com,60020,1647070546831:org.apache.hadoop.hbase.errorhandling.ForeignException$ProxyThrowable: java.io.FileNotFoundException: File does not exist: hdfs://nameservice-hbase1/hbase/data/default/xxx_table/3ba583b9e43fe9efcbcb85d41b62e61d/A/c215951ed4a94c2284b6ea7b4b02fdd2</span><br><span class="line">  at org.apache.hadoop.hbase.errorhandling.ForeignExceptionDispatcher.rethrowException(ForeignExceptionDispatcher.java:83)</span><br><span class="line">  at org.apache.hadoop.hbase.master.snapshot.TakeSnapshotHandler.rethrowExceptionIfFailed(TakeSnapshotHandler.java:313)</span><br><span class="line">  at org.apache.hadoop.hbase.master.snapshot.SnapshotManager.isSnapshotDone(SnapshotManager.java:332)</span><br><span class="line">  ... 7 more</span><br><span class="line">Caused by: org.apache.hadoop.hbase.errorhandling.ForeignException$ProxyThrowable: java.io.FileNotFoundException: File does not exist: hdfs://nameservice-hbase1/hbase/data/default/xxx_table/3ba583b9e43fe9efcbcb85d41b62e61d/A/c215951ed4a94c2284b6ea7b4b02fdd2</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.snapshot.RegionServerSnapshotManager$SnapshotSubprocedurePool.waitForOutstandingTasks(RegionServerSnapshotManager.java:339)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.snapshot.FlushSnapshotSubprocedure.flushSnapshot(FlushSnapshotSubprocedure.java:138)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.snapshot.FlushSnapshotSubprocedure.insideBarrier(FlushSnapshotSubprocedure.java:157)</span><br><span class="line">  at org.apache.hadoop.hbase.procedure.Subprocedure.call(Subprocedure.java:187)</span><br><span class="line">  at org.apache.hadoop.hbase.procedure.Subprocedure.call(Subprocedure.java:53)</span><br><span class="line">  at java.util.concurrent.FutureTask.run(FutureTask.java:262)</span><br><span class="line">  at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)</span><br><span class="line">  at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)</span><br><span class="line">  ... 1 more</span><br></pre></td></tr></table></figure>
@@ -279,7 +312,7 @@
 
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li>[1] <a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/899875">Hbase修复工具Hbck</a></li>
-<li>[2]  [HBase原理与实践]</li>
+<li>[2] [HBase原理与实践]</li>
 </ul>
 
     </div>
@@ -346,9 +379,12 @@
 
   
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
 <script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
 
 
 
