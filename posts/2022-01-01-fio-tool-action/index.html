@@ -18,18 +18,20 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="fio test Disk performence">
+    <meta name="description" content="使用FIO工具测试 HDD&#x2F;SSD 读写性能。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2022-01-01-fio-tool-action">
+<meta property="og:title" content="FIO tool in action">
 <meta property="og:url" content="https://ordiy.github.io/posts/2022-01-01-fio-tool-action/index.html">
 <meta property="og:site_name" content="Ordiy&#39;s Blog">
-<meta property="og:description" content="fio test Disk performence">
+<meta property="og:description" content="使用FIO工具测试 HDD&#x2F;SSD 读写性能。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-01-01T18:45:06.000Z">
-<meta property="article:modified_time" content="2022-11-09T10:13:10.988Z">
+<meta property="article:modified_time" content="2023-01-06T10:14:00.692Z">
 <meta property="article:author" content="Ordiy">
 <meta property="article:tag" content="blog">
 <meta property="article:tag" content="FIO">
+<meta property="article:tag" content="i&#x2F;o">
+<meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary">
 
 
@@ -37,10 +39,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://ordiy.github.io/posts/2022-01-01-fio-tool-action/","path":"posts/2022-01-01-fio-tool-action/","title":"2022-01-01-fio-tool-action"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://ordiy.github.io/posts/2022-01-01-fio-tool-action/","path":"posts/2022-01-01-fio-tool-action/","title":"FIO tool in action"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>2022-01-01-fio-tool-action | Ordiy's Blog</title>
+<title>FIO tool in action | Ordiy's Blog</title>
   
 
 
@@ -141,7 +143,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#FIO-install"><span class="nav-number">1.</span> <span class="nav-text">FIO install</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fio-%E8%AF%B4%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">fio 说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fio-test-linux"><span class="nav-number">3.</span> <span class="nav-text">fio test linux</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#test-action"><span class="nav-number">4.</span> <span class="nav-text">test action</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fio-test-macos-ssd-performence"><span class="nav-number">5.</span> <span class="nav-text">fio test macos ssd performence</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E"><span class="nav-number">6.</span> <span class="nav-text">测试参数说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#fio-%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">fio 说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FIO-install"><span class="nav-number">2.</span> <span class="nav-text">FIO install</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fio-test-linux"><span class="nav-number">3.</span> <span class="nav-text">fio test linux</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#test-action"><span class="nav-number">4.</span> <span class="nav-text">test action</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fio-test-macos-ssd-performence"><span class="nav-number">5.</span> <span class="nav-text">fio test macos ssd performence</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E"><span class="nav-number">6.</span> <span class="nav-text">测试参数说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -154,7 +156,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-count">45</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -165,7 +167,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -225,12 +227,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="2022-01-01-fio-tool-action | Ordiy's Blog">
+      <meta itemprop="name" content="FIO tool in action | Ordiy's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          2022-01-01-fio-tool-action
+          FIO tool in action
         </h1>
 
         <div class="post-meta-container">
@@ -248,7 +250,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-11-09 10:13:10" itemprop="dateModified" datetime="2022-11-09T10:13:10Z">2022-11-09</time>
+      <time title="Modified: 2023-01-06 10:14:00" itemprop="dateModified" datetime="2023-01-06T10:14:00Z">2023-01-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -288,10 +290,12 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="FIO-install"><a href="#FIO-install" class="headerlink" title="FIO install"></a>FIO install</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># centos </span><br><span class="line">sudo yum install libaio -y</span><br><span class="line">sudo yum install libaio-devel -y</span><br><span class="line">sudo yum install fio -y</span><br></pre></td></tr></table></figure>
+        <h1 id="fio-说明"><a href="#fio-说明" class="headerlink" title="fio 说明"></a>fio 说明</h1><p><code>FIO</code>一个Linux I&#x2F;O子系统和调度程序测试的强大工具。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Fio was written by Jens Axboe &lt;axboe@kernel.dk&gt; to enable flexible testing of the Linux I/O subsystem and schedulers. He got tired of writing specific test applications to simulate a given workload, and found that the existing I/O benchmark/test tools out there weren’t flexible enough to do what he wanted.</span><br></pre></td></tr></table></figure>
 
+<h1 id="FIO-install"><a href="#FIO-install" class="headerlink" title="FIO install"></a>FIO install</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># centos </span><br><span class="line">sudo yum install libaio -y</span><br><span class="line">sudo yum install libaio-devel -y</span><br><span class="line">sudo yum install fio -y</span><br></pre></td></tr></table></figure>
 
-<h1 id="fio-说明"><a href="#fio-说明" class="headerlink" title="fio 说明"></a>fio 说明</h1><h1 id="fio-test-linux"><a href="#fio-test-linux" class="headerlink" title="fio test linux"></a>fio test linux</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#检查磁盘信息</span><br><span class="line">sudo fdisk -lu</span><br></pre></td></tr></table></figure>
+<h1 id="fio-test-linux"><a href="#fio-test-linux" class="headerlink" title="fio test linux"></a>fio test linux</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#检查磁盘信息</span><br><span class="line">sudo fdisk -lu</span><br></pre></td></tr></table></figure>
 
 <h1 id="test-action"><a href="#test-action" class="headerlink" title="test action"></a>test action</h1><p>测试顺序read </p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ sudo fio -direct=<span class="number">1</span> -iodepth=<span class="number">128</span> -rw=read -ioengine=libaio -bs=128k -numjobs=<span class="number">1</span> -time_based=<span class="number">1</span> -runtime=<span class="number">1000</span> -group_reporting -filename=<span class="regexp">/dev/</span>vdd -name=test</span><br><span class="line"><span class="attr">test</span>: (g=<span class="number">0</span>): rw=read, bs=(R) 128KiB-128KiB, (W) 128KiB-128KiB, (T) 128KiB-128KiB, ioengine=libaio, iodepth=<span class="number">128</span></span><br><span class="line">fio-<span class="number">3.7</span></span><br><span class="line"><span class="title class_">Starting</span> <span class="number">1</span> process</span><br><span class="line"><span class="title class_">Jobs</span>: <span class="number">1</span> (f=<span class="number">1</span>): [<span class="title function_">R</span>(<span class="number">1</span>)][<span class="number">100.0</span>%][r=251MiB/s,w=0KiB/s][r=<span class="number">2010</span>,w=<span class="number">0</span> <span class="variable constant_">IOPS</span>][eta 00<span class="attr">m</span>:00s]</span><br><span class="line"><span class="attr">test</span>: (groupid=<span class="number">0</span>, jobs=<span class="number">1</span>): err= <span class="number">0</span>: pid=<span class="number">4305</span>: <span class="title class_">Wed</span> <span class="title class_">Nov</span>  <span class="number">9</span> <span class="number">10</span>:<span class="number">58</span>:<span class="number">41</span> <span class="number">2022</span></span><br><span class="line">   <span class="attr">read</span>: <span class="variable constant_">IOPS</span>=<span class="number">1853</span>, <span class="variable constant_">BW</span>=232MiB/s (243MB/s)(226GiB/1000062msec)</span><br><span class="line">    slat (usec): min=<span class="number">3</span>, max=<span class="number">176</span>, avg=<span class="number">10.48</span>, stdev= <span class="number">4.28</span></span><br><span class="line">    clat (msec): min=<span class="number">21</span>, max=<span class="number">189</span>, avg=<span class="number">69.04</span>, stdev= <span class="number">6.86</span></span><br><span class="line">     lat (msec): min=<span class="number">21</span>, max=<span class="number">189</span>, avg=<span class="number">69.05</span>, stdev= <span class="number">6.86</span></span><br><span class="line">    clat percentiles (msec):</span><br><span class="line">     |  <span class="number">1.</span>00th=[   <span class="number">56</span>],  <span class="number">5.</span>00th=[   <span class="number">61</span>], <span class="number">10.</span>00th=[   <span class="number">63</span>], <span class="number">20.</span>00th=[   <span class="number">65</span>],</span><br><span class="line">     | <span class="number">30.</span>00th=[   <span class="number">67</span>], <span class="number">40.</span>00th=[   <span class="number">68</span>], <span class="number">50.</span>00th=[   <span class="number">68</span>], <span class="number">60.</span>00th=[   <span class="number">69</span>],</span><br><span class="line">     | <span class="number">70.</span>00th=[   <span class="number">70</span>], <span class="number">80.</span>00th=[   <span class="number">72</span>], <span class="number">90.</span>00th=[   <span class="number">78</span>], <span class="number">95.</span>00th=[   <span class="number">81</span>],</span><br><span class="line">     | <span class="number">99.</span>00th=[   <span class="number">93</span>], <span class="number">99.</span>50th=[  <span class="number">102</span>], <span class="number">99.</span>90th=[  <span class="number">118</span>], <span class="number">99.</span>95th=[  <span class="number">138</span>],</span><br><span class="line">     | <span class="number">99.</span>99th=[  <span class="number">169</span>]</span><br><span class="line">   bw (  <span class="title class_">KiB</span>/s): min=<span class="number">192000</span>, max=<span class="number">265216</span>, per=<span class="number">99.99</span>%, avg=<span class="number">237268.10</span>, stdev=<span class="number">10703.72</span>, samples=<span class="number">2000</span></span><br><span class="line">   iops        : min= <span class="number">1500</span>, max= <span class="number">2072</span>, avg=<span class="number">1853.65</span>, stdev=<span class="number">83.62</span>, samples=<span class="number">2000</span></span><br><span class="line">  lat (msec)   : <span class="number">50</span>=<span class="number">0.01</span>%, <span class="number">100</span>=<span class="number">99.37</span>%, <span class="number">250</span>=<span class="number">0.62</span>%</span><br><span class="line">  cpu          : usr=<span class="number">0.35</span>%, sys=<span class="number">2.62</span>%, ctx=<span class="number">488619</span>, majf=<span class="number">0</span>, minf=<span class="number">4107</span></span><br><span class="line">  <span class="variable constant_">IO</span> depths    : <span class="number">1</span>=<span class="number">0.1</span>%, <span class="number">2</span>=<span class="number">0.1</span>%, <span class="number">4</span>=<span class="number">0.1</span>%, <span class="number">8</span>=<span class="number">0.1</span>%, <span class="number">16</span>=<span class="number">0.1</span>%, <span class="number">32</span>=<span class="number">0.1</span>%, &gt;=<span class="number">64</span>=<span class="number">100.0</span>%</span><br><span class="line">     submit    : <span class="number">0</span>=<span class="number">0.0</span>%, <span class="number">4</span>=<span class="number">100.0</span>%, <span class="number">8</span>=<span class="number">0.0</span>%, <span class="number">16</span>=<span class="number">0.0</span>%, <span class="number">32</span>=<span class="number">0.0</span>%, <span class="number">64</span>=<span class="number">0.0</span>%, &gt;=<span class="number">64</span>=<span class="number">0.0</span>%</span><br><span class="line">     complete  : <span class="number">0</span>=<span class="number">0.0</span>%, <span class="number">4</span>=<span class="number">100.0</span>%, <span class="number">8</span>=<span class="number">0.0</span>%, <span class="number">16</span>=<span class="number">0.0</span>%, <span class="number">32</span>=<span class="number">0.0</span>%, <span class="number">64</span>=<span class="number">0.0</span>%, &gt;=<span class="number">64</span>=<span class="number">0.1</span>%</span><br><span class="line">     issued <span class="attr">rwts</span>: total=<span class="number">1853894</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span> short=<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span> dropped=<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span></span><br><span class="line">     latency   : target=<span class="number">0</span>, <span class="variable language_">window</span>=<span class="number">0</span>, percentile=<span class="number">100.00</span>%, depth=<span class="number">128</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Run</span> status group <span class="number">0</span> (all jobs):</span><br><span class="line">   <span class="attr">READ</span>: bw=232MiB/s (243MB/s), 232MiB/s-232MiB/s (243MB/s-243MB/s), io=226GiB (243GB), run=<span class="number">1000062</span>-1000062msec</span><br><span class="line"></span><br><span class="line"><span class="title class_">Disk</span> stats (read/write):</span><br><span class="line">  <span class="attr">vdd</span>: ios=<span class="number">1854792</span>/<span class="number">1</span>, merge=<span class="number">273</span>/<span class="number">0</span>, ticks=<span class="number">128357846</span>/<span class="number">1</span>, in_queue=<span class="number">127954002</span>, util=<span class="number">100.00</span>%</span><br></pre></td></tr></table></figure>
@@ -362,7 +366,11 @@
 <td align="left">表示测试任务名称为Rand_Write_Testing，可以随意设定。</td>
 </tr>
 </tbody></table>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/147897.htm?spm=a2c4g.11186623.0.0.3c8c62e45JA3kA#section-f8v-673-2po">https://help.aliyun.com/document_detail/147897.htm?spm=a2c4g.11186623.0.0.3c8c62e45JA3kA#section-f8v-673-2po</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="">https://help.aliyun.com/document_detail&#x2F;147897.htm?spm&#x3D;a2c4g.11186623.0.0.3c8c62e45JA3kA#section-f8v-673-2po</a></li>
+<li><a target="_blank" rel="noopener" href="https://fio.readthedocs.io/en/latest/">FIO doc </a></li>
+<li><a target="_blank" rel="noopener" href="https://cloud.google.com/compute/docs/disks/benchmarking-pd-performance">google fio benchmark</a></li>
+</ul>
 
     </div>
 
@@ -374,14 +382,16 @@
           <div class="post-tags">
               <a href="/tags/blog/" rel="tag"># blog</a>
               <a href="/tags/FIO/" rel="tag"># FIO</a>
+              <a href="/tags/i-o/" rel="tag"># i/o</a>
+              <a href="/tags/linux/" rel="tag"># linux</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/2019-centos7-init-system-2/" rel="prev" title="Centos7 install and config haproxy notes">
-                  <i class="fa fa-chevron-left"></i> Centos7 install and config haproxy notes
+                <a href="/posts/2022-01-01-iperf-network-benchmart/" rel="prev" title="iPerf3 测试网络带宽-benchmark test">
+                  <i class="fa fa-chevron-left"></i> iPerf3 测试网络带宽-benchmark test
                 </a>
             </div>
             <div class="post-nav-item">
@@ -413,7 +423,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
