@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/function%20()%20%7B%0A%20%20%20%20%20%20for%20(var%20_len2%20=%20arguments.length,%20args%20=%20new%20Array(_len2),%20_key2%20=%200;%20_key2%20%3C%20_len2;%20_key2++)%20%7B%0A%20%20%20%20%20%20%20%20args%5B_key2%5D%20=%20arguments%5B_key2%5D;%0A%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20return%20obj%5Bval%5D.apply(obj,%20args);%0A%20%20%20%20%7D">
+  <meta name="google-site-verification" content="STAcFkvSF49fRv3p9O9gm962auBfI64EX85Z7NIb3j4">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ordiy.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="HBase 2.x Fix RIT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2023-01-01-hbase2-fix-rit">
+<meta property="og:url" content="https://ordiy.github.io/posts/2023-01-01-hbase2-fix-rit/index.html">
+<meta property="og:site_name" content="Ordiy&#39;s Blog">
+<meta property="og:description" content="HBase 2.x Fix RIT">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20230303165746.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20230506213532.png">
+<meta property="article:published_time" content="2023-05-07T14:48:25.000Z">
+<meta property="article:modified_time" content="2023-12-13T11:39:27.505Z">
+<meta property="article:author" content="Ordiy">
+<meta property="article:tag" content="blog">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20230303165746.png">
+
+
+<link rel="canonical" href="https://ordiy.github.io/posts/2023-01-01-hbase2-fix-rit/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://ordiy.github.io/posts/2023-01-01-hbase2-fix-rit/","path":"posts/2023-01-01-hbase2-fix-rit/","title":"2023-01-01-hbase2-fix-rit"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>2023-01-01-hbase2-fix-rit | Ordiy's Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Ordiy's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ordiy's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Just do it!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#download-tool"><span class="nav-number">2.</span> <span class="nav-text">download tool</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">高级用法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lock"><span class="nav-number">3.</span> <span class="nav-text">lock</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ordiy</p>
+  <div class="site-description" itemprop="description">Stay Hungry.Stay Foolish.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ordiy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ordiy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ordiymaster_outlook.com" title="E-Mail → mailto:ordiymaster_outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://ordiy.github.io/posts/2023-01-01-hbase2-fix-rit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ordiy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ordiy's Blog">
+      <meta itemprop="description" content="Stay Hungry.Stay Foolish.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="2023-01-01-hbase2-fix-rit | Ordiy's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2023-01-01-hbase2-fix-rit
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-05-07 14:48:25" itemprop="dateCreated datePublished" datetime="2023-05-07T14:48:25Z">2023-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-12-13 11:39:27" itemprop="dateModified" datetime="2023-12-13T11:39:27Z">2023-12-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">tech</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/posts/2023-01-01-hbase2-fix-rit/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="posts/2023-01-01-hbase2-fix-rit/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>集群需要更新Table Version </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &quot; disable &#x27;xxxx_jdid_new&#x27; &quot; | hbase shell -n </span><br><span class="line">echo &quot; alter &#x27;xxxx_jdid_new&#x27;, &#123;NAME =&gt; &#x27;A&#x27;, VERSIONS =&gt; 730 &#125; &quot; | hbase shell -n </span><br><span class="line">echo &quot; enable &#x27;xxxx_jdid_new&#x27; &quot; | hbase shell -n </span><br></pre></td></tr></table></figure>
+
+<p>但是由于table 数据量非常大(100T+) ， 此操作直接导致table 出现大量RIT</p>
+<h1 id="download-tool"><a href="#download-tool" class="headerlink" title="download tool"></a>download tool</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">wget https://dlcdn.apache.org/hbase/hbase-operator-tools-1.2.0/hbase-operator-tools-1.2.0-bin.tar.gz</span><br><span class="line"></span><br><span class="line">tar -zxvf hbase-operator-tools-1.2.0-bin.tar.gz </span><br><span class="line"># 测试</span><br><span class="line">hbase hbck -j ~ s/hbase-operator-tools-1.2.0/hbase-hbck2/hbase-hbck2-1.2.0.jar --help</span><br><span class="line"></span><br><span class="line">#可以使用--config 指定配置文件</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>解决 RIT blocking 
+<img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20230303165746.png" alt="image|700"></p>
+<p>HMaster 日志：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">2023-03-01 21:04:02,810 WARN  [ProcExecTimeout] assignment.AssignmentManager: STUCK Region-In-Transition rit=OPENING, location=idc-bj-hbase01-node198.hostname.com,16020,1657113851089, table=xxxxx_ip_new, region=83504493dad030dd984351d836f1e038</span><br><span class="line">2023-03-01 21:04:02,810 WARN  [ProcExecTimeout] assignment.AssignmentManager: STUCK Region-In-Transition rit=OPENING, location=idc-bj-hbase01-node222.hostname.com,16020,1657119128640, table=xxxxx_ip_new, region=23e774d40cdbb3c0949b3f331dc78ea1</span><br><span class="line">2023-03-01 21:04:02,810 WARN  [ProcExecTimeout] assignment.AssignmentManager: STUCK Region-In-Transition rit=OPENING, location=idc-bj-hbase01-node192.hostname.com,16020,1657112516084, table=xxxxx_ip_new, region=c62e61fa464ad896d9aa5d2d7a69e1e5</span><br><span class="line">2023-03-01 21:04:02,810 WARN  [ProcExecTimeout] assignment.AssignmentManager: STUCK Region-In-Transition rit=OPENING, location=idc-bj-hbase01-node226.hostname.com,16020,1657120001299, table=xxxxx_ip_new, region=3c7d1f07c62cd9a8762869943ae09f9b</span><br><span class="line">2023-03-01 21:04:02,810 WARN  [ProcExecTimeout] assignment.AssignmentManager: STUCK Region-In-Transition rit=OPENING, location=idc-bj-hbase01-node208.hostname.com,16020,1657116060790, table=xxxxx_ip_new, region=58e92be55ce39cd5ddc82961e540e319</span><br><span class="line">2023-03-01 21:04:02,810 WARN  [ProcExecTimeout] assignment.AssignmentManager: STUCK Region-In-Transition rit=OPENING, location=idc-bj-hbase01-node225.hostname.com,16020,1657119785191, table=xxxxx_ip_new, region=d02c8b7652690cb3fcc1f9f16172faae</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>Region 操作：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 对Region 执行 assign </span><br><span class="line">hbase hbck -j ~ s/hbase-operator-tools-1.2.0/hbase-hbck2/hbase-hbck2-1.2.0.jar assigns -o 23e774d40cdbb3c0949b3f331dc78ea1 </span><br></pre></td></tr></table></figure>
+
+<p>Region 恢复正常，可以用canary 或者 Get 测试表，是否完全恢复正常。</p>
+<p>RegionServer 出现 HFile异常:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">2023-03-01 20:13:46,242 WARN  [region-location-2] balancer.RegionLocationFinder: IOException during HDFSBlocksDistribution computation. for region = e6f6b7e51ece844ebb25346ee1d3e424</span><br><span class="line">java.io.FileNotFoundException: File does not exist: hdfs://backup-hbase-hdp/hbase/data/default/app_id_v2/537ec7199e5b188c9e49948c769cf1ef/A/8b0869da8f4b4f7b8828a9c03d059396_SeqId_61_</span><br><span class="line">  at org.apache.hadoop.hdfs.DistributedFileSystem$29.doCall(DistributedFileSystem.java:1581)</span><br><span class="line">  at org.apache.hadoop.hdfs.DistributedFileSystem$29.doCall(DistributedFileSystem.java:1574)</span><br><span class="line">  at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)</span><br><span class="line">  at org.apache.hadoop.hdfs.DistributedFileSystem.getFileStatus(DistributedFileSystem.java:1589)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.StoreFileInfo.getReferencedFileStatus(StoreFileInfo.java:352)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.StoreFileInfo.computeHDFSBlocksDistributionInternal(StoreFileInfo.java:321)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.StoreFileInfo.computeHDFSBlocksDistribution(StoreFileInfo.java:315)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.HRegion.computeHDFSBlocksDistribution(HRegion.java:1238)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.HRegion.computeHDFSBlocksDistribution(HRegion.java:1206)</span><br><span class="line">  at org.apache.hadoop.hbase.master.balancer.RegionLocationFinder.internalGetTopBlockLocation(RegionLocationFinder.java:198)</span><br><span class="line">  at org.apache.hadoop.hbase.master.balancer.RegionLocationFinder$1$1.call(RegionLocationFinder.java:81)</span><br><span class="line">  at org.apache.hadoop.hbase.master.balancer.RegionLocationFinder$1$1.call(RegionLocationFinder.java:78)</span><br><span class="line">  at org.apache.hbase.thirdparty.com.google.common.util.concurrent.TrustedListenableFutureTask$TrustedFutureInterruptibleTask.runInterruptibly(TrustedListenableFutureTask.java:125)</span><br><span class="line">  at org.apache.hbase.thirdparty.com.google.common.util.concurrent.InterruptibleTask.run(InterruptibleTask.java:69)</span><br><span class="line">  at org.apache.hbase.thirdparty.com.google.common.util.concurrent.TrustedListenableFutureTask.run(TrustedListenableFutureTask.java:78)</span><br><span class="line">  at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)</span><br><span class="line">  at java.util.concurrent.FutureTask.run(FutureTask.java:266)</span><br><span class="line">  at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)</span><br><span class="line">  at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)</span><br><span class="line">  at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)</span><br><span class="line">  at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)</span><br><span class="line">  at java.lang.Thread.run(Thread.java:748)</span><br><span class="line">2023-03-01 20:13:46,270 WARN  [region-location-3] balancer.RegionLocationFinder: IOException during HDFSBlocksDistribution computation. for region = 902fae4b2bf19cf834fac4a199c9f598</span><br><span class="line">java.io.FileNotFoundException: File does not exist: hdfs://backup-hbase-hdp/hbase/data/default/app_id_v2/a59bbc3938aea4fb2c0d0256f30cf472/A/0bb927da6e874cad81e79175f39896dc_SeqId_68_</span><br><span class="line">  at org.apache.hadoop.hdfs.DistributedFileSystem$29.doCall(DistributedFileSystem.java:1581)</span><br><span class="line">  at org.apache.hadoop.hdfs.DistributedFileSystem$29.doCall(DistributedFileSystem.java:1574)</span><br><span class="line">  at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)</span><br><span class="line">  at org.apache.hadoop.hdfs.DistributedFileSystem.getFileStatus(DistributedFileSystem.java:1589)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.StoreFileInfo.getReferencedFileStatus(StoreFileInfo.java:352)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.StoreFileInfo.computeHDFSBlocksDistributionInternal(StoreFileInfo.java:321)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.StoreFileInfo.computeHDFSBlocksDistribution(StoreFileInfo.java:315)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.HRegion.computeHDFSBlocksDistribution(HRegion.java:1238)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.HRegion.computeHDFSBlocksDistribution(HRegion.java:1206)</span><br><span class="line">  at org.apache.hadoop.hbase.master.balancer.RegionLocationFinder.internalGetTopBlockLocation(RegionLocationFinder.java:198)</span><br><span class="line">  at org.apache.hadoop.hbase.master.balancer.RegionLocationFinder$1$1.call(RegionLocationFinder.java:81)</span><br><span class="line">  at org.apache.hadoop.hbase.master.balancer.RegionLocationFinder$1$1.call(RegionLocationFinder.java:78)</span><br><span class="line">  at org.apache.hbase.thirdparty.com.google.common.util.concurrent.TrustedListenableFutureTask$TrustedFutureInterruptibleTask.runInterruptibly(TrustedListenableFutureTask.java:125)</span><br><span class="line">  at org.apache.hbase.thirdparty.com.google.common.util.concurrent.InterruptibleTask.run(InterruptibleTask.java:69)</span><br><span class="line">  at org.apache.hbase.thirdparty.com.google.common.util.concurrent.TrustedListenableFutureTask.run(TrustedListenableFutureTask.java:78)</span><br><span class="line">  at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)</span><br><span class="line">  at java.util.concurrent.FutureTask.run(FutureTask.java:266)</span><br><span class="line">  at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)</span><br><span class="line">  at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)</span><br><span class="line">  at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)</span><br><span class="line">  at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)</span><br><span class="line">  at java.lang.Thread.run(Thread.java:748)</span><br><span class="line">2023-03-01 20:13:46,270 WARN  [region-location-1] balancer.RegionLocationFinder: IOException during HDFSBlocksDistribution computation. for region = 2e4e230ae474011ee5707eb7fec8d1a5</span><br><span class="line">java.io.FileNotFoundException: File does not exist: hdfs://backup-hbase-hdp/hbase/data/default/app_id_v2/e17415c07f5efdbe3d4ff41b457205a7/A/aaa6fcd4cfda4f1a9e1454d1c95d41fe_SeqId_73_</span><br><span class="line">  at org.apache.hadoop.hdfs.DistributedFileSystem$29.doCall(DistributedFileSystem.java:1581)</span><br><span class="line">  at org.apache.hadoop.hdfs.DistributedFileSystem$29.doCall(DistributedFileSystem.java:1574)</span><br><span class="line">  at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)</span><br><span class="line">  at org.apache.hadoop.hdfs.DistributedFileSystem.getFileStatus(DistributedFileSystem.java:1589)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.StoreFileInfo.getReferencedFileStatus(StoreFileInfo.java:352)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.StoreFileInfo.computeHDFSBlocksDistributionInternal(StoreFileInfo.java:321)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.StoreFileInfo.computeHDFSBlocksDistribution(StoreFileInfo.java:315)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.HRegion.computeHDFSBlocksDistribution(HRegion.java:1238)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.HRegion.computeHDFSBlocksDistribution(HRegion.java:1206)</span><br><span class="line">  at org.apache.hadoop.hbase.master.balancer.RegionLocationFinder.internalGetTopBlockLocation(RegionLocationFinder.java:198)</span><br><span class="line">  at org.apache.hadoop.hbase.master.balancer.RegionLocationFinder$1$1.call(RegionLocationFinder.java:81)</span><br><span class="line">  at org.apache.hadoop.hbase.master.balancer.RegionLocationFinder$1$1.call(RegionLocationFinder.java:78)</span><br><span class="line">  at org.apache.hbase.thirdparty.com.google.common.util.concurrent.TrustedListenableFutureTask$TrustedFutureInterruptibleTask.runInterruptibly(TrustedListenableFutureTask.java:125)</span><br><span class="line">  at org.apache.hbase.thirdparty.com.google.common.util.concurrent.InterruptibleTask.run(InterruptibleTask.java:69)</span><br><span class="line">  at org.apache.hbase.thirdparty.com.google.common.util.concurrent.TrustedListenableFutureTask.run(TrustedListenableFutureTask.java:78)</span><br><span class="line">  at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)</span><br><span class="line">  at java.util.concurrent.FutureTask.run(FutureTask.java:266)</span><br><span class="line">  at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)</span><br><span class="line">  at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)</span><br><span class="line">  at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)</span><br><span class="line">  at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)</span><br><span class="line">  at java.lang.Thread.run(Thread.java:748)</span><br></pre></td></tr></table></figure>
+
+<p>使用 filesystem --fix 修复以上问题</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hbase hbck -j ~ s/hbase-operator-tools-1.2.0/hbase-hbck2/hbase-hbck2-1.2.0.jar filesystem --fix app_id_v2</span><br></pre></td></tr></table></figure>
+
+<p>执行后问题若还是无法修复，可以将对应Region 下的引用文件进行强制删除：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 假设 geo_ip_new 表， Region: ba3a916a55749216a59a923816819058 出现问题</span><br><span class="line"># 找到引用文件</span><br><span class="line">hdfs dfs -ls -l /hbase/data/default/geo_ip_new/ba3a916a55749216a59a923816819058/A | grep &quot;\.&quot; | awk &#x27;&#123; print $NF &#125;&#x27; </span><br><span class="line"></span><br><span class="line"># 执行删除</span><br><span class="line">hdfs dfs -rm  /hbase/data/default/geo_ip_new/ba3a916a55749216a59a923816819058/A/1583fcee58894c4a829046b371a8fc15.b00fa72df6519151cf98a569c3f482fd </span><br></pre></td></tr></table></figure>
+
+<p>之后再对Region 执行 assign 操作</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hbase hbck -j ~ s/hbase-operator-tools-1.2.0/hbase-hbck2/hbase-hbck2-1.2.0.jar assign  -o ba3a916a55749216a59a923816819058</span><br></pre></td></tr></table></figure>
+
+
+<p>canary 遇到region  not online问题，也可以使用assign 工具解决</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ERROR: org.apache.hadoop.hbase.NotServingRegionException: app_ip_new,0562439629376612551|2020022513,1654594690934.513c23e655b4fb5ff72049f79f8d0a13. is not online on idc01-hbase01-node188.hostname.com,16020,1657111672521</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.HRegionServer.getRegionByEncodedName(HRegionServer.java:3341)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.HRegionServer.getRegion(HRegionServer.java:3318)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.RSRpcServices.getRegion(RSRpcServices.java:1428)</span><br><span class="line">  at org.apache.hadoop.hbase.regionserver.RSRpcServices.get(RSRpcServices.java:2464)</span><br><span class="line">  at org.apache.hadoop.hbase.shaded.protobuf.generated.ClientProtos$ClientService$2.callBlockingMethod(ClientProtos.java:42186)</span><br><span class="line">  at org.apache.hadoop.hbase.ipc.RpcServer.call(RpcServer.java:413)</span><br><span class="line">  at org.apache.hadoop.hbase.ipc.CallRunner.run(CallRunner.java:132)</span><br><span class="line">  at org.apache.hadoop.hbase.ipc.RpcExecutor$Handler.run(RpcExecutor.java:324)</span><br><span class="line">  at org.apache.hadoop.hbase.ipc.RpcExecutor$Handler.run(RpcExecutor.java:304)</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="高级用法"><a href="#高级用法" class="headerlink" title="高级用法"></a>高级用法</h2><p>对处于CLOSED状态的Region 进行批量 assigin </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">echo &quot; scan &#x27;hbase:meta&#x27;, &#123; COLUMN =&gt; &#x27;info:state&#x27;&#125;&quot; | hbase shell  &gt; tmp_txt_p7.txt \</span><br><span class="line">cat tmp_txt_p6.txt  | grep &quot;CLOSED&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h1 id="lock"><a href="#lock" class="headerlink" title="lock"></a>lock</h1><p>lock 解决
+<img src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20230506213532.png"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">hbase --config ../data-sync-dispatcher-nj-ods-2-tx-emr/config/emr-ssd-hbase  hbck -j ~/hbase-operator-tools-1.2.0/hbase-hbck2/hbase-hbck2-1.2.0.jar bypass -r  2277</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">RIT region</span> </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">解决 assgin region</span> </span><br><span class="line">hbase --config ../data-sync-dispatcher-nj-ods-2-tx-emr/config/emr-ssd-hbase  hbck -j ~/hbase-operator-tools-1.2.0/hbase-hbck2/hbase-hbck2-1.2.0.jar  assigns -o 0d20f76480111a18d34083951386eb19</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li>[hbck2 ].  <a target="_blank" rel="noopener" href="https://github.com/apache/hbase-operator-tools/tree/master/hbase-hbck2">https://github.com/apache/hbase-operator-tools/tree/master/hbase-hbck2</a></li>
+<li>[ admin tool hbck2 ]. <a target="_blank" rel="noopener" href="https://docs.cloudera.com/documentation/enterprise/6/6.3/topics/admin_hbase_hbck.html">https://docs.cloudera.com/documentation/enterprise/6/6.3/topics/admin_hbase_hbck.html</a></li>
+<li>[hbck and hck2 ]. <a target="_blank" rel="noopener" href="https://bbs.huaweicloud.com/blogs/329387">https://bbs.huaweicloud.com/blogs/329387</a></li>
+<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1786386">https://cloud.tencent.com/developer/article/1786386</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/blog/" rel="tag"># blog</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2023-01-01-hadoop-linux-core-param-config/" rel="prev" title="Hadoop 服务器内核参数设置">
+                  <i class="fa fa-chevron-left"></i> Hadoop 服务器内核参数设置
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ordiy</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"ordiytech-blog","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

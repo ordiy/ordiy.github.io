@@ -26,7 +26,7 @@
 <meta property="og:description" content="centos7 初始化环境，并安装bbr和ssh. (适用于VPS场景)">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2019-01-01T00:00:00.000Z">
-<meta property="article:modified_time" content="2023-02-01T08:38:51.682Z">
+<meta property="article:modified_time" content="2023-02-14T10:11:28.657Z">
 <meta property="article:author" content="Ordiy">
 <meta property="article:tag" content="blog">
 <meta name="twitter:card" content="summary">
@@ -153,7 +153,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -247,7 +247,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-02-01 08:38:51" itemprop="dateModified" datetime="2023-02-01T08:38:51Z">2023-02-01</time>
+      <time title="Modified: 2023-02-14 10:11:28" itemprop="dateModified" datetime="2023-02-14T10:11:28Z">2023-02-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -285,7 +285,7 @@
     <div class="post-body" itemprop="articleBody">
         <h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对<span class="variable constant_">VPS</span>进行加固，并设置bbr和ssh</span><br></pre></td></tr></table></figure>
 
-<h1 id="update-kernal-and-config-env"><a href="#update-kernal-and-config-env" class="headerlink" title="update kernal and config env"></a>update kernal and config env</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># 升级内核</span><br><span class="line">sudo yum updaet </span><br><span class="line"></span><br><span class="line"># epel</span><br><span class="line">sudo yum -y install epel-release</span><br><span class="line"></span><br><span class="line"># 安装 gcc</span><br><span class="line">sudo yum install gcc pcre-<span class="keyword">static</span> pcre-devel -y</span><br><span class="line"></span><br><span class="line"># repo</span><br><span class="line">#sudo yum repolist </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="update-kernal-and-config-env"><a href="#update-kernal-and-config-env" class="headerlink" title="update kernal and config env"></a>update kernal and config env</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># 升级内核</span><br><span class="line">sudo yum update </span><br><span class="line"></span><br><span class="line"># epel</span><br><span class="line">sudo yum -y install epel-release -y </span><br><span class="line"></span><br><span class="line"># 安装 gcc</span><br><span class="line">sudo yum install gcc pcre-<span class="keyword">static</span> pcre-devel -y</span><br><span class="line"></span><br><span class="line"># repo</span><br><span class="line">#sudo yum repolist </span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h1 id="系统设置"><a href="#系统设置" class="headerlink" title="系统设置"></a>系统设置</h1><h2 id="时间"><a href="#时间" class="headerlink" title="时间"></a>时间</h2><ul>
 <li><p>设置 timedatectl</p>
@@ -330,8 +330,8 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/2019-01-01-log4j2-json-layout/" rel="next" title="使用log4j2 JsonLayout自定义JSON格式日志">
-                  使用log4j2 JsonLayout自定义JSON格式日志 <i class="fa fa-chevron-right"></i>
+                <a href="/posts/2019-01-01-supervisord-init-md/" rel="next" title="使用supervisord管理进程">
+                  使用supervisord管理进程 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
