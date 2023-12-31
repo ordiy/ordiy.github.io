@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ordiy.github.io/posts/2023-01-01-nginx-gzip-compression-fix/</loc>
+    
+    <lastmod>2023-12-31</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://ordiy.github.io/posts/2022-01-01-fio-tool-action/</loc>
     
     <lastmod>2023-12-13</lastmod>
@@ -520,13 +529,6 @@
   </url>
   
   <url>
-    <loc>https://ordiy.github.io/tags/NGINX/</loc>
-    <lastmod>2023-12-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ordiy.github.io/tags/Enginner/</loc>
     <lastmod>2023-12-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -653,6 +655,13 @@
   </url>
   
   <url>
+    <loc>https://ordiy.github.io/tags/NGINX/</loc>
+    <lastmod>2023-12-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ordiy.github.io/tags/Raspberrypi/</loc>
     <lastmod>2023-12-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -772,13 +781,6 @@
   </url>
   
   <url>
-    <loc>https://ordiy.github.io/tags/Log/</loc>
-    <lastmod>2023-12-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ordiy.github.io/tags/TLS/</loc>
     <lastmod>2023-12-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -794,6 +796,13 @@
   
   <url>
     <loc>https://ordiy.github.io/tags/HTTP2/</loc>
+    <lastmod>2023-12-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiy.github.io/tags/Log/</loc>
     <lastmod>2023-12-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -821,6 +830,13 @@
   </url>
   
   <url>
+    <loc>https://ordiy.github.io/tags/ApacheZeppelin/</loc>
+    <lastmod>2023-12-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ordiy.github.io/tags/GitBook/</loc>
     <lastmod>2023-12-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -828,7 +844,7 @@
   </url>
   
   <url>
-    <loc>https://ordiy.github.io/tags/ApacheZeppelin/</loc>
+    <loc>https://ordiy.github.io/tags/JMX/</loc>
     <lastmod>2023-12-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -843,13 +859,6 @@
   
   <url>
     <loc>https://ordiy.github.io/tags/SkipList/</loc>
-    <lastmod>2023-12-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ordiy.github.io/tags/JMX/</loc>
     <lastmod>2023-12-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -919,13 +928,6 @@
   </url>
   
   <url>
-    <loc>https://ordiy.github.io/tags/HDFS/</loc>
-    <lastmod>2023-12-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ordiy.github.io/tags/Meta/</loc>
     <lastmod>2023-12-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -933,7 +935,21 @@
   </url>
   
   <url>
+    <loc>https://ordiy.github.io/tags/HDFS/</loc>
+    <lastmod>2023-12-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ordiy.github.io/tags/RIT/</loc>
+    <lastmod>2023-12-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ordiy.github.io/tags/web/</loc>
     <lastmod>2023-12-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -949,14 +965,14 @@
   </url>
   
   <url>
-    <loc>https://ordiy.github.io/categories/tech/HBase/</loc>
+    <loc>https://ordiy.github.io/categories/tech/BigData/</loc>
     <lastmod>2023-12-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ordiy.github.io/categories/tech/BigData/</loc>
+    <loc>https://ordiy.github.io/categories/tech/HBase/</loc>
     <lastmod>2023-12-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
