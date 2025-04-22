@@ -37,10 +37,10 @@ custom_file_path:
 # ---------------------------------------------------------------
 
 # Schemes
-scheme: Muse
+#scheme: Muse
 #scheme: Mist
 #scheme: Pisces
-#scheme: Gemini
+scheme: Gemini
 
 # Dark Mode
 darkmode: true
@@ -118,7 +118,7 @@ menu_settings:
 
 sidebar:
   # Sidebar position. Available values: left | right
-  position: left
+  position: right
 
   # Sidebar width.
   # Applicable to Muse | Mist and mobile of Pisces | Gemini.
@@ -372,7 +372,7 @@ codeblock:
     dark: prism-dark
   # Add copy button on codeblock
   copy_button:
-    enable: false
+    enable: true
     # Available values: default | flat | mac
     style:
   # Fold code block
@@ -428,7 +428,7 @@ github_banner:
 # ---------------------------------------------------------------
 
 font:
-  enable: false
+  enable: true
 
   # Uri of fonts host, e.g. https://fonts.googleapis.com (Default).
   host:
@@ -582,7 +582,7 @@ math:
 
 # Easily enable fast Ajax navigation on your website.
 # For more information: https://github.com/next-theme/pjax
-pjax: false
+pjax: true
 
 # FancyBox is a tool that offers a nice and elegant way to add zooming functionality for images.
 # For more information: https://fancyapps.com/fancybox/
@@ -595,12 +595,12 @@ mediumzoom: false
 
 # Vanilla JavaScript plugin for lazyloading images.
 # For more information: https://apoorv.pro/lozad.js/demo/
-lazyload: false
+lazyload: true
 
 # Automatically insert whitespace between CJK and half-width characters.
 # For more information: https://github.com/vinta/pangu.js
 # Server-side plugin: https://github.com/next-theme/hexo-pangu
-pangu: false
+pangu: ture
 
 # Prefetch links based on what is in the user's viewport.
 # For more information: https://getquick.link
@@ -865,7 +865,7 @@ algolia_search:
 # Local Search
 # Dependencies: https://github.com/next-theme/hexo-generator-searchdb
 local_search:
-  enable: false
+  enable: true
   # Show top n results per article, show all results by setting to -1
   top_n_per_article: 1
   # Unescape html strings to the readable one.
