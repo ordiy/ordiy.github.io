@@ -118,7 +118,7 @@ menu_settings:
 
 sidebar:
   # Sidebar position. Available values: left | right
-  position: right
+  position: left
 
   # Sidebar width.
   # Applicable to Muse | Mist and mobile of Pisces | Gemini.
@@ -188,7 +188,7 @@ toc:
   # Automatically add list number to toc.
   number: true
   # If true, all words will placed on next lines if header width longer then sidebar width.
-  wrap: false
+  wrap: true
   # If true, all level of TOC in a post will be displayed, rather than the activated part of it.
   expand_all: false
   # Maximum heading depth of generated toc.
@@ -365,22 +365,23 @@ codeblock:
   # Code Highlight theme
   # All available themes: https://theme-next.js.org/highlight/
   theme:
-    light: default
+    light: stackoverflow-dark
     dark: stackoverflow-dark
   prism:
-    light: prism
+    light: vs
     dark: prism-dark
+  line_wrap: true
   # Add copy button on codeblock
   copy_button:
     enable: true
     # Available values: default | flat | mac
-    style:
+    style: flat
   # Fold code block
   fold:
-    enable: false
+    enable: true
     height: 500
   # Display language name
-  language: false
+  language: js
 
 back2top:
   enable: true
