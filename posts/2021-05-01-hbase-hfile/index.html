@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en,zh-cn,default">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Ordiy">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://ordiy.github.io/posts/2021-05-01-hbase-hfile/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HBase HFile 基本概念">
+<meta property="og:url" content="https://ordiy.github.io/posts/2021-05-01-hbase-hfile/index.html">
+<meta property="og:site_name" content="Ordiy&#39;s Blog">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ordiy.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2021-05-01T18:18:45.000Z">
+<meta property="article:modified_time" content="2025-03-26T09:39:38.226Z">
+<meta property="article:author" content="Ordiy">
+<meta property="article:tag" content="HBase">
+<meta property="article:tag" content="GitBook">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ordiy.github.io/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            HBase HFile 基本概念 | Ordiy Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"ordiy.github.io","root":"/","language":["en","zh-cn","default"],"path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"atom-one-light","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/530e8906-4109-4871-b851-3301fee1e1bb.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"The truth sets me free","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ordiy Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/categories"
+                        >
+                            <span>Categories</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">107</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">35</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">91</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">HBase HFile 基本概念</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/redefine-avatar.svg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Ordiy</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2021-05-01 18:18:45</span>
+        <span class="mobile">2021-05-01 18:18:45</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-03-26 09:39:38</span>
+            <span class="mobile">2025-03-26 09:39:38</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/tech/HBase/">HBase</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/HBase/">HBase</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/GitBook/">GitBook</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h1 id="HFile-简介"><a href="#HFile-简介" class="headerlink" title="HFile 简介"></a>HFile 简介</h1><p>HFile参考BigTable的SSTable和Hadoop的TFile实现,用于MemStore中数据落盘之后会形成一个或者多个文件写入HDFS。HFile JARA <a class="link"   target="_blank" rel="noopener" href="https://issues.apache.org/jira/browse/HBASE-61" >HBASE-61<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<h1 id="HFile-结构"><a href="#HFile-结构" class="headerlink" title="HFile 结构"></a>HFile 结构</h1><h2 id="HFile-逻辑结构"><a href="#HFile-逻辑结构" class="headerlink" title="HFile 逻辑结构"></a>HFile 逻辑结构</h2><p>以HFile V2为例，HFile的逻辑结构：
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220330180033.png"
+                     
+                ></p>
+<h2 id="HFile-物理结构"><a href="#HFile-物理结构" class="headerlink" title="HFile 物理结构"></a>HFile 物理结构</h2><p>以HFile V2为例，HFile的物理结构：
+HFile各种不同类型的Block构成，在HBase DDL建表语句中的<code>BLOCKSIZE =&gt; &#39;65536&#39;</code>，表示Block的大小。
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220330160731.png"
+                     
+                ></p>
+<p>虽然HFile的Block Type有多种，但是每个Block的数据结构都是一样的（便于存储，遍历？），Block结构：
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220330163133.png"
+                     
+                >
+又的数据可能会存储在多个HFile Block上。</p>
+<p>HFile Block 的BlockType 类型:
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220330163704.png"
+                     
+                ></p>
+<ul>
+<li>参考更多：
+<a class="link"   target="_blank" rel="noopener" href="http://devdoc.net/bigdata/hbase-0.98.7-hadoop1/book/hfilev2.html#hfilev2.overview" >HFile v1 &amp; HFile v2<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+</ul>
+<h2 id="HFile-V2-feature"><a href="#HFile-V2-feature" class="headerlink" title="HFile V2 feature"></a>HFile V2 feature</h2><p> HFile V2在Boolm Fileter上增加了位数组拆分功能，可以按照Key拆分</p>
+<h2 id="HFile-V3-feature"><a href="#HFile-V3-feature" class="headerlink" title="HFile V3 feature"></a>HFile V3 feature</h2><p>HFile V3与HFile基本相同，只是增加了对cell的标签功能支持，cell标签为其它与安全相关的功能（cell 级别的ACL和单元级别可见性）提供提供实现框架。 实现： cell关联0个或多个可见性标签，再将可见性与用户关联起来。(<a class="link"   target="_blank" rel="noopener" href="https://mikethomsen.github.io/posts/2018/05/07/hbase-visibility-labels/" >一个实践案例<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>)    </p>
+<table>
+<thead>
+<tr>
+<th align="left">additional info</th>
+<th align="left">desc</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">hfile.MAX_TAGS_LEN</td>
+<td align="left">cell中 存储tags的最大byte 长度</td>
+</tr>
+<tr>
+<td align="left">hfile.TAGS_COMPRESSED</td>
+<td align="left">boolean value. 是否压缩TAGS</td>
+</tr>
+<tr>
+<td align="left">*注<a class="link"   target="_blank" rel="noopener" href="http://devdoc.net/bigdata/hbase-0.98.7-hadoop1/book/hfilev3.html" >HFile V3<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<p>版本逻辑结构对比：
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220330155918.png"
+                     
+                ></p>
+<h1 id="HFile-的Block说明"><a href="#HFile-的Block说明" class="headerlink" title="HFile 的Block说明"></a>HFile 的Block说明</h1><h2 id="HFile-Trailer-Block"><a href="#HFile-Trailer-Block" class="headerlink" title="HFile Trailer Block"></a>HFile Trailer Block</h2><p>Trailer Block 记录HFile的版本信息、各部分的偏移值和寻址值（可以看作是HFile的元数据）。查看Trailer Block  信息：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hbase hfile -f /hbase/data/default/xxx_table/fff89b301b32e363c5f95788fb44bb6c/A/5c9c11f43b9d4b52a53e62d4ea1dc6b4 -m</span><br></pre></td></tr></table></figure></div>
+<p>内容：</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">reader=<span class="regexp">/hbase/</span>data/<span class="keyword">default</span>/xxx_table/fff89b301b32e363c5f95788fb44bb6c/A/5c9c11f43b9d4b52a53e62d4ea1dc6b4,</span><br><span class="line">    compression=gz,</span><br><span class="line">    cacheConf=<span class="title class_">CacheConfig</span>:disabled,</span><br><span class="line">    firstKey=<span class="number">1110000007101565658</span>/<span class="attr">A</span>:json_result/<span class="number">1641611263000</span>/<span class="title class_">Put</span>,</span><br><span class="line">    lastKey=<span class="number">1114996580280422658</span>/<span class="attr">A</span>:json_result/<span class="number">1635760526000</span>/<span class="title class_">Put</span>,</span><br><span class="line">    avgKeyLen=<span class="number">43</span>,</span><br><span class="line">    avgValueLen=<span class="number">435</span>,</span><br><span class="line">    entries=<span class="number">143417796</span>,</span><br><span class="line">    length=<span class="number">4743346317</span></span><br><span class="line"><span class="title class_">Trailer</span>:</span><br><span class="line">    fileinfoOffset=<span class="number">4743345372</span>,</span><br><span class="line">    loadOnOpenDataOffset=<span class="number">4743335023</span>,</span><br><span class="line">    dataIndexCount=<span class="number">479</span>,</span><br><span class="line">    metaIndexCount=<span class="number">0</span>,</span><br><span class="line">    totalUncomressedBytes=<span class="number">70255033695</span>,</span><br><span class="line">    entryCount=<span class="number">143417796</span>,</span><br><span class="line">    compressionCodec=<span class="variable constant_">GZ</span>,</span><br><span class="line">    uncompressedDataIndexSize=<span class="number">62723887</span>,</span><br><span class="line">    numDataIndexLevels=<span class="number">2</span>,</span><br><span class="line">    firstDataBlockOffset=<span class="number">0</span>,</span><br><span class="line">    lastDataBlockOffset=<span class="number">4743187322</span>,</span><br><span class="line">    comparatorClassName=org.<span class="property">apache</span>.<span class="property">hadoop</span>.<span class="property">hbase</span>.<span class="property">KeyValue$KeyComparator</span>,</span><br><span class="line">    majorVersion=<span class="number">2</span>,</span><br><span class="line">    minorVersion=<span class="number">3</span></span><br><span class="line"><span class="title class_">Fileinfo</span>:</span><br><span class="line">    <span class="variable constant_">BLOOM_FILTER_TYPE</span> = <span class="variable constant_">ROW</span></span><br><span class="line">    <span class="variable constant_">DELETE_FAMILY_COUNT</span> = \x00\x00\x00\x00\x00\x00\x00\x00</span><br><span class="line">    <span class="variable constant_">EARLIEST_PUT_TS</span> = \x00\x00\x01;\xF3k&gt;<span class="number">0</span></span><br><span class="line">    <span class="variable constant_">KEY_VALUE_VERSION</span> = \x00\x00\x00\x01</span><br><span class="line">    <span class="variable constant_">LAST_BLOOM_KEY</span> = <span class="number">1114996580280422658</span></span><br><span class="line">    <span class="variable constant_">MAJOR_COMPACTION_KEY</span> = \x00</span><br><span class="line">    <span class="variable constant_">MAX_MEMSTORE_TS_KEY</span> = \x00\x00\x00\x00\x00\x00\x01\x5C</span><br><span class="line">    <span class="variable constant_">MAX_SEQ_ID_KEY</span> = <span class="number">348</span></span><br><span class="line">    <span class="variable constant_">TIMERANGE</span> = <span class="number">1356998590000.</span>...<span class="number">9359508000000</span></span><br><span class="line">    hfile.<span class="property">AVG_KEY_LEN</span> = <span class="number">43</span></span><br><span class="line">    hfile.<span class="property">AVG_VALUE_LEN</span> = <span class="number">435</span></span><br><span class="line">    hfile.<span class="property">LASTKEY</span> = \x00\x131114996580280422658\x01Ajson_result\x00\x00\x01|\xDA\xEC\xD2\xB0\x04</span><br><span class="line"><span class="title class_">Mid</span>-<span class="attr">key</span>: \x00\x131112514530495714671\x01Ajson_result\x00\x00\x01&#125;\xF9\x00W\xA8\x04\x00\x00\x00\x00\x8D\xA5oq\x00\x00\x09\xAF</span><br><span class="line"><span class="title class_">Bloom</span> <span class="attr">filter</span>:</span><br><span class="line">    <span class="title class_">BloomSize</span>: <span class="number">1835008</span></span><br><span class="line">    <span class="title class_">No</span> <span class="keyword">of</span> <span class="title class_">Keys</span> <span class="keyword">in</span> <span class="attr">bloom</span>: <span class="number">1517186</span></span><br><span class="line">    <span class="title class_">Max</span> <span class="title class_">Keys</span> <span class="keyword">for</span> <span class="attr">bloom</span>: <span class="number">1530284</span></span><br><span class="line">    <span class="title class_">Percentage</span> <span class="attr">filled</span>: <span class="number">99</span>%</span><br><span class="line">    <span class="title class_">Number</span> <span class="keyword">of</span> <span class="attr">chunks</span>: <span class="number">14</span></span><br><span class="line">    <span class="title class_">Comparator</span>: <span class="title class_">RawBytesComparator</span></span><br><span class="line"><span class="title class_">Delete</span> <span class="title class_">Family</span> <span class="title class_">Bloom</span> <span class="attr">filter</span>:</span><br><span class="line">    <span class="title class_">Not</span> present</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Data-Block"><a href="#Data-Block" class="headerlink" title="Data Block"></a>Data Block</h2><p>Data Blocks是存储KeyValue数据，HBase中所有数据都是以KeyValue结构存储在HBase中，内存和磁盘中的Data Block结构：
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220330164326.png"
+                     
+                ></p>
+<p>KeyValue由：Key Length, Value Length, Key和Value。其中Key是一个复合结构，由多个部分构成：Rowkey、Column Family、Column Qualifier、TimeStamp以及KeyType。所以，任意的KeyValue都包含Rowkey、Column Family、Column Qualifier（TimeStamp（long类型 8byte&#x2F;KeyType(枚举）是定长的，占用空间较小），因此这种存储方式比直接存储Value占用更多的存储空间。也是HBase表结构设计时经常强调Rowkey、Column Family以及Column Qualifier尽可能设置短的根本原因。</p>
+<h2 id="Bloom-Block-以及-Bloom-Index-Block结构"><a href="#Bloom-Block-以及-Bloom-Index-Block结构" class="headerlink" title="Bloom Block 以及 Bloom Index Block结构"></a>Bloom Block 以及 Bloom Index Block结构</h2><p>布隆过滤器（Bloom）对HBase的数据读取性能至关重要。（原因：LSM树对写入非常友好，对读取并不十分友好(遍历)，使用布隆过滤器（Bloom）可以进行相应优化，可以直接判断HFile是否存在待检索Key，同时使用了多层Bloom数位组)</p>
+<ul>
+<li><p>Bloom Block
+在HFile V2中Bloom Filer位数组进行了拆分，可以拆分为多个位数组，每个位数组就对应一个Bloom Block。</p>
+</li>
+<li><p>Bloom Index Block
+在存在多个Bloom Filter位数组时候，为了提高效率使用Bloom Index Block来定位不同的位数组。Bloom Index Block内存和逻辑结构：
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220330182201.png"
+                     
+                >
+<code>Bloom Index Block</code>的<code>Bloom Index Entry</code>的<code>BlockOffset</code>是一个指向<code>Bloom Block</code>在HFile中的偏移量。
+在实现上由<code>CompoundBloomFilterBase.java</code>进行数位组的查找和定位：
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220330184840.png"
+                     
+                ><br>使用一个二维数组表示多个BloomFilter的多个数位组，以及关联的Block的position：</p>
+</li>
+</ul>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">binarySearch</span><span class="params">(<span class="type">byte</span>[][] arr, <span class="type">byte</span>[] key, <span class="type">int</span> offset, <span class="type">int</span> length)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">low</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">high</span> <span class="operator">=</span> arr.length - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (low &lt;= high) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> (low + high) &gt;&gt;&gt; <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// we have to compare in this order, because the comparator order</span></span><br><span class="line">    <span class="comment">// has special logic when the &#x27;left side&#x27; is a special key.</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">cmp</span> <span class="operator">=</span> Bytes.BYTES_RAWCOMPARATOR</span><br><span class="line">        .compare(key, offset, length, arr[mid], <span class="number">0</span>, arr[mid].length);</span><br><span class="line">    <span class="comment">// key lives above the midpoint</span></span><br><span class="line">    <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>)</span><br><span class="line">      low = mid + <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// key lives below the midpoint</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (cmp &lt; <span class="number">0</span>)</span><br><span class="line">      high = mid - <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// BAM. how often does this really happen?</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      <span class="keyword">return</span> mid;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> -(low + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>所以： Get请求根据Bloom Filter进行过滤查找，可分为三步： Key 在BloomIndexBlock 所有BlckKey二分查找到，定位到Bloom Index Entity  &gt; 使用Bloom Index Entity加载对应的位数组 ---&gt; 对key进行Hash Mapping ,对数位组进行查找（! All 1 &#x3D;&#x3D; 存在）</p>
+<h1 id="HFile-基本命令"><a href="#HFile-基本命令" class="headerlink" title="HFile 基本命令"></a>HFile 基本命令</h1><div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">$ hbase hfile</span><br><span class="line"></span><br><span class="line">usage: HFile [-a] [-b] [-e] [-f &lt;arg&gt; | -r &lt;arg&gt;] [-h] [-i] [-k] [-m] [-p]</span><br><span class="line">       [-s] [-v] [-w &lt;arg&gt;]</span><br><span class="line"> -a,--checkfamily         Enable family check</span><br><span class="line"> -b,--printblocks         Print block index meta data</span><br><span class="line"> -e,--printkey            Print keys</span><br><span class="line"> -f,--file &lt;arg&gt;          File to scan. Pass full-path; e.g.</span><br><span class="line">                          hdfs://a:9000/hbase/hbase:meta/12/34</span><br><span class="line"> -h,--printblockheaders   Print block headers <span class="keyword">for</span> each block.</span><br><span class="line"> -i,--checkMobIntegrity   Print all cells whose mob files are missing</span><br><span class="line"> -k,--checkrow            Enable row order check; looks <span class="keyword">for</span> out-of-order</span><br><span class="line">                          keys</span><br><span class="line"> -m,--printmeta           Print meta data of file</span><br><span class="line"> -p,--printkv             Print key/value pairs</span><br><span class="line"> -r,--region &lt;arg&gt;        Region to scan. Pass region name; e.g.</span><br><span class="line">                          <span class="string">&#x27;hbase:meta,,1&#x27;</span></span><br><span class="line"> -s,--stats               Print statistics</span><br><span class="line"> -v,--verbose             Verbose output; emits file and meta data</span><br><span class="line">                          delimiters</span><br><span class="line"> -w,--seekToRow &lt;arg&gt;     Seek to this row and <span class="built_in">print</span> all the kvs <span class="keyword">for</span> this</span><br><span class="line">                          row only</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li>胡争,范欣欣. HBase原理与实践 (Chinese Edition) (p. 150). Kindle 版本.</li>
+</ul>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> HBase HFile 基本概念</li>
+        <li><strong>Author:</strong> Ordiy</li>
+        <li><strong>Created at
+                :</strong> 2021-05-01 18:18:45</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-03-26 09:39:38
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://ordiy.github.io/posts/2021-05-01-hbase-hfile/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/HBase/">#HBase</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/GitBook/">#GitBook</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/posts/2021-04-11-hbase-ycsb-benchamark-test-1/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">HBase2 YCSB benchmark test</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/posts/2021-04-22-zeppelin-inaction-1/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">Zeppelin In Action</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">HBase HFile 基本概念</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HFile-%E7%AE%80%E4%BB%8B"><span class="nav-text">HFile 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HFile-%E7%BB%93%E6%9E%84"><span class="nav-text">HFile 结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HFile-%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84"><span class="nav-text">HFile 逻辑结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HFile-%E7%89%A9%E7%90%86%E7%BB%93%E6%9E%84"><span class="nav-text">HFile 物理结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HFile-V2-feature"><span class="nav-text">HFile V2 feature</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HFile-V3-feature"><span class="nav-text">HFile V3 feature</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HFile-%E7%9A%84Block%E8%AF%B4%E6%98%8E"><span class="nav-text">HFile 的Block说明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HFile-Trailer-Block"><span class="nav-text">HFile Trailer Block</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-Block"><span class="nav-text">Data Block</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bloom-Block-%E4%BB%A5%E5%8F%8A-Bloom-Index-Block%E7%BB%93%E6%9E%84"><span class="nav-text">Bloom Block 以及 Bloom Index Block结构</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HFile-%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="nav-text">HFile 基本命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-text">参考</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ordiy</a>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>

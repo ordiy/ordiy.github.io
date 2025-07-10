@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en,zh-cn,default">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Ordiy">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://ordiy.github.io/posts/2019-01-01-centos7-init-system-2/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Centos7 install and config haproxy notes">
+<meta property="og:url" content="https://ordiy.github.io/posts/2019-01-01-centos7-init-system-2/index.html">
+<meta property="og:site_name" content="Ordiy&#39;s Blog">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ordiy.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2022-01-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-26T09:39:38.221Z">
+<meta property="article:author" content="Ordiy">
+<meta property="article:tag" content="blog">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ordiy.github.io/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Centos7 install and config haproxy notes | Ordiy Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"ordiy.github.io","root":"/","language":["en","zh-cn","default"],"path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"atom-one-light","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/530e8906-4109-4871-b851-3301fee1e1bb.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"The truth sets me free","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ordiy Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/categories"
+                        >
+                            <span>Categories</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">107</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">35</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">91</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Centos7 install and config haproxy notes</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/redefine-avatar.svg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Ordiy</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2022-01-01</span>
+        <span class="mobile">2022-01-01</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-03-26 09:39:38</span>
+            <span class="mobile">2025-03-26 09:39:38</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/blog/">blog</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用haproxy 验证QUICC和gRPC 代理</span><br></pre></td></tr></table></figure></div>
+<p>需要使用的组件和用途</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">certbot 获取CA证书</span><br><span class="line">openssl TLS加密解密组件</span><br><span class="line">haproxy  QUICC和gRPC loadbanlance </span><br><span class="line">nginx  静态html 服务</span><br></pre></td></tr></table></figure></div>
+
+
+<h1 id="certbot-获取证书"><a href="#certbot-获取证书" class="headerlink" title="certbot  获取证书"></a>certbot  获取证书</h1><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#certbot certonly --webroot -w /var/www/html -d www.mydomain.com -d mydomain.com --email &lt;YOUR_EMAIL_ADDRESS&gt; --agree-tos</span><br><span class="line">#certbot certonly  -d www.isun.app -d isun.app --manual --preferred-challenges --email admin@noxftech.com  dns --server https://acme-v02.api.letsencrypt.org/directory</span><br><span class="line"></span><br><span class="line">admin@noxftech.com</span><br><span class="line"></span><br><span class="line"># config txt</span><br><span class="line">dig @8.8.8.8 -t txt  _acme-challenge.isun.app</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 设置renew certbot oxy</span><br><span class="line">vim renew.sh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">crontab -e</span><br><span class="line">0 3 * * * /root/renew.sh &gt; /dev/null 2&gt;&amp;1</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="install-openssl-haproxy"><a href="#install-openssl-haproxy" class="headerlink" title="install  openssl haproxy"></a>install  openssl haproxy</h1><h2 id="install-openssl-1-1-x"><a href="#install-openssl-1-1-x" class="headerlink" title="install openssl 1.1.x"></a>install openssl 1.1.x</h2><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#https://www.osradar.com/how-to-install-the-latest-version-of-openssl-on-centos-7/</span><br><span class="line">wget --no-check-certificate https://ftp.openssl.org/source/old/1.1.1/openssl-1.1.1q.tar.gz </span><br><span class="line"></span><br><span class="line">tar xvf openssl-1.1.1q.tar.gz </span><br><span class="line"></span><br><span class="line">cd openssl-1.1.1q/</span><br><span class="line">./config --prefix=/usr/openssl-1.1.1q shared</span><br><span class="line"># make </span><br><span class="line">make CPU=native USE_PCRE2=1 USE_PCRE2_JIT=1 USE_OPENSSL=1 SSL_LIB=/usr/local/openssl-1.1.1/lib SSL_INC=/usr/local/openssl-1.1.1/include USE_ZLIB=1</span><br><span class="line"></span><br><span class="line"># make install </span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line"># check version </span><br><span class="line">openssl version -a</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="install-haproxy"><a href="#install-haproxy" class="headerlink" title="install haproxy"></a>install haproxy</h2><h3 id="make-install"><a href="#make-install" class="headerlink" title="make install"></a>make install</h3><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sudo yum install -y wget </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">gcc make</span> </span><br><span class="line">yum install gcc openssl-devel readline-devel systemd-devel make pcre-devel</span><br><span class="line">sudo yum install wget -y </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">wget</span>  </span><br><span class="line">wget https://www.haproxy.org/download/2.6/src/haproxy-2.6.6.tar.gz</span><br><span class="line">tar -zxvf haproxy-2.6.6.tar.gz</span><br><span class="line">cd haproxy-2.6.6</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">make</span> </span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># make TARGET=linux2628 CPU=native USE_PCRE2=1 USE_PCRE2_JIT=1 USE_OPENSSL=1 SSL_LIB=/opt/openssl-1.1.1/lib SSL_INC=/opt/openssl-1.1.1/include USE_ZLIB=1</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">make TARGET=linux-glibc USE_QUIC=1 USE_PCRE=1 USE_OPENSSL=1 USE_ZLIB=1 USE_CRYPT_H=1 USE_LIBCRYPT=1 SSL_LIB=/opt/openssl-1.1.1/lib SSL_INC=/opt/openssl-1.1.1/include</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">make with opensslv1.1.1 ,support tls1.3</span> </span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="built_in">sudo</span> make TARGET=linux-glibc  USE_OPENSSL=1 SSL_LIB=/usr/lib SSL_INC=/usr/include USE_ZLIB=1</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">make /usr/openssl-1.1.1q</span> </span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">make TARGET=linux-glibc USE_OPENSSL=1 SSL_LIB=/usr/openssl-1.1.1q/lib SSL_INC=/usr/openssl-1.1.1q/include USE_ZLIB=1</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">make</span> </span><br><span class="line">make TARGET=linux-glibc USE_OPENSSL=1 SSL_LIB=/usr/openssl-1.1.1q/lib SSL_INC=/usr/openssl-1.1.1q/include USE_ZLIB=1</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">解决 error <span class="keyword">while</span> loading shared libraries: libssl.so.1.1: cannot open shared object file: No such file or directory</span></span><br><span class="line">vim ~/.bash_profile</span><br><span class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/openssl-1.1.1q/lib </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">make install</span> </span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line">sudo mkdir -p /etc/haproxy</span><br><span class="line">sudo mkdir -p /var/lib/haproxy </span><br><span class="line">sudo touch /var/lib/haproxy/stats</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">slink</span> </span><br><span class="line">sudo ln -s /usr/local/sbin/haproxy /usr/sbin/haproxy</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">config systemctl</span> </span><br><span class="line">sudo cp ~/haproxy-2.6.6/examples/haproxy.init /etc/init.d/haproxy</span><br><span class="line">sudo chmod 755 /etc/init.d/haproxy</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">config systemctl</span></span><br><span class="line">sudo chkconfig haproxy on</span><br><span class="line">sudo systemctl enable haproxy</span><br><span class="line"></span><br><span class="line">sudo useradd -r haproxy</span><br><span class="line">haproxy -v</span><br><span class="line"><span class="meta prompt_"> </span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">show all module</span> </span><br><span class="line">haproxy -vv</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">check systemctl status ,default not start</span> </span><br><span class="line">sudo systemctl  status haproxy </span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="config-haproxy-cfg-file-example"><a href="#config-haproxy-cfg-file-example" class="headerlink" title="config haproxy.cfg file example"></a>config haproxy.cfg file example</h3><p>haproxy.cfg 普通配置案例：</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">#vim  /etc/haproxy/haproxy.<span class="property">cfg</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">global</span></span><br><span class="line">    log         <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> local3 info</span><br><span class="line">    chroot      /<span class="keyword">var</span>/lib/haproxy</span><br><span class="line">    maxconn     <span class="number">512</span></span><br><span class="line">    user        haproxy</span><br><span class="line">    group       haproxy</span><br><span class="line">    daemon</span><br><span class="line">    pidfile     /<span class="keyword">var</span>/run/haproxy.<span class="property">pid</span></span><br><span class="line">   # <span class="keyword">do</span> not keep old processes longer than that after a reload</span><br><span class="line">   hard-stop-after 5m</span><br><span class="line">   # <span class="title class_">The</span> command-line-<span class="title function_">interface</span> (<span class="variable constant_">CLI</span>) used by the admin, by provisionning</span><br><span class="line">   # tools, and to transfer sockets during reloads</span><br><span class="line">   stats socket /<span class="keyword">var</span>/run/haproxy-svc1.<span class="property">sock</span> level admin mode <span class="number">600</span> user haproxy expose-fd listeners</span><br><span class="line">   stats timeout 1h</span><br><span class="line">   # intermediate security <span class="keyword">for</span> <span class="variable constant_">SSL</span>, <span class="keyword">from</span> <span class="attr">https</span>:<span class="comment">//ssl-config.mozilla.org/</span></span><br><span class="line">   ssl-<span class="keyword">default</span>-bind-ciphers <span class="attr">TLS_AES_128_GCM_SHA256</span>:<span class="attr">TLS_AES_256_GCM_SHA384</span>:<span class="attr">TLS_CHACHA20_POLY1305_SHA256</span>:<span class="variable constant_">ECDHE</span>-<span class="variable constant_">ECDSA</span>-<span class="title class_">AES128</span>-<span class="variable constant_">GCM</span>-<span class="title class_">SHA256</span>:<span class="variable constant_">ECDHE</span>-<span class="variable constant_">RSA</span>-<span class="title class_">AES128</span>-<span class="variable constant_">GCM</span>-<span class="title class_">SHA256</span>:<span class="variable constant_">ECDHE</span>-<span class="variable constant_">ECDSA</span>-<span class="title class_">AES256</span>-<span class="variable constant_">GCM</span>-<span class="title class_">SHA384</span>:<span class="variable constant_">ECDHE</span>-<span class="variable constant_">RSA</span>-<span class="title class_">AES256</span>-<span class="variable constant_">GCM</span>-<span class="title class_">SHA384</span>:<span class="variable constant_">ECDHE</span>-<span class="variable constant_">ECDSA</span>-<span class="title class_">CHACHA20</span>-<span class="title class_">POLY1305</span>:<span class="variable constant_">ECDHE</span>-<span class="variable constant_">RSA</span>-<span class="title class_">CHACHA20</span>-<span class="title class_">POLY1305</span>:<span class="variable constant_">DHE</span>-<span class="variable constant_">RSA</span>-<span class="title class_">AES128</span>-<span class="variable constant_">GCM</span>-<span class="title class_">SHA256</span>:<span class="variable constant_">DHE</span>-<span class="variable constant_">RSA</span>-<span class="title class_">AES256</span>-<span class="variable constant_">GCM</span>-<span class="title class_">SHA384</span></span><br><span class="line">   ssl-<span class="keyword">default</span>-bind-options prefer-client-ciphers no-sslv3 no-tlsv10 no-tlsv11  no-tls-tickets</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">    maxconn <span class="number">150</span></span><br><span class="line">    log <span class="variable language_">global</span></span><br><span class="line">    mode tcp</span><br><span class="line">    option dontlognull</span><br><span class="line">    timeout connect 30s</span><br><span class="line">    timeout client 900s</span><br><span class="line">    timeout server 900s</span><br><span class="line">    timeout tunnel  600s</span><br><span class="line">    option srvtcpka #tcp mode, server side send  keep alived</span><br><span class="line">    option tcpka   #tcp keep alved</span><br><span class="line">    timeout http-request 5s #slow request</span><br><span class="line">    http-reuse aggressive</span><br><span class="line"></span><br><span class="line">frontend www</span><br><span class="line">   mode http</span><br><span class="line">   maxconn <span class="number">10</span></span><br><span class="line">   bind *:<span class="number">80</span>,[::]:<span class="number">80</span> v6only</span><br><span class="line">   http-request redirect scheme https unless &#123; ssl_fc &#125;</span><br><span class="line"></span><br><span class="line">frontend tls-inbound</span><br><span class="line">    bind *:<span class="number">443</span>,[::]:<span class="number">443</span> v6only ssl crt /etc/letsencrypt/live/www.<span class="property">isun</span>.<span class="property">app</span>/www_isun_app_crt.<span class="property">pem</span></span><br><span class="line">    mode http</span><br><span class="line">    maxconn <span class="number">10</span></span><br><span class="line">    http-after-response set-header <span class="title class_">Strict</span>-<span class="title class_">Transport</span>-<span class="title class_">Security</span> <span class="string">&quot;max-age=31536000&quot;</span></span><br><span class="line">    # silently ignore connect probes and pre-connect without request</span><br><span class="line">    #option http-ignore-probes</span><br><span class="line">    # pass client<span class="string">&#x27;s IP address to the server and prevent against attempts</span></span><br><span class="line"><span class="string">    # to inject bad contents</span></span><br><span class="line"><span class="string">    #http-request del-header x-forwarded-for</span></span><br><span class="line"><span class="string">    option forwardfor</span></span><br><span class="line"><span class="string">    #enable HTTP compression of text contents</span></span><br><span class="line"><span class="string">    compression algo deflate gzip</span></span><br><span class="line"><span class="string">    compression type text/ application/javascript application/xhtml+xml image/x-icon</span></span><br><span class="line"><span class="string">    # enable HTTP caching of any cacheable content</span></span><br><span class="line"><span class="string">    tcp-request inspect-delay 10s</span></span><br><span class="line"><span class="string">    tcp-request content accept if HTTP</span></span><br><span class="line"><span class="string">    default_backend web-site</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">frontend admin_stats</span></span><br><span class="line"><span class="string">    mode http</span></span><br><span class="line"><span class="string">    bind *:8085 ssl crt /etc/letsencrypt/live/www.isun.app/www_isun_app_crt.pem  alpn h2,http/1.1</span></span><br><span class="line"><span class="string">    option httpclose</span></span><br><span class="line"><span class="string">    option forwardfor</span></span><br><span class="line"><span class="string">    option httplog</span></span><br><span class="line"><span class="string">    maxconn 10</span></span><br><span class="line"><span class="string">    default_backend stats_web</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">backend stats_web</span></span><br><span class="line"><span class="string">   mode http</span></span><br><span class="line"><span class="string">   stats enable</span></span><br><span class="line"><span class="string">   stats refresh 30s</span></span><br><span class="line"><span class="string">   stats uri /admin</span></span><br><span class="line"><span class="string">   stats auth admin:123123_pwdLogin</span></span><br><span class="line"><span class="string">   stats admin if TRUE</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">backend web-site</span></span><br><span class="line"><span class="string">   mode http</span></span><br><span class="line"><span class="string">   server s1 127.0.0.1:8085 check inter 12000</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure></div>
+<p>启动服务</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start haproxy</span><br><span class="line">sudo systemctl status haproxy</span><br></pre></td></tr></table></figure></div>
+<p>测试服务</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -i -XGET &#x27;https://127.0.0.1/admin</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="haprox-软重启"><a href="#haprox-软重启" class="headerlink" title="haprox 软重启"></a>haprox 软重启</h3><p>aproxy 支持一种软重载，避免TCP长连接在更改配置时断开（ 意味着更好的性能）</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 配置</span><br><span class="line">global</span><br><span class="line">   log         127.0.0.1 local2</span><br><span class="line">   chroot      /var/lib/haproxy</span><br><span class="line">   pidfile     /var/run/haproxy.pid</span><br><span class="line">   maxconn     4096</span><br><span class="line">   #user        haproxy</span><br><span class="line">   #group       haproxy</span><br><span class="line">   daemon</span><br><span class="line">   stats socket /var/lib/haproxy/stats mode 600 expose-fd listeners level user</span><br><span class="line">   #debug</span><br></pre></td></tr></table></figure></div>
+<p>使用：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#/var/run/haproxy.pid</span><br><span class="line">#sudo time haproxy -f /etc/haproxy/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid) -x /var/lib/haproxy/stats</span><br><span class="line">sudo time haproxy -f /etc/haproxy/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid) </span><br></pre></td></tr></table></figure></div>
+<p>参考 <a class="link"   target="_blank" rel="noopener" href="https://www.haproxy.com/blog/hitless-reloads-with-haproxy-howto/" >hitless-reloads-with-haproxy-howto<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<h3 id="h2c-使用-noTLS"><a href="#h2c-使用-noTLS" class="headerlink" title="h2c 使用(noTLS)"></a>h2c 使用(noTLS)</h3><p>Enable HTTP&#x2F;2 over HTTP (h2c)To enable HTTP&#x2F;2 between clients and HAProxy without using TLS, use the proto parameter to announce support for it. This method does not allow you to support multiple versions of HTTP simultaneously.
+gRPC 使用HTTP2作为通信协议，可使用HTTP&#x2F;2 或者  HTTP (h2c) ,可以使用此方法实现 haproxy proxy gRPC。</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">global</span></span><br><span class="line">    # haproxy multiThread config </span><br><span class="line">    nbproc <span class="number">4</span></span><br><span class="line">    cpu-map <span class="number">1</span> <span class="number">0</span></span><br><span class="line">    cpu-map <span class="number">2</span> <span class="number">1</span></span><br><span class="line">    cpu-map <span class="number">3</span> <span class="number">2</span></span><br><span class="line">    cpu-map <span class="number">4</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">    mode  http</span><br><span class="line"></span><br><span class="line">frontend ods</span><br><span class="line">    bind *:<span class="number">9093</span> proto h2</span><br><span class="line">    default_backend ods_gw_servies</span><br><span class="line"></span><br><span class="line">backend ods_gw_servies</span><br><span class="line">   balance <span class="keyword">static</span>-rr</span><br><span class="line">   option tcp-check</span><br><span class="line">   server server2 <span class="number">172.16</span><span class="number">.116</span><span class="number">.206</span>:<span class="number">9093</span> check  proto h2</span><br><span class="line">   server server3 <span class="number">172.16</span><span class="number">.116</span><span class="number">.95</span>:<span class="number">9093</span> check  proto h2</span><br><span class="line"></span><br><span class="line"># monitor </span><br><span class="line">frontend stats</span><br><span class="line">    mode http</span><br><span class="line">    bind *:<span class="number">8084</span></span><br><span class="line">    use_backend demo <span class="keyword">if</span> <span class="variable constant_">HTTP</span></span><br><span class="line"></span><br><span class="line">backend demo</span><br><span class="line">   mode http</span><br><span class="line">   stats enable</span><br><span class="line">   stats uri /stats</span><br><span class="line">   stats auth <span class="attr">admin</span>:pwd@helloWorld</span><br></pre></td></tr></table></figure></div>
+
+
+<h2 id="QUICC配置"><a href="#QUICC配置" class="headerlink" title="QUICC配置"></a>QUICC配置</h2><div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 待补充 <span class="variable constant_">TODO</span> </span><br><span class="line"><span class="title class_">One</span> front that made impressive progress over the last few months is <span class="variable constant_">QUIC</span>. <span class="title class_">While</span> a few months ago we were counting the number <span class="keyword">of</span> red boxes on the interop tests at <span class="attr">https</span>:<span class="comment">//interop.seemann.io/ to figure what to work on as a top priority, now we&#x27;re rather counting the number of tests that report a full-green state, and haproxy is now on par with other servers in these tests. Thus the idea emerged, in order to continue to make progress on this front, to start to deploy QUIC on haproxy.org so that interoperability issues with browsers and real-world traffic can be spotted. A few attempts were made and already revealed issues so for now it&#x27;s disabled again. Be prepared to possibly observe a few occasional hiccups when visiting the site (and if so, please do complain to us). The range of possible issues would likely be frozen transfers and truncated responses, but these should not happen.</span></span><br><span class="line"><span class="title class_">From</span> a technical point, the way it<span class="string">&#x27;s done is by having a separate haproxy process listening to QUIC on UDP port 1443, and forwarding HTTP requests to the existing process. The main process constantly checks the QUIC one, and when it&#x27;</span>s seen <span class="keyword">as</span> operational, it appends an <span class="title class_">Alt</span>-<span class="title class_">Svc</span> header that indicates the client that an <span class="variable constant_">HTTP</span>/<span class="number">3</span> implementation is available on port <span class="number">1443</span>, and that <span class="variable language_">this</span> announce is valid <span class="keyword">for</span> a short <span class="title function_">time</span> (we<span class="string">&#x27;ll leave it to one minute only so that issues can resolve quickly, but for now it&#x27;</span>s only 10s so that quick tests cause no harm):</span><br><span class="line"></span><br><span class="line">    http-response add-header alt-svc <span class="string">&#x27;h3=&quot;:1443&quot;; ma=60&#x27;</span> <span class="keyword">if</span> &#123; <span class="title function_">var</span>(txn.<span class="property">host</span>) -m end haproxy.<span class="property">org</span> &#125; &#123; <span class="title function_">nbsrv</span>(quic) gt <span class="number">0</span> &#125;</span><br><span class="line"><span class="title class_">As</span> such, compatible browsers are free to <span class="keyword">try</span> to connect there or not. <span class="title class_">Other</span> <span class="title function_">tools</span> (such <span class="keyword">as</span> git clone) will not use it. <span class="title class_">For</span> those impatient to test it, the <span class="variable constant_">QUIC</span> process<span class="string">&#x27; status is reported at the bottom of the stats page here: http://stats.haproxy.org/. The &quot;quic&quot; socket in the frontend at the top reports the total traffic received from the QUIC process, so if you&#x27;</span>re seeing it increase <span class="keyword">while</span> you reload the page it<span class="string">&#x27;s likely that you&#x27;</span>re <span class="keyword">using</span> <span class="variable constant_">QUIC</span> to read it. <span class="title class_">In</span> <span class="title class_">Firefox</span> I<span class="string">&#x27;m having this little plugin loaded: https://addons.mozilla.org/en-US/firefox/addon/http2-indicator/. It displays a small flash on the URL bar with different colors depending on the protocol used to load the page (H1/SPDY/H2/H3). When that works it&#x27;</span>s <span class="title function_">green</span> (<span class="variable constant_">H3</span>), otherwise it<span class="string">&#x27;s blue (H2). For Chrome there is HTTP Indicator which does the same but displays an orange symbol when using H3. Chrome only accepts H3 on port 443 (which we enabled as well for it). Note that H2 and H3 are only served when the site is browsed in HTTPS at https://haproxy.org/.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">At this point I&#x27;</span>d still say <span class="string">&quot;do not reproduce these experiments at home&quot;</span>. <span class="title class_">Amaury</span> and <span class="title class_">Fred</span> are still watching the process<span class="string">&#x27; traces very closely to spot bugs and stop it as soon as a problem is detected. But it&#x27;</span>s still too early <span class="keyword">for</span> being operated by non-developers. <span class="title class_">The</span> hope is that by <span class="number">2.6</span> we<span class="string">&#x27;ll reach the point where enthousiasts can deploy a few instances on not-too-sensitive sites with sufficient confidence and a little dose of monitoring.</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="配置syslog"><a href="#配置syslog" class="headerlink" title="配置syslog"></a>配置syslog</h3><p>haproxy 使用配置syslog 记录binlog 日志：</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 配置 syslog </span><br><span class="line">vim /etc/rsyslog.<span class="property">conf</span></span><br><span class="line"></span><br><span class="line"># <span class="title class_">Provides</span> <span class="variable constant_">UDP</span> syslog reception</span><br><span class="line">$ModLoad imudp</span><br><span class="line">$UDPServerRun <span class="number">514</span></span><br><span class="line">local3.* <span class="regexp">/var/</span>log/haproxy.<span class="property">log</span> </span><br><span class="line">  </span><br><span class="line"># 重启syslog </span><br><span class="line">sudo systemctl restart rsyslog</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<h3 id="配置-prometheus-监控"><a href="#配置-prometheus-监控" class="headerlink" title="配置 prometheus 监控"></a>配置 prometheus 监控</h3><div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable constant_">TODO</span> 待补充</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h2><p>nginx 配置静态文件服务：</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install  nginx  -y </span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl enable haproxy</span><br><span class="line"></span><br><span class="line">#</span><br><span class="line">sudo systemctl restart nginx</span><br></pre></td></tr></table></figure></div>
+
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a class="link"   target="_blank" rel="noopener" href="https://upcloud.com/resources/tutorials/haproxy-load-balancer-centos" >https://upcloud.com/resources/tutorials/haproxy-load-balancer-centos<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br><a class="link"   target="_blank" rel="noopener" href="https://blog.51cto.com/yanconggod/2062213" >https://blog.51cto.com/yanconggod/2062213<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br><a class="link"   target="_blank" rel="noopener" href="https://docs.haproxy.org/2.6/intro.html" >https://docs.haproxy.org/2.6/intro.html<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br><a class="link"   target="_blank" rel="noopener" href="https://www.osradar.com/how-to-install-the-latest-version-of-openssl-on-centos-7/" >https://www.osradar.com/how-to-install-the-latest-version-of-openssl-on-centos-7/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>   </p>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Centos7 install and config haproxy notes</li>
+        <li><strong>Author:</strong> Ordiy</li>
+        <li><strong>Created at
+                :</strong> 2022-01-01 00:00:00</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-03-26 09:39:38
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://ordiy.github.io/posts/2019-01-01-centos7-init-system-2/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/blog/">#blog</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/posts/2022-01-01-iperf-network-benchmart/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">iPerf3 测试网络带宽-benchmark test</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/posts/2021-12-02-xz-compress-util/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">xz compress util</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">Centos7 install and config haproxy notes</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9C%80%E6%B1%82"><span class="nav-text">需求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#certbot-%E8%8E%B7%E5%8F%96%E8%AF%81%E4%B9%A6"><span class="nav-text">certbot  获取证书</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#install-openssl-haproxy"><span class="nav-text">install  openssl haproxy</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#install-openssl-1-1-x"><span class="nav-text">install openssl 1.1.x</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#install-haproxy"><span class="nav-text">install haproxy</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#make-install"><span class="nav-text">make install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#config-haproxy-cfg-file-example"><span class="nav-text">config haproxy.cfg file example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#haprox-%E8%BD%AF%E9%87%8D%E5%90%AF"><span class="nav-text">haprox 软重启</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#h2c-%E4%BD%BF%E7%94%A8-noTLS"><span class="nav-text">h2c 使用(noTLS)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QUICC%E9%85%8D%E7%BD%AE"><span class="nav-text">QUICC配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEsyslog"><span class="nav-text">配置syslog</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-prometheus-%E7%9B%91%E6%8E%A7"><span class="nav-text">配置 prometheus 监控</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx"><span class="nav-text">nginx</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-text">参考</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ordiy</a>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>

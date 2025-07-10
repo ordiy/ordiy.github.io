@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en,zh-cn,default">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Ordiy">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://ordiy.github.io/posts/2025-flink-session-mode-cluster-install/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flink standalone session cluster 安装与配置 - flink - nginx - log">
+<meta property="og:url" content="https://ordiy.github.io/posts/2025-flink-session-mode-cluster-install/index.html">
+<meta property="og:site_name" content="Ordiy&#39;s Blog">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ordiy.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2025-01-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-10T03:00:39.834Z">
+<meta property="article:author" content="Ordiy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ordiy.github.io/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Flink standalone session cluster 安装与配置 - flink - nginx - log | Ordiy Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"ordiy.github.io","root":"/","language":["en","zh-cn","default"],"path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"atom-one-light","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/530e8906-4109-4871-b851-3301fee1e1bb.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"The truth sets me free","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ordiy Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/categories"
+                        >
+                            <span>Categories</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">107</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">35</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">91</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Flink standalone session cluster 安装与配置 - flink - nginx - log</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/redefine-avatar.svg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Ordiy</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-01-01</span>
+        <span class="mobile">2025-01-01</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-07-10 03:39</span>
+            <span class="mobile">2025-07-10 03:39</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/tech/data/">data</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h1 id="JDK-11-Flink-1-17"><a href="#JDK-11-Flink-1-17" class="headerlink" title="JDK 11 + Flink 1.17"></a>JDK 11 + Flink 1.17</h1><h2 id="Flink-程序结构"><a href="#Flink-程序结构" class="headerlink" title="Flink 程序结构"></a>Flink 程序结构</h2><p>参考文档：
+<a class="link"   target="_blank" rel="noopener" href="https://nightlies.apache.org/flink/flink-docs-release-1.17/zh/docs/dev/datastream/overview/#anatomy-of-a-flink-program" >https://nightlies.apache.org/flink/flink-docs-release-1.17/zh/docs/dev/datastream/overview/#anatomy-of-a-flink-program<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<h1 id="Flink-部署"><a href="#Flink-部署" class="headerlink" title="Flink 部署"></a>Flink 部署</h1><h2 id="Session-mode"><a href="#Session-mode" class="headerlink" title="Session mode"></a>Session mode</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/2024/202505121153523.png"
+                     
+                ></p>
+<h3 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h3><p>运行特征：
+集群生命周期：在 Flink Session 集群中，客户端连接到一个预先存在的、长期运行的集群，该集群可以接受多个作业提交。即使所有作业完成后，集群（和 JobManager）仍将继续运行直到手动停止 session 为止。因此，Flink Session 集群的寿命不受任何 Flink 作业寿命的约束。</p>
+<p>资源隔离：TaskManager slot 由 ResourceManager 在提交作业时分配，并在作业完成时释放。由于所有作业都共享同一集群，因此在集群资源方面存在一些竞争 — 例如提交工作阶段的网络带宽。此共享设置的局限性在于，如果 TaskManager 崩溃，则在此 TaskManager 上运行 task 的所有作业都将失败；类似的，如果 JobManager 上发生一些致命错误，它将影响集群中正在运行的所有作业。</p>
+<p>其他注意事项：拥有一个预先存在的集群可以节省大量时间申请资源和启动 TaskManager。有种场景很重要，作业执行时间短并且启动时间长会对端到端的用户体验产生负面的影响 — 就像对简短查询的交互式分析一样，希望作业可以使用现有资源快速执行计算。</p>
+<p>在 Session 模式下，集群生命周期独立于集群上运行的任何作业 并且资源在所有作业之间共享。应用程序模式为每个应用程序创建一个会话集群，并在集群上执行应用程序的方法。 因此，它具有更好的资源隔离，因为资源仅由从单个方法启动的作业使用。 这是以为每个应用程序启动专用集群为代价的。</p>
+<p>package加载：
+当Flink Session集群启动时，JobManager和TaskManager由Java classpath中的Flink框架类（Flink framework classes）进行启动加载。而通过session提交（REST或命令行方式）的job或应用程序由FlinkUserCodeClassLoader进行加载。</p>
+<h1 id="测试程序"><a href="#测试程序" class="headerlink" title="测试程序"></a>测试程序</h1><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># </span><br><span class="line">$FLINK_HOME/bin/flink run  -m 127.0.0.1:8081 -c org.apache.flink.examples.java.wordcount.WordCount   $FLINK_HOME/examples/batch/WordCount.jar --input=/data/flink-task-application/tmp_src/input.txt --output=/data/flink-task-application/tmp_src/out.txt</span><br></pre></td></tr></table></figure></div>
+
+<p>测试效果</p>
+<h1 id="flink-总内存大小-Total-Process-Memory"><a href="#flink-总内存大小-Total-Process-Memory" class="headerlink" title="flink 总内存大小 Total Process Memory"></a>flink 总内存大小 Total Process Memory</h1><p>jobmanager.memory.flink.size</p>
+<h1 id="检查点存储目录（本地文件系统或-HDFS-S3）"><a href="#检查点存储目录（本地文件系统或-HDFS-S3）" class="headerlink" title="检查点存储目录（本地文件系统或 HDFS&#x2F;S3）"></a>检查点存储目录（本地文件系统或 HDFS&#x2F;S3）</h1><p>state.checkpoints.dir: s3p:&#x2F;&#x2F;s3_path_xxx&#x2F;pro-oci-flink-cluster&#x2F;completed-jobs&#x2F;</p>
+<p>#&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<h1 id="Fault-tolerance-and-checkpointing"><a href="#Fault-tolerance-and-checkpointing" class="headerlink" title="Fault tolerance and checkpointing"></a>Fault tolerance and checkpointing</h1><p>#&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p>state.backend.type: rocksdb</p>
+<h1 id="RocksDB-本地数据存储目录（每个-TaskManager）"><a href="#RocksDB-本地数据存储目录（每个-TaskManager）" class="headerlink" title="RocksDB 本地数据存储目录（每个 TaskManager）"></a>RocksDB 本地数据存储目录（每个 TaskManager）</h1><p>state.backend.rocksdb.localdir: &#x2F;data&#x2F;flink-data&#x2F;rocksdb&#x2F;data</p>
+<h1 id="（可选）启用检查点，设置间隔（毫秒）"><a href="#（可选）启用检查点，设置间隔（毫秒）" class="headerlink" title="（可选）启用检查点，设置间隔（毫秒）"></a>（可选）启用检查点，设置间隔（毫秒）</h1><p>execution.checkpointing.interval: 60000</p>
+<h1 id="（可选）优化-RocksDB-性能"><a href="#（可选）优化-RocksDB-性能" class="headerlink" title="（可选）优化 RocksDB 性能"></a>（可选）优化 RocksDB 性能</h1><p>state.backend.rocksdb.memory-managed: true
+state.backend.rocksdb.block-cache-size: 256m
+state.backend.rocksdb.write-cache-size: 64m
+state.backend.rocksdb.compaction.style: leveled
+state.backend.rocksdb.thread.num: 4</p>
+<p>#&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<h1 id="Rest-web-frontend"><a href="#Rest-web-frontend" class="headerlink" title="Rest &amp; web frontend"></a>Rest &amp; web frontend</h1><p>#&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<h1 id="The-port-to-which-the-REST-client-connects-to-If-rest-bind-port-has"><a href="#The-port-to-which-the-REST-client-connects-to-If-rest-bind-port-has" class="headerlink" title="The port to which the REST client connects to. If rest.bind-port has"></a>The port to which the REST client connects to. If rest.bind-port has</h1><h1 id="not-been-specified-then-the-server-will-bind-to-this-port-as-well"><a href="#not-been-specified-then-the-server-will-bind-to-this-port-as-well" class="headerlink" title="not been specified, then the server will bind to this port as well."></a>not been specified, then the server will bind to this port as well.</h1><h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>rest.port: 18081</p>
+<h1 id="The-address-to-which-the-REST-client-will-connect-to"><a href="#The-address-to-which-the-REST-client-will-connect-to" class="headerlink" title="The address to which the REST client will connect to"></a>The address to which the REST client will connect to</h1><h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><p>rest.address: 10.21.100.85</p>
+<h1 id="Port-range-for-the-REST-and-web-server-to-bind-to"><a href="#Port-range-for-the-REST-and-web-server-to-bind-to" class="headerlink" title="Port range for the REST and web server to bind to."></a>Port range for the REST and web server to bind to.</h1><h1 id="-2"><a href="#-2" class="headerlink" title=""></a></h1><p>#rest.bind-port: 8080-8090</p>
+<h1 id="The-address-that-the-REST-web-server-binds-to"><a href="#The-address-that-the-REST-web-server-binds-to" class="headerlink" title="The address that the REST &amp; web server binds to"></a>The address that the REST &amp; web server binds to</h1><h1 id="By-default-this-is-localhost-which-prevents-the-REST-web-server-from"><a href="#By-default-this-is-localhost-which-prevents-the-REST-web-server-from" class="headerlink" title="By default, this is localhost, which prevents the REST &amp; web server from"></a>By default, this is localhost, which prevents the REST &amp; web server from</h1><h1 id="being-able-to-communicate-outside-of-the-machine-container-it-is-running-on"><a href="#being-able-to-communicate-outside-of-the-machine-container-it-is-running-on" class="headerlink" title="being able to communicate outside of the machine&#x2F;container it is running on."></a>being able to communicate outside of the machine&#x2F;container it is running on.</h1><h1 id="-3"><a href="#-3" class="headerlink" title=""></a></h1><h1 id="To-enable-this-set-the-bind-address-to-one-that-has-access-to-outside-facing"><a href="#To-enable-this-set-the-bind-address-to-one-that-has-access-to-outside-facing" class="headerlink" title="To enable this, set the bind address to one that has access to outside-facing"></a>To enable this, set the bind address to one that has access to outside-facing</h1><h1 id="network-interface-such-as-0-0-0-0"><a href="#network-interface-such-as-0-0-0-0" class="headerlink" title="network interface, such as 0.0.0.0."></a>network interface, such as 0.0.0.0.</h1><h1 id="-4"><a href="#-4" class="headerlink" title=""></a></h1><p>rest.bind-address: 0.0.0.0</p>
+<p>#&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<h1 id="Fault-tolerance-and-checkpointing-1"><a href="#Fault-tolerance-and-checkpointing-1" class="headerlink" title="Fault tolerance and checkpointing"></a>Fault tolerance and checkpointing</h1><p>#&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p>web.submit.enable: false</p>
+<p>web.cancel.enable: true</p>
+<p>#&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<h1 id="Advanced"><a href="#Advanced" class="headerlink" title="Advanced"></a>Advanced</h1><p>#&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p>io.tmp.dirs: &#x2F;data&#x2F;flink-data&#x2F;tmp</p>
+<p>#&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<h1 id="HistoryServer"><a href="#HistoryServer" class="headerlink" title="HistoryServer"></a>HistoryServer</h1><p>#&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p>jobmanager.archive.fs.dir: s3p:&#x2F;&#x2F;s3_path_xxx&#x2F;pro-oci-flink-cluster&#x2F;completed-jobs&#x2F;</p>
+<h1 id="The-address-under-which-the-web-based-HistoryServer-listens"><a href="#The-address-under-which-the-web-based-HistoryServer-listens" class="headerlink" title="The address under which the web-based HistoryServer listens."></a>The address under which the web-based HistoryServer listens.</h1><p>historyserver.web.address: 0.0.0.0</p>
+<h1 id="The-port-under-which-the-web-based-HistoryServer-listens"><a href="#The-port-under-which-the-web-based-HistoryServer-listens" class="headerlink" title="The port under which the web-based HistoryServer listens."></a>The port under which the web-based HistoryServer listens.</h1><p>historyserver.web.port: 8082</p>
+<h1 id="Comma-separated-list-of-directories-to-monitor-for-completed-jobs"><a href="#Comma-separated-list-of-directories-to-monitor-for-completed-jobs" class="headerlink" title="Comma separated list of directories to monitor for completed jobs."></a>Comma separated list of directories to monitor for completed jobs.</h1><p>historyserver.archive.fs.dir: s3p:&#x2F;&#x2F;s3_path_xxx&#x2F;pro-oci-flink-cluster&#x2F;historyserver-archive-fs-dir&#x2F;</p>
+<h1 id="Interval-in-milliseconds-for-refreshing-the-monitored-directories"><a href="#Interval-in-milliseconds-for-refreshing-the-monitored-directories" class="headerlink" title="Interval in milliseconds for refreshing the monitored directories."></a>Interval in milliseconds for refreshing the monitored directories.</h1><p>#historyserver.archive.fs.refresh-interval: 10000</p>
+<p>s3.access-key: xxxx
+s3.secret-key: xxxx</p>
+<p>jobmanager.rpc.address: 10.21.100.85
+jobmanager.rpc.port: 6123
+jobmanager.bind-host: 0.0.0.0</p>
+<p>taskmanager.bind-host: 0.0.0.0
+taskmanager.memory.process.size: 50gb
+taskmanager.numberOfTaskSlots: 64
+parallelism.default: 8</p>
+<p>jobmanager.execution.failover-strategy: region
+rest.port: 8081
+rest.address: 10.21.100.190
+#rest.bind-address: 10.21.100.190</p>
+<p>jobmanager.archive.fs.dir: &#x2F;data&#x2F;jobmanager-task
+io.tmp.dirs: &#x2F;data&#x2F;flink-data&#x2F;</p>
+<p>blob.server.port: 6124
+query.server.port: 6125</p>
+<h1 id="启用-ZooKeeper-HA"><a href="#启用-ZooKeeper-HA" class="headerlink" title="启用 ZooKeeper HA"></a>启用 ZooKeeper HA</h1><p>high-availability: zookeeper</p>
+<h1 id="ZooKeeper-集群地址"><a href="#ZooKeeper-集群地址" class="headerlink" title="ZooKeeper 集群地址"></a>ZooKeeper 集群地址</h1><p>high-availability.zookeeper.quorum: 10.21.100.88:2181,10.21.100.46:2181,10.21.100.211:2181</p>
+<h1 id="HA-元数据存储路径（S3）"><a href="#HA-元数据存储路径（S3）" class="headerlink" title="HA 元数据存储路径（S3）"></a>HA 元数据存储路径（S3）</h1><p>high-availability.storageDir: s3p:&#x2F;&#x2F;s3_path_xxx&#x2F;pro-oci-flink-cluster&#x2F;flink-ha&#x2F;</p>
+<h1 id="ZooKeeper-根路径（可选，隔离-Flink-数据）"><a href="#ZooKeeper-根路径（可选，隔离-Flink-数据）" class="headerlink" title="ZooKeeper 根路径（可选，隔离 Flink 数据）"></a>ZooKeeper 根路径（可选，隔离 Flink 数据）</h1><p>high-availability.zookeeper.path.root: &#x2F;flink</p>
+<h1 id="集群唯一标识（避免多集群冲突）"><a href="#集群唯一标识（避免多集群冲突）" class="headerlink" title="集群唯一标识（避免多集群冲突）"></a>集群唯一标识（避免多集群冲突）</h1><p>high-availability.cluster-id: flink-session-cluster-oci-01</p>
+<h1 id="flink-oci-01-flink-session-cluster-01-as-Zookeeper-namespace-high-availability-zookeeper-path-root-high-availability-cluster-id"><a href="#flink-oci-01-flink-session-cluster-01-as-Zookeeper-namespace-high-availability-zookeeper-path-root-high-availability-cluster-id" class="headerlink" title="&#39;&#x2F;flink-oci-01&#x2F;flink-session-cluster-01&#39; as Zookeeper namespace.  ${high-availability.zookeeper.path.root} + ${high-availability.cluster-id}"></a>&#39;&#x2F;flink-oci-01&#x2F;flink-session-cluster-01&#39; as Zookeeper namespace.  ${high-availability.zookeeper.path.root} + ${high-availability.cluster-id}</h1><h1 id="ha"><a href="#ha" class="headerlink" title="ha"></a>ha</h1><p>high-availability.type: zookeeper
+high-availability.storageDir: hdfs:&#x2F;&#x2F;&#x2F;flink&#x2F;ha&#x2F;
+high-availability.zookeeper.quorum: 10.21.100.88:2181,10.21.100.46:2181,10.21.100.211:2181</p>
+<p>high-availability.zookeeper.path.root: </p>
+<p>metrics.reporter.prom.factory.class: org.apache.flink.metrics.prometheus.PrometheusReporterFactory</p>
+<p>&#x3D;&#x3D;&#x3D;&gt;</p>
+<p>bash -c &#39; cat &gt; conf&#x2F;flink-conf.yaml &lt;&lt; EOF</p>
+<p>s3.access-key: xxx
+s3.secret-key: xxxx</p>
+<p>jobmanager.rpc.address: 10.21.100.45
+jobmanager.rpc.port: 6123
+jobmanager.bind-host: 0.0.0.0</p>
+<p>#flink 进程总内存
+jobmanager.memory.process.size: 11g
+#flink 总内存大小 Total Process Memory
+jobmanager.memory.flink.size: 6g
+jobmanager.memory.jvm-metaspace.size: 384m
+jobmanager.memory.jvm-overhead: 1g
+jobmanager.memory.off-heap.size: 128m  # 默认值</p>
+<p>taskmanager.bind-host: 0.0.0.0
+taskmanager.memory.process.size: 26g
+taskmanager.numberOfTaskSlots: 8
+parallelism.default: 8</p>
+<p>jobmanager.execution.failover-strategy: region</p>
+<p>rest.port: 8081
+rest.address: 10.21.100.45</p>
+<p>jobmanager.archive.fs.dir: &#x2F;data&#x2F;jobmanager-task
+io.tmp.dirs: &#x2F;data&#x2F;flink-data&#x2F;</p>
+<p>blob.server.port: 6124
+query.server.port: 6125</p>
+<h1 id="启用-ZooKeeper-HA-1"><a href="#启用-ZooKeeper-HA-1" class="headerlink" title="启用 ZooKeeper HA"></a>启用 ZooKeeper HA</h1><p>high-availability: zookeeper</p>
+<h1 id="ZooKeeper-集群地址-1"><a href="#ZooKeeper-集群地址-1" class="headerlink" title="ZooKeeper 集群地址"></a>ZooKeeper 集群地址</h1><p>high-availability.zookeeper.quorum: 10.21.100.88:2181,10.21.100.46:2181,10.21.100.211:2181</p>
+<h1 id="HA-元数据存储路径（S3）-1"><a href="#HA-元数据存储路径（S3）-1" class="headerlink" title="HA 元数据存储路径（S3）"></a>HA 元数据存储路径（S3）</h1><p>high-availability.storageDir: s3p:&#x2F;&#x2F;s3_path_xxx&#x2F;pro-oci-flink-cluster&#x2F;flink-ha&#x2F;</p>
+<h1 id="ZooKeeper-根路径（可选，隔离-Flink-数据）-1"><a href="#ZooKeeper-根路径（可选，隔离-Flink-数据）-1" class="headerlink" title="ZooKeeper 根路径（可选，隔离 Flink 数据）"></a>ZooKeeper 根路径（可选，隔离 Flink 数据）</h1><p>high-availability.zookeeper.path.root: &#x2F;flink</p>
+<h1 id="集群唯一标识（避免多集群冲突）-1"><a href="#集群唯一标识（避免多集群冲突）-1" class="headerlink" title="集群唯一标识（避免多集群冲突）"></a>集群唯一标识（避免多集群冲突）</h1><p>high-availability.cluster-id: flink-session-cluster-oci-prod-01</p>
+<h1 id="metrics"><a href="#metrics" class="headerlink" title="metrics"></a>metrics</h1><h1 id="port-9249"><a href="#port-9249" class="headerlink" title="port 9249"></a>port 9249</h1><p>metrics.reporter.prom.factory.class: org.apache.flink.metrics.prometheus.PrometheusReporterFactory</p>
+<p>EOF&#39;</p>
+<div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bin/flink run  -m <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8081</span> -c org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">examples</span>.<span class="property">java</span>.<span class="property">wordcount</span>.<span class="property">WordCount</span> \</span><br><span class="line">  $FLINK_HOME/examples/batch/<span class="title class_">WordCount</span>.<span class="property">jar</span> --input=<span class="regexp">/data/</span>flink-bin/log/flink-ubuntu-standalonesession-<span class="number">0</span>-oci-flink-taskmanager-node-<span class="number">03</span>.<span class="property">log</span> \</span><br><span class="line">  --output=./out.<span class="property">txt</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+<h1 id="遇到的问题记录"><a href="#遇到的问题记录" class="headerlink" title="遇到的问题记录"></a>遇到的问题记录</h1><h2 id="taskManager-slot-耗尽"><a href="#taskManager-slot-耗尽" class="headerlink" title="taskManager slot 耗尽"></a>taskManager slot 耗尽</h2><div class="code-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">bin/flink run \</span><br><span class="line">  -Djobmanager.scheduler=adaptive \</span><br><span class="line">              -Djobmanager.adaptive-scheduler.min-parallelism=1 \</span><br><span class="line">              -Djobmanager.adaptive-scheduler.max-parallelism=100 \</span><br><span class="line">  -c io.github.streamingwithflink.chapter1.AverageSensorReadings /data/data-examples/examples-scala.jar</span><br></pre></td></tr></table></figure></div>
+
+<div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="title class_">Caused</span> <span class="attr">by</span>: java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">CompletionException</span>: java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">CompletionException</span>: org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">runtime</span>.<span class="property">jobmanager</span>.<span class="property">scheduler</span>.<span class="property">NoResourceAvailableException</span>: <span class="title class_">Could</span> not acquire the minimum required resources.</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">runtime</span>.<span class="property">scheduler</span>.<span class="property">DefaultExecutionDeployer</span>.<span class="title function_">lambda$assignResource$4</span>(<span class="title class_">DefaultExecutionDeployer</span>.<span class="property">java</span>:<span class="number">227</span>)</span><br><span class="line">	... <span class="number">39</span> more</span><br><span class="line"><span class="title class_">Caused</span> <span class="attr">by</span>: java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">CompletionException</span>: org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">runtime</span>.<span class="property">jobmanager</span>.<span class="property">scheduler</span>.<span class="property">NoResourceAvailableException</span>: <span class="title class_">Could</span> not acquire the minimum required resources.</span><br><span class="line">	at java.<span class="property">base</span>/java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">CompletableFuture</span>.<span class="title function_">encodeThrowable</span>(<span class="title class_">CompletableFuture</span>.<span class="property">java</span>:<span class="number">331</span>)</span><br><span class="line">	at java.<span class="property">base</span>/java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">CompletableFuture</span>.<span class="title function_">completeThrowable</span>(<span class="title class_">CompletableFuture</span>.<span class="property">java</span>:<span class="number">346</span>)</span><br><span class="line">	at java.<span class="property">base</span>/java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">CompletableFuture$UniApply</span>.<span class="title function_">tryFire</span>(<span class="title class_">CompletableFuture</span>.<span class="property">java</span>:<span class="number">632</span>)</span><br><span class="line">	... <span class="number">37</span> more</span><br><span class="line"><span class="title class_">Caused</span> <span class="attr">by</span>: org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">runtime</span>.<span class="property">jobmanager</span>.<span class="property">scheduler</span>.<span class="property">NoResourceAvailableException</span>: <span class="title class_">Could</span> not acquire the minimum required resources.</span><br><span class="line"></span><br><span class="line"><span class="string">``</span><span class="string">``</span></span><br><span class="line"></span><br><span class="line">### 解决方法</span><br><span class="line"></span><br><span class="line">vim conf/flink-config.<span class="property">yaml</span></span><br></pre></td></tr></table></figure></div>
+<p>添加这个配置：</p>
+<div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cluster.<span class="property">fine</span>-grained-resource-management.<span class="property">enabled</span>: <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"># cpu core * <span class="number">2</span> </span><br><span class="line"># 一个<span class="variable constant_">CPU</span> 分配 <span class="number">2</span> slot , 测试使用</span><br><span class="line">taskmanager.<span class="property">numberOfTaskSlots</span>: <span class="number">64</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>讲解：
+<a class="link"   target="_blank" rel="noopener" href="https://nightlies.apache.org/flink/flink-docs-release-1.17/zh/docs/deployment/finegrained_resource/#resource-allocation-strategy" >https://nightlies.apache.org/flink/flink-docs-release-1.17/zh/docs/deployment/finegrained_resource/#resource-allocation-strategy<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>为了启用细粒度的资源管理配置,需要将 cluster.fine-grained-resource-management.enabled 的值设置为 true。
+没有该配置,Flink 运行 job 时并不能按照你指定的资源需求分配 slots,并且 job 会失败抛出异常。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/2024/202505201113101.png"
+                     
+                ></p>
+<ul>
+<li>生产环境下，需要对集群进行扩容（增加TaskManger 节点）</li>
+</ul>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Flink standalone session cluster 安装与配置 - flink - nginx - log</li>
+        <li><strong>Author:</strong> Ordiy</li>
+        <li><strong>Created at
+                :</strong> 2025-01-01 00:00:00</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-07-10 03:00:39
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://ordiy.github.io/posts/2025-flink-session-mode-cluster-install/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/posts/2025-flink-save-point-error/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">Flink Save point error</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/posts/2025-nginx-log-flink-etl/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">Flink清洗Nginx日志</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">Flink standalone session cluster 安装与配置 - flink - nginx - log</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JDK-11-Flink-1-17"><span class="nav-text">JDK 11 + Flink 1.17</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Flink-%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84"><span class="nav-text">Flink 程序结构</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flink-%E9%83%A8%E7%BD%B2"><span class="nav-text">Flink 部署</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Session-mode"><span class="nav-text">Session mode</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81"><span class="nav-text">特征</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%A8%8B%E5%BA%8F"><span class="nav-text">测试程序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#flink-%E6%80%BB%E5%86%85%E5%AD%98%E5%A4%A7%E5%B0%8F-Total-Process-Memory"><span class="nav-text">flink 总内存大小 Total Process Memory</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E7%82%B9%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95%EF%BC%88%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%88%96-HDFS-S3%EF%BC%89"><span class="nav-text">检查点存储目录（本地文件系统或 HDFS&#x2F;S3）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Fault-tolerance-and-checkpointing"><span class="nav-text">Fault tolerance and checkpointing</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RocksDB-%E6%9C%AC%E5%9C%B0%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95%EF%BC%88%E6%AF%8F%E4%B8%AA-TaskManager%EF%BC%89"><span class="nav-text">RocksDB 本地数据存储目录（每个 TaskManager）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89%E5%90%AF%E7%94%A8%E6%A3%80%E6%9F%A5%E7%82%B9%EF%BC%8C%E8%AE%BE%E7%BD%AE%E9%97%B4%E9%9A%94%EF%BC%88%E6%AF%AB%E7%A7%92%EF%BC%89"><span class="nav-text">（可选）启用检查点，设置间隔（毫秒）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89%E4%BC%98%E5%8C%96-RocksDB-%E6%80%A7%E8%83%BD"><span class="nav-text">（可选）优化 RocksDB 性能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Rest-web-frontend"><span class="nav-text">Rest &amp; web frontend</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-port-to-which-the-REST-client-connects-to-If-rest-bind-port-has"><span class="nav-text">The port to which the REST client connects to. If rest.bind-port has</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#not-been-specified-then-the-server-will-bind-to-this-port-as-well"><span class="nav-text">not been specified, then the server will bind to this port as well.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-address-to-which-the-REST-client-will-connect-to"><span class="nav-text">The address to which the REST client will connect to</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-1"><span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Port-range-for-the-REST-and-web-server-to-bind-to"><span class="nav-text">Port range for the REST and web server to bind to.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-2"><span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-address-that-the-REST-web-server-binds-to"><span class="nav-text">The address that the REST &amp; web server binds to</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#By-default-this-is-localhost-which-prevents-the-REST-web-server-from"><span class="nav-text">By default, this is localhost, which prevents the REST &amp; web server from</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#being-able-to-communicate-outside-of-the-machine-container-it-is-running-on"><span class="nav-text">being able to communicate outside of the machine&#x2F;container it is running on.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-3"><span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#To-enable-this-set-the-bind-address-to-one-that-has-access-to-outside-facing"><span class="nav-text">To enable this, set the bind address to one that has access to outside-facing</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#network-interface-such-as-0-0-0-0"><span class="nav-text">network interface, such as 0.0.0.0.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-4"><span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Fault-tolerance-and-checkpointing-1"><span class="nav-text">Fault tolerance and checkpointing</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Advanced"><span class="nav-text">Advanced</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HistoryServer"><span class="nav-text">HistoryServer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-address-under-which-the-web-based-HistoryServer-listens"><span class="nav-text">The address under which the web-based HistoryServer listens.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-port-under-which-the-web-based-HistoryServer-listens"><span class="nav-text">The port under which the web-based HistoryServer listens.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Comma-separated-list-of-directories-to-monitor-for-completed-jobs"><span class="nav-text">Comma separated list of directories to monitor for completed jobs.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Interval-in-milliseconds-for-refreshing-the-monitored-directories"><span class="nav-text">Interval in milliseconds for refreshing the monitored directories.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E7%94%A8-ZooKeeper-HA"><span class="nav-text">启用 ZooKeeper HA</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ZooKeeper-%E9%9B%86%E7%BE%A4%E5%9C%B0%E5%9D%80"><span class="nav-text">ZooKeeper 集群地址</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HA-%E5%85%83%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E8%B7%AF%E5%BE%84%EF%BC%88S3%EF%BC%89"><span class="nav-text">HA 元数据存储路径（S3）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ZooKeeper-%E6%A0%B9%E8%B7%AF%E5%BE%84%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%8C%E9%9A%94%E7%A6%BB-Flink-%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="nav-text">ZooKeeper 根路径（可选，隔离 Flink 数据）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E5%94%AF%E4%B8%80%E6%A0%87%E8%AF%86%EF%BC%88%E9%81%BF%E5%85%8D%E5%A4%9A%E9%9B%86%E7%BE%A4%E5%86%B2%E7%AA%81%EF%BC%89"><span class="nav-text">集群唯一标识（避免多集群冲突）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#flink-oci-01-flink-session-cluster-01-as-Zookeeper-namespace-high-availability-zookeeper-path-root-high-availability-cluster-id"><span class="nav-text">&#39;&#x2F;flink-oci-01&#x2F;flink-session-cluster-01&#39; as Zookeeper namespace.  ${high-availability.zookeeper.path.root} + ${high-availability.cluster-id}</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ha"><span class="nav-text">ha</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E7%94%A8-ZooKeeper-HA-1"><span class="nav-text">启用 ZooKeeper HA</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ZooKeeper-%E9%9B%86%E7%BE%A4%E5%9C%B0%E5%9D%80-1"><span class="nav-text">ZooKeeper 集群地址</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HA-%E5%85%83%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E8%B7%AF%E5%BE%84%EF%BC%88S3%EF%BC%89-1"><span class="nav-text">HA 元数据存储路径（S3）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ZooKeeper-%E6%A0%B9%E8%B7%AF%E5%BE%84%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%8C%E9%9A%94%E7%A6%BB-Flink-%E6%95%B0%E6%8D%AE%EF%BC%89-1"><span class="nav-text">ZooKeeper 根路径（可选，隔离 Flink 数据）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E5%94%AF%E4%B8%80%E6%A0%87%E8%AF%86%EF%BC%88%E9%81%BF%E5%85%8D%E5%A4%9A%E9%9B%86%E7%BE%A4%E5%86%B2%E7%AA%81%EF%BC%89-1"><span class="nav-text">集群唯一标识（避免多集群冲突）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#metrics"><span class="nav-text">metrics</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#port-9249"><span class="nav-text">port 9249</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95"><span class="nav-text">遇到的问题记录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#taskManager-slot-%E8%80%97%E5%B0%BD"><span class="nav-text">taskManager slot 耗尽</span></a></li></ol></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ordiy</a>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>

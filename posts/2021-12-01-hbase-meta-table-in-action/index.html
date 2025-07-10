@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en,zh-cn,default">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Ordiy">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://ordiy.github.io/posts/2021-12-01-hbase-meta-table-in-action/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HBase Meta使用及故障排查">
+<meta property="og:url" content="https://ordiy.github.io/posts/2021-12-01-hbase-meta-table-in-action/index.html">
+<meta property="og:site_name" content="Ordiy&#39;s Blog">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ordiy.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2022-03-23T15:00:31.000Z">
+<meta property="article:modified_time" content="2025-03-26T09:39:38.226Z">
+<meta property="article:author" content="Ordiy">
+<meta property="article:tag" content="blog">
+<meta property="article:tag" content="HBase">
+<meta property="article:tag" content="SkipList">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ordiy.github.io/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            HBase Meta使用及故障排查 | Ordiy Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"ordiy.github.io","root":"/","language":["en","zh-cn","default"],"path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"atom-one-light","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/530e8906-4109-4871-b851-3301fee1e1bb.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"The truth sets me free","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ordiy Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/categories"
+                        >
+                            <span>Categories</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">107</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">35</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">91</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">HBase Meta使用及故障排查</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/redefine-avatar.svg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Ordiy</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2022-03-23 15:31</span>
+        <span class="mobile">2022-03-23 15:31</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-03-26 09:39:38</span>
+            <span class="mobile">2025-03-26 09:39:38</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/tech/Hadoop/">Hadoop</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/tech/Hadoop/HBase/">HBase</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/blog/">blog</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/HBase/">HBase</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/SkipList/">SkipList</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h1 id="HBase-Meta-表"><a href="#HBase-Meta-表" class="headerlink" title="HBase Meta 表"></a>HBase Meta 表</h1><p>HBas的表由多个<code>Region</code>组成， 而<code>Region</code>又分布在不同的<code>RegionServer</code>上。Client在做任何操作时，都要去人数据在那个<code>Region</code>上，然后根据<code>Region</code>关联的<code>RegionServer</code>信息，确定对应的RegionServer 节点上读取数据，因此HBase系统内部设计了一张特殊的表————<code>hbase:meta</code>表（hbase是系统表统一的namespace,meta是表名）。</p>
+<h2 id="如何定位到hbase-meta表"><a href="#如何定位到hbase-meta表" class="headerlink" title="如何定位到hbase:meta表"></a>如何定位到<code>hbase:meta</code>表</h2><p>client 需要预先获取到hbase:meta表所在的RegionServer才能，才能获取到hbase:meta中的信息。
+<code>hbase:meta</code>所在RegionServer会存在放Zookpeer Server中的<code>$&#123;hbase_home&#125;/meta-region-server</code> path下的ZNode,如下所示：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">zookeeper-client</span></span><br><span class="line">[zk: localhost:2181(CONNECTED) 1] get /hbase/meta-region-server</span><br><span class="line">master:16000</span><br><span class="line">                    PBUF</span><br><span class="line">+</span><br><span class="line">xxxx-hbase02-node20.xxxx.com</span><br><span class="line">cZxid = 0x50000aaf6</span><br><span class="line">ctime = Thu Aug 19 16:34:29 CST 2021</span><br><span class="line">mZxid = 0xa00033637</span><br><span class="line">mtime = Thu Jan 13 12:04:13 CST 2022</span><br><span class="line">pZxid = 0x50000aaf6</span><br><span class="line">cversion = 0</span><br><span class="line">dataVersion = 17</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 78</span><br><span class="line">numChildren = 0</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>这里表示<code>hbase:meta</code>所在的<code>RegionServer</code>是<code>xxxx-hbase02-node20.xxxx.com</code> ( 这里显示有一些乱码，是zk client 由于decode不对导致的，实际是没问题的)</p>
+<h1 id="hbase-meta表结构"><a href="#hbase-meta表结构" class="headerlink" title="hbase:meta表结构"></a><code>hbase:meta</code>表结构</h1><p>在<code>hbase:meta</code>表中一个rowkey对应一个Region，rowkey由TableName(用户创建的表)、StartRow(region split key&#x2F; 启始row),Timestamp( Region创建的时间戳)，EncondeName(前面三字字段进行MD5 Hex得到，具体计算方法：md5sum(String.join(&quot;,&quot;, TableName, StartRow, Timestamp, ，EncondeName)))。 一行数据分为多个列，如下展示：</p>
+<h2 id="1-x版本hbase-meta表结构："><a href="#1-x版本hbase-meta表结构：" class="headerlink" title="1.x版本hbase:meta表结构："></a>1.x版本<code>hbase:meta</code>表结构：</h2><ul>
+<li>1.x版本<code>hbase:meta</code>表结构</li>
+</ul>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">hbase shell</span> </span><br><span class="line">hbase(main):001:0&gt; desc &#x27;hbase:meta&#x27;</span><br><span class="line">Table hbase:meta is ENABLED</span><br><span class="line">hbase:meta, &#123;TABLE_ATTRIBUTES =&gt; &#123;IS_META =&gt; &#x27;true&#x27;, coprocessor$1 =&gt; &#x27;|org.apache.hadoop.hbase.coprocessor.MultiRowMutationEndpoint|536870911|&#x27;&#125;</span><br><span class="line">COLUMN FAMILIES DESCRIPTION</span><br><span class="line">&#123;NAME =&gt; &#x27;info&#x27;, DATA_BLOCK_ENCODING =&gt; &#x27;NONE&#x27;, BLOOMFILTER =&gt; &#x27;NONE&#x27;, REPLICATION_SCOPE =&gt; &#x27;0&#x27;, COMPRESSION =&gt; &#x27;NONE&#x27;, VERSIONS =&gt; &#x27;10&#x27;, TTL=&gt; &#x27;FOREVER&#x27;, MIN_VERSIONS =&gt; &#x27;0&#x27;, CACHE_DATA_IN_L1 =&gt; &#x27;true&#x27;, KEEP_DELETED_CELLS =&gt; &#x27;FALSE&#x27;, BLOCKSIZE =&gt; &#x27;8192&#x27;, IN_MEMORY =&gt; &#x27;true&#x27;, BLOCKCACHE =&gt; &#x27;true&#x27;&#125;</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>字段展示及说明</li>
+</ul>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 结构示例</span><br><span class="line">#scan &#x27;hbase:meta&#x27;, &#123;LIMIT =&gt; 1 &#125;</span><br><span class="line"> xxxx_profile,,1514870140734.685eb1870b1b1c1238e8e90ed3d746fb.                column=info:regioninfo, timestamp=1514870140766, value=&#123;ENCODED =&gt; 685eb1870b1b1c1238e8e90ed3d746fb, NAME =&gt; &#x27;xxxx_profile,,1514870140734.685eb1870b1b1c1238e8e90ed3d746fb.&#x27;, STARTKEY =&gt; &#x27;&#x27;, ENDKEY =&gt; &#x27;&#x27;&#125;</span><br><span class="line"> xxxx_profile,,1514870140734.685eb1870b1b1c1238e8e90ed3d746fb.                column=info:seqnumDuringOpen, timestamp=1647067952077, value=\x00\x00\x00\x00)\x0D\x08\x07</span><br><span class="line"> xxxx_profile,,1514870140734.685eb1870b1b1c1238e8e90ed3d746fb.                column=info:server, timestamp=1647067952077, value=xxxx-hbase01-node240.xxxx.com:60020</span><br><span class="line"> xxxx_profile,,1514870140734.685eb1870b1b1c1238e8e90ed3d746fb.                column=info:serverstartcode, timestamp=1647067952077, value=1647067851041</span><br></pre></td></tr></table></figure></div>
+<p>字段信息说明：</p>
+<table>
+<thead>
+<tr>
+<th align="left">字段</th>
+<th align="left">说明</th>
+<th>value demo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>rowkey</code></td>
+<td align="left">rowkey由<tableName>,<startKey>,<regionId>,<encodedRegionName> 4部分组成</td>
+<td>xxxx_profile,,</p> 1514870140734.685eb1870b1b1c1238e8e90ed3d746fb</td>
+</tr>
+<tr>
+<td align="left"><code>info:regioninfo</code></td>
+<td align="left">region信息。EncondeName ,ReginName, Region的startRow,endRow</td>
+<td>{ENCODED &#x3D;&gt; 685eb1870b1b1c1238e8e90ed3d746fb, NAME &#x3D;&gt; &#39;xxxx_profile,,1514870140734.685eb1870b1b1c1238e8e90ed3d746fb.&#39;, STARTKEY &#x3D;&gt; &#39;&#39;, ENDKEY &#x3D;&gt; &#39;&#39;}</td>
+</tr>
+<tr>
+<td align="left"><code>info:seqnumDuringOpen</code></td>
+<td align="left">region打开的序列号（二进制） ， Region open&#x2F;disable 会改变该sequenceId</td>
+<td>\x00\x00\x00\x00</td>
+</tr>
+<tr>
+<td align="left"><code>info:server</code></td>
+<td align="left">region 所在的regionServer <host>:<port></td>
+<td>xxxx-hbase01-node240.xxxx.com:60020</td>
+</tr>
+<tr>
+<td align="left"><code>info:serverstartcode</code></td>
+<td align="left">region启动时的Timestamp, region disable&#x2F;enable 会更新该时间戳,需要注意的是该时间戳与column的时间戳不一致</td>
+<td>1616034411621</td>
+</tr>
+</tbody></table>
+<h2 id="HBase-2-2-hbase-meta表结构及字段"><a href="#HBase-2-2-hbase-meta表结构及字段" class="headerlink" title="HBase 2.2 hbase:meta表结构及字段"></a>HBase 2.2 <code>hbase:meta</code>表结构及字段</h2><ul>
+<li>2.2 版本<code>hbase:meta</code>表结构</li>
+</ul>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ hbase shell </span><br><span class="line"></span><br><span class="line">hbase(main):001:0&gt; desc <span class="string">&#x27;hbase:meta&#x27;</span></span><br><span class="line">Table hbase:meta is ENABLED</span><br><span class="line">hbase:meta, &#123;TABLE_ATTRIBUTES =&gt; &#123;IS_META =&gt; <span class="string">&#x27;true&#x27;</span>, REGION_REPLICATION =&gt; <span class="string">&#x27;1&#x27;</span>, coprocessor<span class="variable">$1</span> =&gt; <span class="string">&#x27;|org.apache.hadoop.hbase.coprocessor.MultiRowMutationEndpoint|536870911|&#x27;</span>&#125;</span><br><span class="line">COLUMN FAMILIES DESCRIPTION</span><br><span class="line">&#123;NAME =&gt; <span class="string">&#x27;info&#x27;</span>, VERSIONS =&gt; <span class="string">&#x27;3&#x27;</span>, EVICT_BLOCKS_ON_CLOSE =&gt; <span class="string">&#x27;false&#x27;</span>, NEW_VERSION_BEHAVIOR =&gt; <span class="string">&#x27;false&#x27;</span>, KEEP_DELETED_CELLS =&gt; <span class="string">&#x27;FALSE&#x27;</span>, CACHE_DATA_ON_WRITE =&gt; <span class="string">&#x27;false&#x27;</span>, DATA_BLOCK_ENCODING =&gt; <span class="string">&#x27;NONE&#x27;</span>, TTL =&gt; <span class="string">&#x27;FOREVER&#x27;</span>,MIN_VERSIONS =&gt; <span class="string">&#x27;0&#x27;</span>, REPLICATION_SCOPE =&gt; <span class="string">&#x27;0&#x27;</span>, BLOOMFILTER =&gt; <span class="string">&#x27;NONE&#x27;</span>, CACHE_INDEX_ON_WRITE =&gt; <span class="string">&#x27;false&#x27;</span>, IN_MEMORY =&gt; <span class="string">&#x27;true&#x27;</span>, CACHE_BLOOMS_ON_WRITE =&gt; <span class="string">&#x27;false&#x27;</span>, PREFETCH_BLOCKS_ON_OPEN =&gt; <span class="string">&#x27;false&#x27;</span>, COMPRESSION =&gt; <span class="string">&#x27;NONE&#x27;</span>, BLOCKCACHE =&gt; <span class="string">&#x27;true&#x27;</span>, BLOCKSIZE =&gt; <span class="string">&#x27;8192&#x27;</span>&#125;</span><br><span class="line">&#123;NAME =&gt; <span class="string">&#x27;rep_barrier&#x27;</span>, VERSIONS =&gt; <span class="string">&#x27;2147483647&#x27;</span>, EVICT_BLOCKS_ON_CLOSE =&gt; <span class="string">&#x27;false&#x27;</span>, NEW_VERSION_BEHAVIOR =&gt; <span class="string">&#x27;false&#x27;</span>, KEEP_DELETED_CELLS =&gt; <span class="string">&#x27;FALSE&#x27;</span>, CACHE_DATA_ON_WRITE =&gt; <span class="string">&#x27;false&#x27;</span>, DATA_BLOCK_ENCODING =&gt; <span class="string">&#x27;NONE&#x27;</span>, TTL =&gt; <span class="string">&#x27;FOREVER&#x27;</span>, MIN_VERSIONS =&gt; <span class="string">&#x27;0&#x27;</span>, REPLICATION_SCOPE =&gt; <span class="string">&#x27;0&#x27;</span>, BLOOMFILTER =&gt; <span class="string">&#x27;NONE&#x27;</span>, CACHE_INDEX_ON_WRITE =&gt; <span class="string">&#x27;false&#x27;</span>, IN_MEMORY =&gt; <span class="string">&#x27;true&#x27;</span>, CACHE_BLOOMS_ON_WRITE =&gt; <span class="string">&#x27;false&#x27;</span>, PREFETCH_BLOCKS_ON_OPEN =&gt; <span class="string">&#x27;false&#x27;</span>, COMPRESSION =&gt; <span class="string">&#x27;NONE&#x27;</span>, BLOCKCACHE =&gt; <span class="string">&#x27;true&#x27;</span>, BLOCKSIZE =&gt; <span class="string">&#x27;65536&#x27;</span>&#125;</span><br><span class="line">&#123;NAME =&gt; <span class="string">&#x27;table&#x27;</span>, VERSIONS =&gt; <span class="string">&#x27;3&#x27;</span>, EVICT_BLOCKS_ON_CLOSE =&gt; <span class="string">&#x27;false&#x27;</span>, NEW_VERSION_BEHAVIOR =&gt; <span class="string">&#x27;false&#x27;</span>, KEEP_DELETED_CELLS =&gt; <span class="string">&#x27;FALSE&#x27;</span>, CACHE_DATA_ON_WRITE =&gt; <span class="string">&#x27;false&#x27;</span>, DATA_BLOCK_ENCODING =&gt; <span class="string">&#x27;NONE&#x27;</span>, TTL =&gt; <span class="string">&#x27;FOREVER&#x27;</span>, MIN_VERSIONS =&gt; <span class="string">&#x27;0&#x27;</span>, REPLICATION_SCOPE =&gt; <span class="string">&#x27;0&#x27;</span>, BLOOMFILTER =&gt; <span class="string">&#x27;NONE&#x27;</span>, CACHE_INDEX_ON_WRITE =&gt; <span class="string">&#x27;false&#x27;</span>, IN_MEMORY =&gt; <span class="string">&#x27;true&#x27;</span>, CACHE_BLOOMS_ON_WRITE =&gt; <span class="string">&#x27;false&#x27;</span>, PREFETCH_BLOCKS_ON_OPEN =&gt; <span class="string">&#x27;false&#x27;</span>, COMPRESSION =&gt; <span class="string">&#x27;NONE&#x27;</span>, BLOCKCACHE =&gt; <span class="string">&#x27;true&#x27;</span>, BLOCKSIZE =&gt; <span class="string">&#x27;8192&#x27;</span>&#125;</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li><code>hbase:meta</code>表字段</li>
+</ul>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">hbase shell</span><br><span class="line">hbase(main):008:0&gt;scan <span class="string">&#x27;hbase:meta&#x27;</span>, &#123; STARTROW =&gt; <span class="string">&#x27;fraud:test_fraud,,9999999999999&#x27;</span>, REVERSED =&gt; <span class="literal">true</span>, VERSIONS=&gt; 3, LIMIT =&gt; 1&#125;</span><br><span class="line"></span><br><span class="line">ROW                                                                                                         COLUMN+CELL</span><br><span class="line"> fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.                               column=info:regioninfo, timestamp=1642046677391, value=&#123;ENCODED =&gt; 1834b75053cfb05edb359493313b1d86, NAME =&gt; <span class="string">&#x27;fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.&#x27;</span>, STARTKEY =&gt; <span class="string">&#x27;&#x27;</span>, ENDKEY =&gt; <span class="string">&#x27;007ff1a547c07e27999d6d60d720b47e&#x27;</span>&#125;</span><br><span class="line"> fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.                               column=info:regioninfo, timestamp=1642046676303, value=&#123;ENCODED =&gt; 1834b75053cfb05edb359493313b1d86, NAME =&gt; <span class="string">&#x27;fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.&#x27;</span>, STARTKEY =&gt; <span class="string">&#x27;&#x27;</span>, ENDKEY =&gt; <span class="string">&#x27;007ff1a547c07e27999d6d60d720b47e&#x27;</span>&#125;</span><br><span class="line"> fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.                               column=info:regioninfo, timestamp=1641866862584, value=&#123;ENCODED =&gt; 1834b75053cfb05edb359493313b1d86, NAME =&gt; <span class="string">&#x27;fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.&#x27;</span>, STARTKEY =&gt; <span class="string">&#x27;&#x27;</span>, ENDKEY =&gt; <span class="string">&#x27;007ff1a547c07e27999d6d60d720b47e&#x27;</span>&#125;</span><br><span class="line"> fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.                               column=info:seqnumDuringOpen, timestamp=1642046677391, value=\x00\x00\x00\x00\x00\x00\x00\x1C</span><br><span class="line"> fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.                               column=info:seqnumDuringOpen, timestamp=1641866862584, value=\x00\x00\x00\x00\x00\x00\x00\x13</span><br><span class="line"> fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.                               column=info:seqnumDuringOpen, timestamp=1641866862204, value=\x00\x00\x00\x00\x00\x00\x00\x01</span><br><span class="line"> fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.                               column=info:server, timestamp=1642046677391, value=xxxx-hbase02-node13.xxxx.com:16020</span><br><span class="line"> fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.                               column=info:server, timestamp=1641866862584, value=xxxx-hbase02-node13.xxxx.com:16020</span><br><span class="line"> fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.                               column=info:serverstartcode, timestamp=1642046677391, value=1642046652302</span><br><span class="line"> fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.                               column=info:serverstartcode, timestamp=1641866862584, value=1639400425190</span><br><span class="line"> fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.                               column=info:sn, timestamp=1642046676303, value=xxxx-hbase02-node13.xxxx.com,16020,1642046652302</span><br><span class="line"> fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.                               column=info:sn, timestamp=1641866862368, value=xxxx-hbase02-node13.xxxx.com,16020,1639400425190</span><br><span class="line"> fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.                               column=info:state, timestamp=1642046677391, value=OPEN</span><br><span class="line"> fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.                               column=info:state, timestamp=1642046676303, value=OPENING</span><br><span class="line"> fraud:test_fraud,,1641866861822.1834b75053cfb05edb359493313b1d86.                               column=info:state, timestamp=1641866862584, value=OPEN</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="hbase-meta-更新逻辑"><a href="#hbase-meta-更新逻辑" class="headerlink" title="hbase:meta 更新逻辑"></a><code>hbase:meta</code> 更新逻辑</h1><h2 id="client-MetaCache"><a href="#client-MetaCache" class="headerlink" title="client MetaCache"></a>client <code>MetaCache</code></h2><p>在hbase-client(以2.0.0为例）,tableName 于对应的region使用了一个<code>ConcurrentMap&lt;TableName, ConcurrentNavigableMap&lt;byte[], RegionLocations&gt;&gt;</code>的数据结构进行存储，值得注意的是<code>NavigableMap</code>是继承于SortedMap的接口,可以&quot;获取大于&#x2F;等于某对象的键值对&quot;、“获取小于&#x2F;等于某对象的键值对”,很适合用于使用<code>Row</code>查询对应的<code>RegionLocations</code>。<code>NavigableMap</code>使用的数据结构-跳跃表（SkipList)，SkipList示意图：
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20220323150645.png"
+                     
+                ></p>
+<ul>
+<li>图片来源<a href="">wiki</a></li>
+</ul>
+<h1 id="HBase-meta-常见问题"><a href="#HBase-meta-常见问题" class="headerlink" title="HBase meta 常见问题"></a>HBase meta 常见问题</h1><h2 id="Region-的Overlaps-和Holes及Orphans-对于RIT或者block丢失导致的问题可以使用hbck-解决："><a href="#Region-的Overlaps-和Holes及Orphans-对于RIT或者block丢失导致的问题可以使用hbck-解决：" class="headerlink" title="Region 的Overlaps&#39;和Holes及Orphans,对于RIT或者block丢失导致的问题可以使用hbck&#96;解决："></a>Region 的<code>Overlaps&#39;和</code>Holes<code>及</code>Orphans<code>,对于RIT或者</code>block<code>丢失导致的问题可以使用</code>hbck&#96;解决：</h2><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hbase hbck -fixAssignments -fixMeta -fixHdfsHoles xxx_table</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li>[] 胡争,范欣欣. HBase原理与实践 (Chinese Edition). Kindle 版本.</li>
+</ul>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> HBase Meta使用及故障排查</li>
+        <li><strong>Author:</strong> Ordiy</li>
+        <li><strong>Created at
+                :</strong> 2022-03-23 15:00:31</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-03-26 09:39:38
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://ordiy.github.io/posts/2021-12-01-hbase-meta-table-in-action/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/blog/">#blog</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/HBase/">#HBase</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/SkipList/">#SkipList</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/posts/2020-03-01-hbase-region-server-in-action/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">HBase RIT 问题记录</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/posts/2022-02-20-hbase-fix-rit-lock-md/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">2022-02-20-hbase2-fix-rit-lock.md</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">HBase Meta使用及故障排查</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HBase-Meta-%E8%A1%A8"><span class="nav-text">HBase Meta 表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E5%88%B0hbase-meta%E8%A1%A8"><span class="nav-text">如何定位到hbase:meta表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hbase-meta%E8%A1%A8%E7%BB%93%E6%9E%84"><span class="nav-text">hbase:meta表结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-x%E7%89%88%E6%9C%AChbase-meta%E8%A1%A8%E7%BB%93%E6%9E%84%EF%BC%9A"><span class="nav-text">1.x版本hbase:meta表结构：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HBase-2-2-hbase-meta%E8%A1%A8%E7%BB%93%E6%9E%84%E5%8F%8A%E5%AD%97%E6%AE%B5"><span class="nav-text">HBase 2.2 hbase:meta表结构及字段</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hbase-meta-%E6%9B%B4%E6%96%B0%E9%80%BB%E8%BE%91"><span class="nav-text">hbase:meta 更新逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#client-MetaCache"><span class="nav-text">client MetaCache</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HBase-meta-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-text">HBase meta 常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Region-%E7%9A%84Overlaps-%E5%92%8CHoles%E5%8F%8AOrphans-%E5%AF%B9%E4%BA%8ERIT%E6%88%96%E8%80%85block%E4%B8%A2%E5%A4%B1%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8hbck-%E8%A7%A3%E5%86%B3%EF%BC%9A"><span class="nav-text">Region 的Overlaps&#39;和Holes及Orphans,对于RIT或者block丢失导致的问题可以使用hbck&#96;解决：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-text">参考</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ordiy</a>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>

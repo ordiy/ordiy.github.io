@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en,zh-cn,default">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Ordiy">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://ordiy.github.io/posts/2021-04-11-hbase-ycsb-benchamark-test-1/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HBase2 YCSB benchmark test">
+<meta property="og:url" content="https://ordiy.github.io/posts/2021-04-11-hbase-ycsb-benchamark-test-1/index.html">
+<meta property="og:site_name" content="Ordiy&#39;s Blog">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ordiy.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2021-05-21T11:09:29.000Z">
+<meta property="article:modified_time" content="2025-03-26T09:39:38.226Z">
+<meta property="article:author" content="Ordiy">
+<meta property="article:tag" content="HBase">
+<meta property="article:tag" content="YCSB">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ordiy.github.io/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            HBase2 YCSB benchmark test | Ordiy Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"ordiy.github.io","root":"/","language":["en","zh-cn","default"],"path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"atom-one-light","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/530e8906-4109-4871-b851-3301fee1e1bb.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"The truth sets me free","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ordiy Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/categories"
+                        >
+                            <span>Categories</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">107</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">35</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">91</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">HBase2 YCSB benchmark test</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/redefine-avatar.svg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Ordiy</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2021-05-21 11:09:29</span>
+        <span class="mobile">2021-05-21 11:09:29</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-03-26 09:39:38</span>
+            <span class="mobile">2025-03-26 09:39:38</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/tech/BigData/">BigData</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/HBase/">HBase</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/YCSB/">YCSB</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h1 id="测试环境说明"><a href="#测试环境说明" class="headerlink" title="测试环境说明"></a>测试环境说明</h1><hr>
+<p>机器&#x2F;网络 环境:</p>
+<table>
+<thead>
+<tr>
+<th align="left">-</th>
+<th align="left">配置说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">物理机器配置信息</td>
+<td align="left">CPU32C , 64G Memory , 3T 磁盘 （10个挂载) ,万兆网卡</td>
+</tr>
+<tr>
+<td align="left">虚拟化</td>
+<td align="left">无 (物理机器运行)</td>
+</tr>
+<tr>
+<td align="left">网络</td>
+<td align="left">万兆网卡&#x2F;100G交换机</td>
+</tr>
+<tr>
+<td align="left">机柜&#x2F;机架情况</td>
+<td align="left">所有节点在同机架</td>
+</tr>
+<tr>
+<td align="left">OS 版本</td>
+<td align="left">Centos 7.5</td>
+</tr>
+</tbody></table>
+<p>软件版本:       </p>
+<table>
+<thead>
+<tr>
+<th align="left">-</th>
+<th align="left">配置说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">HBase</td>
+<td align="left">2.1.6-CDH3.1.5</td>
+</tr>
+<tr>
+<td align="left">HDFS</td>
+<td align="left">3.1.1-CDH3.1.5</td>
+</tr>
+<tr>
+<td align="left">ambari</td>
+<td align="left">2.7.4-CDH3.1.5</td>
+</tr>
+<tr>
+<td align="left">JDK</td>
+<td align="left">1.8_u181</td>
+</tr>
+<tr>
+<td align="left">YCSB</td>
+<td align="left">0.18.0-SNAPHOT</td>
+</tr>
+</tbody></table>
+<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><hr>
+<p>测试说明:</p>
+<table>
+<thead>
+<tr>
+<th align="left">-</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">目的</td>
+<td align="left">测试HBase在生产环境的下的基准性能</td>
+</tr>
+<tr>
+<td align="left">数据量</td>
+<td align="left">4T（按照生产环境 预估）,1000+ Region .YCSB 一次写入1kb，4T数据约需要43亿行（4 * 1024 * 1024 * 1024 ）</td>
+</tr>
+</tbody></table>
+<h2 id="场景设计"><a href="#场景设计" class="headerlink" title="场景设计"></a>场景设计</h2><table>
+<thead>
+<tr>
+<th align="left">场景</th>
+<th align="left">ycsb workload name</th>
+<th align="left">desc</th>
+<th align="left">分布</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">读0% &#x2F; 写100%</td>
+<td align="left">workload_g</td>
+<td align="left">单写入场景&#x2F;SYNC_WAL</td>
+<td align="left">Zipfian：随机选择记录，存在热记录</td>
+</tr>
+<tr>
+<td align="left">读20% &#x2F; 写80%</td>
+<td align="left">workload_h</td>
+<td align="left">读少些多场景</td>
+<td align="left">Zipfian：随机选择记录，存在热记录</td>
+</tr>
+<tr>
+<td align="left">读20%&#x2F; 写80%</td>
+<td align="left">workload_j</td>
+<td align="left">读多写少场景</td>
+<td align="left">Zipfian：随机选择记录，存在热记录</td>
+</tr>
+<tr>
+<td align="left">读100%&#x2F;写0%</td>
+<td align="left">workload_m</td>
+<td align="left">全读取</td>
+<td align="left">Zipfian：随机选择记录，存在热记录</td>
+</tr>
+<tr>
+<td align="left">补充测试场景-读100%&#x2F;写0%</td>
+<td align="left">workload_m</td>
+<td align="left">全读取</td>
+<td align="left">uniform：全随机选择记录，不存在热记录</td>
+</tr>
+</tbody></table>
+<h2 id="工具准备"><a href="#工具准备" class="headerlink" title="工具准备"></a>工具准备</h2><p>YCSB 工具当前的Release版本是1.7，对应的Hbase client 版本是<code>2.0.0</code>,最新master分支的代码使用client是<code>2.3.6</code>,这里选用master分支上的最新代码自行编译和构建。</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https://github.com/brianfrankcooper/YCSB.git</span><br><span class="line">$ cd YCSB </span><br><span class="line"></span><br><span class="line"># build </span><br><span class="line">$ mvn -pl site.ycsb:mongodb-binding -am clean package</span><br><span class="line"></span><br><span class="line"># jar 包打包位置</span><br><span class="line">$ ll /hbase2/target/ycsb-hbase2-binding-0.18.0-SNAPSHOT.tar.gz</span><br><span class="line"></span><br><span class="line">#copy </span><br><span class="line">$ cp .//hbase2/target/ycsb-hbase2-binding-0.18.0-SNAPSHOT.tar.gz /opt/app</span><br><span class="line">$ cd /opt/app</span><br><span class="line">$ tar -zxvf ycsb-hbase2-binding-0.18.0-SNAPSHOT.tar.gz</span><br><span class="line">$ ln -s ycsb-hbase2-binding-0.18.0-SNAPSHOT ycsb-hbase2</span><br><span class="line"></span><br><span class="line"># 配置</span><br><span class="line">export YCSB_HOME=/opt/app/ycsb-hbase2</span><br><span class="line">export PATH=$PATH:$YCSB_HOME/bin</span><br><span class="line"></span><br><span class="line"># 配置hbase config</span><br><span class="line">$ mkdir conf </span><br><span class="line"></span><br><span class="line"># 将hbase hase-site.xml文件拷贝到 conf</span><br><span class="line">$ cp /etc/hbase/conf/hbase-site.xml ./conf</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="进行测试"><a href="#进行测试" class="headerlink" title="进行测试"></a>进行测试</h1><hr>
+<h2 id="准备-测试数据"><a href="#准备-测试数据" class="headerlink" title="准备-测试数据"></a>准备-测试数据</h2><p>hbase 创建测试表</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 用的机器是<span class="variable constant_">HDD</span>的磁盘</span><br><span class="line"># regionNum = <span class="title class_">RegionServer</span> * <span class="number">350</span> </span><br><span class="line"># 我这边有<span class="number">3</span>个<span class="title class_">Region</span></span><br><span class="line"># region后续也可以通过split 进行自动调整</span><br><span class="line"><span class="title function_">hbase</span>(main):<span class="number">001</span>:<span class="number">0</span>&gt; n_splits = <span class="number">1050</span> # <span class="title class_">HBase</span> <span class="title function_">recommends</span> (<span class="number">10</span> * number <span class="keyword">of</span> regionservers)</span><br><span class="line"><span class="title function_">hbase</span>(main):<span class="number">002</span>:<span class="number">0</span>&gt; create <span class="string">&#x27;user_table2&#x27;</span>, <span class="string">&#x27;cf&#x27;</span>, &#123;<span class="function"><span class="params">SPLITS</span> =&gt;</span> (<span class="number">1.</span>.<span class="property">n_splits</span>).<span class="property">map</span> &#123;|i| <span class="string">&quot;user#&#123;10000+i*(99999-10000)/n_splits&#125;&quot;</span>&#125;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>准备写入数据:</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 这一步耗时很长，我这边用了24H 多写入了</span><br><span class="line"># 使用<span class="number">2</span>个客户端并行写入 <span class="number">42</span>亿</span><br><span class="line"></span><br><span class="line">#insertstart <span class="number">0</span> ~ <span class="number">2100000000</span></span><br><span class="line">$ nohup  ycsb load hbase2 -P workloads/workloada -jvm-args=<span class="string">&#x27;-XX:+UseG1GC -Xms10g -Xmx20g&#x27;</span> -cp /opt/app/ycsb-<span class="number">0.17</span><span class="number">.0</span>/hbase20-binding/conf -p table=user_table2 -p columnfamily=cf -p durability=<span class="variable constant_">ASYNC_WAL</span> -p insertstart=<span class="number">0</span> -p recordcount=<span class="number">2100000000</span> -p operationcount=<span class="number">2100000000</span> -threads <span class="number">64</span> -s  &gt; workloada_load_1.<span class="property">log</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span> &amp; </span><br><span class="line"></span><br><span class="line">#insertstart <span class="number">0</span> ~ <span class="number">2100000000</span> </span><br><span class="line">nohup  ycsb load hbase20 -P workloads/workloada -jvm-args=<span class="string">&#x27;-XX:+UseG1GC -Xms10g -Xmx20g&#x27;</span> -cp /opt/app/ycsb-<span class="number">0.17</span><span class="number">.0</span>/hbase20-binding/conf -p table=user_table2 -p columnfamily=cf -p durability=<span class="variable constant_">ASYNC_WAL</span> -p insertstart=<span class="number">2100000000</span> -p recordcount=<span class="number">2100000000</span> -p operationcount=<span class="number">2100000000</span> -threads <span class="number">64</span> -s  &gt; workloada_load_2.<span class="property">log</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span> &amp; </span><br></pre></td></tr></table></figure></div>
+
+<h2 id="执行测试场景A-读0-写100"><a href="#执行测试场景A-读0-写100" class="headerlink" title="执行测试场景A 读0%/写100%"></a>执行测试场景A <code>读0%/写100%</code></h2><p>写入数据完成，执行测试场景A：</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ cat &lt;&lt; <span class="variable constant_">EOF</span> &gt; workloads/workloadm</span><br><span class="line">readallfields=<span class="literal">true</span></span><br><span class="line">readproportion=<span class="number">0.00</span></span><br><span class="line">updateproportion=<span class="number">0</span></span><br><span class="line">scanproportion=<span class="number">0</span></span><br><span class="line">insertproportion=<span class="number">1.0</span></span><br><span class="line">requestdistribution=zipfian</span><br><span class="line"><span class="variable constant_">EOF</span></span><br><span class="line"> </span><br><span class="line">$ nohup ./bin/ycsb run hbase2 -P workloads/workloadm -jvm-args=<span class="string">&#x27;-XX:+UseG1GC -Xms2g -Xmx20g&#x27;</span> -cp /opt/app/ycsb-<span class="number">0.17</span><span class="number">.0</span>/hbase20-binding/conf -p table=user_table2 -p columnfamily=cf -p recordcount=<span class="number">1000000000</span> -p operationcount=<span class="number">1000000000</span> -threads <span class="number">64</span> -s &gt; workloada_m.<span class="property">log</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span> &amp; </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>测试结果：</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#ycsb 测试结果</span><br><span class="line">[<span class="variable constant_">OVERALL</span>], <span class="title class_">RunTime</span>(ms), <span class="number">54185529</span></span><br><span class="line">[<span class="variable constant_">OVERALL</span>], <span class="title class_">Throughput</span>(ops/sec), <span class="number">36910.22376103406</span></span><br><span class="line">[TOTAL_GCS_G1_Young_Generation], <span class="title class_">Count</span>, <span class="number">6289</span></span><br><span class="line">[TOTAL_GC_TIME_G1_Young_Generation], <span class="title class_">Time</span>(ms), <span class="number">87444</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME_</span>%_G1_Young_Generation], <span class="title class_">Time</span>(%), <span class="number">0.1613788803279931</span></span><br><span class="line">[TOTAL_GCS_G1_Old_Generation], <span class="title class_">Count</span>, <span class="number">0</span></span><br><span class="line">[TOTAL_GC_TIME_G1_Old_Generation], <span class="title class_">Time</span>(ms), <span class="number">0</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME_</span>%_G1_Old_Generation], <span class="title class_">Time</span>(%), <span class="number">0.0</span></span><br><span class="line">[TOTAL_GCs], <span class="title class_">Count</span>, <span class="number">6289</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME</span>], <span class="title class_">Time</span>(ms), <span class="number">87444</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME_</span>%], <span class="title class_">Time</span>(%), <span class="number">0.1613788803279931</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">Operations</span>, <span class="number">128</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">AverageLatency</span>(us), <span class="number">43.140625</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">MinLatency</span>(us), <span class="number">1</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">MaxLatency</span>(us), <span class="number">3591</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], 95thPercentileLatency(us), <span class="number">36</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], 99thPercentileLatency(us), <span class="number">566</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], <span class="title class_">Operations</span>, <span class="number">2000000000</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], <span class="title class_">AverageLatency</span>(us), <span class="number">1730.6711586995</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], <span class="title class_">MinLatency</span>(us), <span class="number">119</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], <span class="title class_">MaxLatency</span>(us), <span class="number">7602175</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], 95thPercentileLatency(us), <span class="number">1453</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], 99thPercentileLatency(us), <span class="number">4195</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], <span class="title class_">Return</span>=<span class="variable constant_">OK</span>, <span class="number">2000000000</span></span><br></pre></td></tr></table></figure></div>
+
+<p>测试机器负载：
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210521135955.png"
+                     
+                ></p>
+<p>QPS 监控:
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210521140105.png"
+                     
+                ></p>
+<h2 id="执行测试B-读20-写80"><a href="#执行测试B-读20-写80" class="headerlink" title="执行测试B-读20%写80%"></a>执行测试B-读20%写80%</h2><div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ cat &lt;&lt; <span class="variable constant_">EOF</span> &gt; workloads/workloadg</span><br><span class="line">readallfields=<span class="literal">true</span></span><br><span class="line">readproportion=<span class="number">0.20</span></span><br><span class="line">updateproportion=<span class="number">0</span></span><br><span class="line">scanproportion=<span class="number">0</span></span><br><span class="line">insertproportion=<span class="number">0.80</span></span><br><span class="line">requestdistribution=zipfian</span><br><span class="line"><span class="variable constant_">EOF</span></span><br><span class="line"> </span><br><span class="line">$ $ nohup ./bin/ycsb load hbase2 -P workloads/workloadg -jvm-args=<span class="string">&#x27;-XX:+UseG1GC -Xms2g -Xmx20g&#x27;</span> -cp /opt/dp/ycsb-<span class="number">0.17</span><span class="number">.0</span>/hbase20-binding/conf -p table=user_table2 -p columnfamily=cf -p recordcount=<span class="number">1000000000</span> -p operationcount=<span class="number">1000000000</span> -threads <span class="number">64</span> -s &gt; workloada_g.<span class="property">log</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span> &amp; </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>YCSB 测试结果：</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">[<span class="variable constant_">OVERALL</span>], <span class="title class_">RunTime</span>(ms), <span class="number">8444494</span></span><br><span class="line">[<span class="variable constant_">OVERALL</span>], <span class="title class_">Throughput</span>(ops/sec), <span class="number">11842.035769105882</span></span><br><span class="line">[TOTAL_GCS_G1_Young_Generation], <span class="title class_">Count</span>, <span class="number">316</span></span><br><span class="line">[TOTAL_GC_TIME_G1_Young_Generation], <span class="title class_">Time</span>(ms), <span class="number">4594</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME_</span>%_G1_Young_Generation], <span class="title class_">Time</span>(%), <span class="number">0.05440231232327242</span></span><br><span class="line">[TOTAL_GCS_G1_Old_Generation], <span class="title class_">Count</span>, <span class="number">0</span></span><br><span class="line">[TOTAL_GC_TIME_G1_Old_Generation], <span class="title class_">Time</span>(ms), <span class="number">0</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME_</span>%_G1_Old_Generation], <span class="title class_">Time</span>(%), <span class="number">0.0</span></span><br><span class="line">[TOTAL_GCs], <span class="title class_">Count</span>, <span class="number">316</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME</span>], <span class="title class_">Time</span>(ms), <span class="number">4594</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME_</span>%], <span class="title class_">Time</span>(%), <span class="number">0.05440231232327242</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">Operations</span>, <span class="number">19995388</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">AverageLatency</span>(us), <span class="number">23096.382339317446</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">MinLatency</span>(us), <span class="number">138</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">MaxLatency</span>(us), <span class="number">41287679</span></span><br><span class="line">[<span class="variable constant_">READ</span>], 95thPercentileLatency(us), <span class="number">66879</span></span><br><span class="line">[<span class="variable constant_">READ</span>], 99thPercentileLatency(us), <span class="number">218239</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">Return</span>=<span class="variable constant_">OK</span>, <span class="number">19995388</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">Operations</span>, <span class="number">168</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">AverageLatency</span>(us), <span class="number">28.136904761904763</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">MinLatency</span>(us), <span class="number">0</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">MaxLatency</span>(us), <span class="number">2683</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], 95thPercentileLatency(us), <span class="number">24</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], 99thPercentileLatency(us), <span class="number">51</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], <span class="title class_">Operations</span>, <span class="number">80004612</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], <span class="title class_">AverageLatency</span>(us), <span class="number">3044.945812198927</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], <span class="title class_">MinLatency</span>(us), <span class="number">240</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], <span class="title class_">MaxLatency</span>(us), <span class="number">40861695</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], 95thPercentileLatency(us), <span class="number">736</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], 99thPercentileLatency(us), <span class="number">2967</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], <span class="title class_">Return</span>=<span class="variable constant_">OK</span>, <span class="number">80004612</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="执行测试C-读80-写20"><a href="#执行测试C-读80-写20" class="headerlink" title="执行测试C-读80%写20%"></a>执行测试C-读80%写20%</h2><div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ cat &lt;&lt; <span class="variable constant_">EOF</span> &gt; workloads/workloadh</span><br><span class="line">recordcount=<span class="number">100000000</span></span><br><span class="line">operationcount=<span class="number">100000000</span></span><br><span class="line">workload=site.<span class="property">ycsb</span>.<span class="property">workloads</span>.<span class="property">CoreWorkload</span></span><br><span class="line">readallfields=<span class="literal">true</span></span><br><span class="line">readproportion=<span class="number">0.8</span></span><br><span class="line">updateproportion=<span class="number">0</span></span><br><span class="line">scanproportion=<span class="number">0</span></span><br><span class="line">insertproportion=<span class="number">0.20</span></span><br><span class="line">requestdistribution=zipfian</span><br><span class="line"><span class="variable constant_">EOF</span></span><br><span class="line"></span><br><span class="line">$ nohup ./bin/ycsb run hbase2 -P workloads/workloadh -jvm-args=<span class="string">&#x27;-XX:+UseG1GC -Xms10g -Xmx10g &#x27;</span> -cp /opt/dp/ycsb-hbase2/conf -p table=user_table2 -p columnfamily=cf -p recordcount=<span class="number">100000000</span> -p operationcount=<span class="number">100000000</span> -threads <span class="number">84</span> -s &gt; workload_h_log.<span class="property">log</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span> </span><br><span class="line"> </span><br></pre></td></tr></table></figure></div>
+<p>测试结果：</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">[<span class="variable constant_">OVERALL</span>], <span class="title class_">RunTime</span>(ms), <span class="number">1622208</span></span><br><span class="line">[<span class="variable constant_">OVERALL</span>], <span class="title class_">Throughput</span>(ops/sec), <span class="number">6164.437606028327</span></span><br><span class="line">[TOTAL_GCS_G1_Young_Generation], <span class="title class_">Count</span>, <span class="number">34</span></span><br><span class="line">[TOTAL_GC_TIME_G1_Young_Generation], <span class="title class_">Time</span>(ms), <span class="number">582</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME_</span>%_G1_Young_Generation], <span class="title class_">Time</span>(%), <span class="number">0.03587702686708486</span></span><br><span class="line">[TOTAL_GCS_G1_Old_Generation], <span class="title class_">Count</span>, <span class="number">0</span></span><br><span class="line">[TOTAL_GC_TIME_G1_Old_Generation], <span class="title class_">Time</span>(ms), <span class="number">0</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME_</span>%_G1_Old_Generation], <span class="title class_">Time</span>(%), <span class="number">0.0</span></span><br><span class="line">[TOTAL_GCs], <span class="title class_">Count</span>, <span class="number">34</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME</span>], <span class="title class_">Time</span>(ms), <span class="number">582</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME_</span>%], <span class="title class_">Time</span>(%), <span class="number">0.03587702686708486</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">Operations</span>, <span class="number">7999801</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">AverageLatency</span>(us), <span class="number">16489.358773674496</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">MinLatency</span>(us), <span class="number">120</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">MaxLatency</span>(us), <span class="number">18448383</span></span><br><span class="line">[<span class="variable constant_">READ</span>], 95thPercentileLatency(us), <span class="number">61855</span></span><br><span class="line">[<span class="variable constant_">READ</span>], 99thPercentileLatency(us), <span class="number">222207</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">Return</span>=<span class="variable constant_">OK</span>, <span class="number">7999801</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">Operations</span>, <span class="number">168</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">AverageLatency</span>(us), <span class="number">22.125</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">MinLatency</span>(us), <span class="number">1</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">MaxLatency</span>(us), <span class="number">2257</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], 95thPercentileLatency(us), <span class="number">12</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], 99thPercentileLatency(us), <span class="number">71</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], <span class="title class_">Operations</span>, <span class="number">2000199</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], <span class="title class_">AverageLatency</span>(us), <span class="number">1431.605406762027</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], <span class="title class_">MinLatency</span>(us), <span class="number">241</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], <span class="title class_">MaxLatency</span>(us), <span class="number">18120703</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], 95thPercentileLatency(us), <span class="number">542</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], 99thPercentileLatency(us), <span class="number">4099</span></span><br><span class="line">[<span class="variable constant_">INSERT</span>], <span class="title class_">Return</span>=<span class="variable constant_">OK</span>, <span class="number">2000199</span></span><br></pre></td></tr></table></figure></div>
+
+
+<h2 id="测试场景D-读100-写0"><a href="#测试场景D-读100-写0" class="headerlink" title="测试场景D - 读100% &#x2F; 写0%"></a>测试场景D - 读100% &#x2F; 写0%</h2><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ cat &gt;&gt; EOF &gt; workloads/workloadj</span><br><span class="line">recordcount=100000000</span><br><span class="line">operationcount=100000000</span><br><span class="line">workload=site.ycsb.workloads.CoreWorkload</span><br><span class="line">readallfields=true</span><br><span class="line">readproportion=1.0</span><br><span class="line">updateproportion=0.0</span><br><span class="line">scanproportion=0.0</span><br><span class="line">insertproportion=0.0</span><br><span class="line">requestdistribution=zipfian</span><br><span class="line"></span><br><span class="line">EOF</span><br><span class="line"> </span><br><span class="line">$ nohup ./bin/ycsb run hbase2 -P workloads/workloadj -jvm-args=&#x27;-XX:+UseG1GC -Xms10g -Xmx10g &#x27;  -cp /opt/dp/ycsb-hbase2/conf -p table=user_table2 -p columnfamily=cf  -p recordcount=100000000 -p operationcount=100000000 -threads 84 -s &gt; workload_j.log 2&gt;&amp;1 &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>测试结果：</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[<span class="variable constant_">OVERALL</span>], <span class="title class_">RunTime</span>(ms), <span class="number">31251027</span></span><br><span class="line">[<span class="variable constant_">OVERALL</span>], <span class="title class_">Throughput</span>(ops/sec), <span class="number">3199.8948386560223</span></span><br><span class="line">[TOTAL_GCS_G1_Young_Generation], <span class="title class_">Count</span>, <span class="number">307</span></span><br><span class="line">[TOTAL_GC_TIME_G1_Young_Generation], <span class="title class_">Time</span>(ms), <span class="number">4354</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME_</span>%_G1_Young_Generation], <span class="title class_">Time</span>(%), <span class="number">0.013932342127508322</span></span><br><span class="line">[TOTAL_GCS_G1_Old_Generation], <span class="title class_">Count</span>, <span class="number">0</span></span><br><span class="line">[TOTAL_GC_TIME_G1_Old_Generation], <span class="title class_">Time</span>(ms), <span class="number">0</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME_</span>%_G1_Old_Generation], <span class="title class_">Time</span>(%), <span class="number">0.0</span></span><br><span class="line">[TOTAL_GCs], <span class="title class_">Count</span>, <span class="number">307</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME</span>], <span class="title class_">Time</span>(ms), <span class="number">4354</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME_</span>%], <span class="title class_">Time</span>(%), <span class="number">0.013932342127508322</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">Operations</span>, <span class="number">100000000</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">AverageLatency</span>(us), <span class="number">26169.73705328</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">MinLatency</span>(us), <span class="number">105</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">MaxLatency</span>(us), <span class="number">46170111</span></span><br><span class="line">[<span class="variable constant_">READ</span>], 95thPercentileLatency(us), <span class="number">55967</span></span><br><span class="line">[<span class="variable constant_">READ</span>], 99thPercentileLatency(us), <span class="number">208895</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">Return</span>=<span class="variable constant_">OK</span>, <span class="number">100000000</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">Operations</span>, <span class="number">168</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">AverageLatency</span>(us), <span class="number">22.458333333333332</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">MinLatency</span>(us), <span class="number">1</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">MaxLatency</span>(us), <span class="number">2121</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], 95thPercentileLatency(us), <span class="number">16</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], 99thPercentileLatency(us), <span class="number">57</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="测试场景E-uniform-读100-写0"><a href="#测试场景E-uniform-读100-写0" class="headerlink" title="测试场景E-uniform 读100%&#x2F;写0%"></a>测试场景E-uniform 读100%&#x2F;写0%</h3><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ cat &lt;&lt; EOF &gt; workloads/workloadj_uniform</span><br><span class="line">recordcount=100000000</span><br><span class="line">operationcount=100000000</span><br><span class="line">workload=site.ycsb.workloads.CoreWorkload</span><br><span class="line">readallfields=true</span><br><span class="line">readproportion=1.0</span><br><span class="line">updateproportion=0.0</span><br><span class="line">scanproportion=0.0</span><br><span class="line">insertproportion=0.0</span><br><span class="line">requestdistribution=uniform</span><br><span class="line">EOF </span><br><span class="line"></span><br><span class="line">$ nohup ./bin/ycsb run hbase2 -P workloads/workloadj_uniform -jvm-args=&#x27;-XX:+UseG1GC -Xms10g -Xmx10g &#x27;  -cp /opt/dp/ycsb-hbase2/conf -p table=user_table2 -p columnfamily=cf  -p recordcount=10000000 -p operationcount=10000000 -threads 84 -s &gt; workload_uniform.log 2&gt;&amp;1 &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>测试结果：</p>
+<div class="code-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[<span class="variable constant_">OVERALL</span>], <span class="title class_">RunTime</span>(ms), <span class="number">10907660</span></span><br><span class="line">[<span class="variable constant_">OVERALL</span>], <span class="title class_">Throughput</span>(ops/sec), <span class="number">916.7869185508166</span></span><br><span class="line">[TOTAL_GCS_G1_Young_Generation], <span class="title class_">Count</span>, <span class="number">34</span></span><br><span class="line">[TOTAL_GC_TIME_G1_Young_Generation], <span class="title class_">Time</span>(ms), <span class="number">577</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME_</span>%_G1_Young_Generation], <span class="title class_">Time</span>(%), <span class="number">0.005289860520038212</span></span><br><span class="line">[TOTAL_GCS_G1_Old_Generation], <span class="title class_">Count</span>, <span class="number">0</span></span><br><span class="line">[TOTAL_GC_TIME_G1_Old_Generation], <span class="title class_">Time</span>(ms), <span class="number">0</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME_</span>%_G1_Old_Generation], <span class="title class_">Time</span>(%), <span class="number">0.0</span></span><br><span class="line">[TOTAL_GCs], <span class="title class_">Count</span>, <span class="number">34</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME</span>], <span class="title class_">Time</span>(ms), <span class="number">577</span></span><br><span class="line">[<span class="variable constant_">TOTAL_GC_TIME_</span>%], <span class="title class_">Time</span>(%), <span class="number">0.005289860520038212</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">Operations</span>, <span class="number">10000000</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">AverageLatency</span>(us), <span class="number">91175.9869907</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">MinLatency</span>(us), <span class="number">160</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">MaxLatency</span>(us), <span class="number">18235391</span></span><br><span class="line">[<span class="variable constant_">READ</span>], 95thPercentileLatency(us), <span class="number">138495</span></span><br><span class="line">[<span class="variable constant_">READ</span>], 99thPercentileLatency(us), <span class="number">560127</span></span><br><span class="line">[<span class="variable constant_">READ</span>], <span class="title class_">Return</span>=<span class="variable constant_">OK</span>, <span class="number">10000000</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">Operations</span>, <span class="number">168</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">AverageLatency</span>(us), <span class="number">22.44047619047619</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">MinLatency</span>(us), <span class="number">1</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], <span class="title class_">MaxLatency</span>(us), <span class="number">2099</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], 95thPercentileLatency(us), <span class="number">20</span></span><br><span class="line">[<span class="variable constant_">CLEANUP</span>], 99thPercentileLatency(us), <span class="number">69</span></span><br></pre></td></tr></table></figure></div>
+
+<h1 id="测试数据汇总"><a href="#测试数据汇总" class="headerlink" title="测试数据汇总"></a>测试数据汇总</h1><hr>
+<p> 测试结果-汇总表：
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210521140743.png"
+                     
+                ></p>
+<p><br> 图表表示(不包含 uniform分布)：
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210521140842.png"
+                     
+                ></p>
+<h2 id="测试总结"><a href="#测试总结" class="headerlink" title="测试总结"></a>测试总结</h2><ul>
+<li>从上图可以看出 HBase的GET 读操作是主要的性能瓶颈，主要是收到<code>BlockCache Hit </code>Ratio和<code>Disk IOPS</code> 的影响：</li>
+</ul>
+<p>RegionServer Hit Ratio :
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210521142441.png"
+                     
+                >
+一个机器的最大内存是64G，分配给RegionServer 的BlockCache L1 总量是12G，集群RegionServer L1 Cache总共35G(12G * 3节点), 能够缓存的数据量有限。
+测试中 GET RPC 的BlockCache Hit Ratio 一直在50%左右（和生产环境接近)，还有50% 的 RPC 请求需要到HDFS存储中访问数据(需要读磁盘），导致latency较大，成为限制QPS提升的瓶颈。</p>
+<p>关于Disk IO ，磁盘最大OPS：<code>1K OPS</code>左右,如图：
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210521145029.png"
+                     
+                >
+机器最大IOPS： 机器有10个挂载，单个HDD盘的读写 <code>150IOPS</code>左右，所以<code>10挂载 * 150 IOPS = 1.5K OPS</code>,从监控看磁盘OPS基本已经达到上限。</p>
+<ul>
+<li>相对与zipfian分布的测试，uniform分布下，Hbase 读取性能还要下降2&#x2F;3 。 
+这是由于zipfian分布下存在热数据,<code>YCSB paper</code> 中zipfian与uniform对比见:
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210521144127.png"
+                     
+                >
+*注意：图片涞源,<a class="link"   target="_blank" rel="noopener" href="https://labs.yahoo.com/news/yahoo-cloud-serving-benchmark/" >https://labs.yahoo.com/news/yahoo-cloud-serving-benchmark/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在机器环境不变的情况下，通过提前表的StoreFileSize,可以有效提高表的吞吐量：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20210521144838.png"
+                     
+                >
+*图片涞源：Surbhi Kochhar,<a class="link"   target="_blank" rel="noopener" href="https://blog.cloudera.com/hbase-performance-testing-using-ycsb/" >https://blog.cloudera.com/hbase-performance-testing-using-ycsb/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>
+这个图展示了：缓存命中率接近99％(40G数据，cache 命中率100%），并且大多数工作负载数据在缓存中可用，因此延迟要低得多。相比之下，对于1TB数据集，由于必须从HDFS存储访问HFile数据，因此缓存命中率约为85％。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><hr>
+<ul>
+<li><p>YCSB project 
+<a class="link"   target="_blank" rel="noopener" href="https://labs.yahoo.com/news/yahoo-cloud-serving-benchmark/" >https://labs.yahoo.com/news/yahoo-cloud-serving-benchmark/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+</li>
+<li><p>hbase-performance-testing-using-ycsb
+<a class="link"   target="_blank" rel="noopener" href="https://blog.cloudera.com/hbase-performance-testing-using-ycsb/" >https://blog.cloudera.com/hbase-performance-testing-using-ycsb/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+</li>
+<li><p>HBase测试|HBase 2.2.1随机读写性能测试
+<a class="link"   target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/V53IHclunWsEMjgxYrbQdQ" >https://mp.weixin.qq.com/s/V53IHclunWsEMjgxYrbQdQ<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+</li>
+<li><p>Hbase SSD 
+<a class="link"   target="_blank" rel="noopener" href="https://blogs.apache.org/hbase/?page=1" >https://blogs.apache.org/hbase/?page=1<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+</li>
+</ul>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> HBase2 YCSB benchmark test</li>
+        <li><strong>Author:</strong> Ordiy</li>
+        <li><strong>Created at
+                :</strong> 2021-05-21 11:09:29</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-03-26 09:39:38
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://ordiy.github.io/posts/2021-04-11-hbase-ycsb-benchamark-test-1/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/HBase/">#HBase</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/YCSB/">#YCSB</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/posts/2021-06-01-hbase-jmx-metrics/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">HBase Metrics Info</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/posts/2021-05-01-hbase-hfile/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">HBase HFile 基本概念</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">HBase2 YCSB benchmark test</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E8%AF%B4%E6%98%8E"><span class="nav-text">测试环境说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88"><span class="nav-text">测试方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E8%AE%BE%E8%AE%A1"><span class="nav-text">场景设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7%E5%87%86%E5%A4%87"><span class="nav-text">工具准备</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E8%A1%8C%E6%B5%8B%E8%AF%95"><span class="nav-text">进行测试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87-%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE"><span class="nav-text">准备-测试数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E6%B5%8B%E8%AF%95%E5%9C%BA%E6%99%AFA-%E8%AF%BB0-%E5%86%99100"><span class="nav-text">执行测试场景A 读0%&#x2F;写100%</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E6%B5%8B%E8%AF%95B-%E8%AF%BB20-%E5%86%9980"><span class="nav-text">执行测试B-读20%写80%</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E6%B5%8B%E8%AF%95C-%E8%AF%BB80-%E5%86%9920"><span class="nav-text">执行测试C-读80%写20%</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%9C%BA%E6%99%AFD-%E8%AF%BB100-%E5%86%990"><span class="nav-text">测试场景D - 读100% &#x2F; 写0%</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%9C%BA%E6%99%AFE-uniform-%E8%AF%BB100-%E5%86%990"><span class="nav-text">测试场景E-uniform 读100%&#x2F;写0%</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E6%B1%87%E6%80%BB"><span class="nav-text">测试数据汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E6%80%BB%E7%BB%93"><span class="nav-text">测试总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-text">参考文献</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ordiy</a>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>

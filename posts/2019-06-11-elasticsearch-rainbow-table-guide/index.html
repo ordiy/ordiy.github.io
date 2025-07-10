@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en,zh-cn,default">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Ordiy">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://ordiy.github.io/posts/2019-06-11-elasticsearch-rainbow-table-guide/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用ElasticSearch构建彩虹表">
+<meta property="og:url" content="https://ordiy.github.io/posts/2019-06-11-elasticsearch-rainbow-table-guide/index.html">
+<meta property="og:site_name" content="Ordiy&#39;s Blog">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ordiy.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2019-01-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-26T09:39:38.224Z">
+<meta property="article:author" content="Ordiy">
+<meta property="article:tag" content="blog">
+<meta property="article:tag" content="ElasticSearch">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ordiy.github.io/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            使用ElasticSearch构建彩虹表 | Ordiy Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"ordiy.github.io","root":"/","language":["en","zh-cn","default"],"path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"atom-one-light","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/530e8906-4109-4871-b851-3301fee1e1bb.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"The truth sets me free","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ordiy Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/categories"
+                        >
+                            <span>Categories</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">107</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">35</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">91</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">使用ElasticSearch构建彩虹表</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/redefine-avatar.svg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Ordiy</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2019-01-01</span>
+        <span class="mobile">2019-01-01</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-03-26 09:39:38</span>
+            <span class="mobile">2025-03-26 09:39:38</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/blog/">blog</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/ElasticSearch/">ElasticSearch</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h3 id="数据量预估"><a href="#数据量预估" class="headerlink" title="数据量预估"></a>数据量预估</h3><p>目前Mobie、Tele、UnionCom和XX运营商已经在使用的号码段共计51个，数据量预估是 4,415,000,000条，存储这些文本信息需要439G。</p>
+<h3 id="ES存储设计"><a href="#ES存储设计" class="headerlink" title="ES存储设计"></a>ES存储设计</h3><p>  为支持高QPS,需要对设计支持高QPS</p>
+<h4 id="nodes和shard"><a href="#nodes和shard" class="headerlink" title="nodes和shard"></a>nodes和shard</h4><p>可以参考设备信息的ES进行配置8个节点，20分片
+测试环境只有3机器 shard可以分为6分片</p>
+<h3 id="ES存储结构设计-Es-5-3"><a href="#ES存储结构设计-Es-5-3" class="headerlink" title="ES存储结构设计(Es 5.3)"></a>ES存储结构设计(Es 5.3)</h3><p>shard策略： 将单个shard的大小控制在30G～60G左右
+indices(Database)： phn_relations_rainbow
+type: rbtype
+document 格式</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;phn&quot;: &quot;12345678901&quot;, </span><br><span class="line">    &quot;md5&quot;: &quot;5d41402abc4b2a76b9719d911017c592&quot;, </span><br><span class="line">    &quot;sha&quot;: &quot;2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<h4 id="文档索引设计"><a href="#文档索引设计" class="headerlink" title="文档索引设计"></a>文档索引设计</h4><p>_Id（docId）使用phn_md5作为docId提升查询速度(docId的查询速度最快)</p>
+<h4 id="域映射设计"><a href="#域映射设计" class="headerlink" title="域映射设计"></a>域映射设计</h4><p> term 查找精确值md5值或者sha256值时，需要告诉 Elasticsearch 该字段具有精确值，要将其设置成 <code>not_analyzed</code> 无需分析的. 之后term 查询不会对其做任何分析，查询会进行精确查找.
+ string类型域默认是anlayzed，会被认为包含全文，它们的值在索引前，会通过一个分析器，针对这个域的搜索的搜索也会经过一个分析器(_analzer)。在彩虹表中我们需要的是索引到精确值，所以将md5和sha的index属性设置为not_analyzed.(避免倒排词典的分词后，耗费更多的head空间)
+ md5和sha使用了<code>not_analyzed</code>即作为一个精确值，对精确值来讲FOO和foo是不同的，所以将MD5和SHA256统一使用大写字符存储在ES中.（ 5.4及以后的版本请用keyword类型）</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">PUT /phn_relations_rainbow </span><br><span class="line">&#123;</span><br><span class="line">    &quot;mappings&quot;: &#123;</span><br><span class="line">        &quot;rbtype&quot;: &#123;</span><br><span class="line">            &quot;properties&quot;: &#123;</span><br><span class="line">                &quot;md5&quot;: &#123;</span><br><span class="line">                    &quot;type&quot;: &quot;string&quot;, </span><br><span class="line">                    &quot;index&quot;: &quot;not_analyzed&quot;</span><br><span class="line">                &#125;, </span><br><span class="line">                &quot;sha&quot;: &#123;</span><br><span class="line">                    &quot;type&quot;: &quot;string&quot;, </span><br><span class="line">                    &quot;index&quot;: &quot;not_analyzed&quot;</span><br><span class="line">                &#125;, </span><br><span class="line">                &quot;phn&quot;: &#123;</span><br><span class="line">                    &quot;type&quot;: &quot;string&quot;, </span><br><span class="line">                    &quot;index&quot;: &quot;not_analyzed&quot;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+<h3 id="查询设计"><a href="#查询设计" class="headerlink" title="查询设计"></a>查询设计</h3><h4 id="使用非评分的精确查询"><a href="#使用非评分的精确查询" class="headerlink" title="使用非评分的精确查询"></a>使用非评分的精确查询</h4><p>非评分查询constant_score, 不进行评分或相关度的计算，score会返回一个默认评分1.按照<a class="link"   target="_blank" rel="noopener" href="https://elasticsearch.cn/book/elasticsearch_definitive_guide_2.x/_finding_exact_values.html" >elasticsearch.cn官方<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>的说法，非评分查询可以获取到更快的访问。原文</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Elasticsearch 能够缓存非评分查询从而获取更快的访问，但是它也会不太聪明地缓存一些使用极少的东西。非评分计算因为倒排索引已经足够快了，所以我们只想缓存那些我们知道 在将来会被再次使用的查询，以避免资源的浪费。</span><br><span class="line"></span><br><span class="line">为了实现以上设想，Elasticsearch 会为每个索引跟踪保留查询使用的历史状态。如果查询在最近的 256 次查询中会被用到，那么它就会被缓存到内存中。当 bitset 被缓存后，缓存会在那些低于 10,000 个文档（或少于 3% 的总索引数）的段（segment）中被忽略。这些小的段即将会消失，所以为它们分配缓存是一种浪费。</span><br></pre></td></tr></table></figure></div>
+
+<p>term 查询在倒排索引中查找值，然后获取包含term的所有文档。因为查询的是包含关系，但这个与我们的精确查询不符，需要使用组合过滤器-bool过滤器</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">curl -XGET &quot;http://172.16.103.191:19250/alias_phn_relations_rainbow/mitype/_search?routing=12345678901&quot; -d &#x27;&#123;</span><br><span class="line">    &quot;query&quot;: &#123;</span><br><span class="line">        &quot;constant_score&quot;: &#123;</span><br><span class="line">            &quot;filter&quot;: &#123;</span><br><span class="line">                &quot;bool&quot;: &#123;</span><br><span class="line">                    &quot;must&quot;: &#123;</span><br><span class="line">                        &quot;term&quot;: &#123;</span><br><span class="line">                            &quot;mac&quot;: &quot;12345678901&quot;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;&#x27;  -w  &quot;time_total:%&#123;time_total&#125;&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+<h3 id="ES的监控设计"><a href="#ES的监控设计" class="headerlink" title="ES的监控设计"></a>ES的监控设计</h3><p>接入promethesu监控请求耗时和QPS. 主要测试记录</p>
+<h4 id="getByDocId-config-routing"><a href="#getByDocId-config-routing" class="headerlink" title="getByDocId config routing"></a>getByDocId config routing</h4><p>1000 QPS 5min  50ms内获得99.76%</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#原始记录</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.001&quot;,&#125; 97577.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.002&quot;,&#125; 293417.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.003&quot;,&#125; 297628.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.004&quot;,&#125; 298078.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.005&quot;,&#125; 298257.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.01&quot;,&#125; 298578.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.03&quot;,&#125; 299277.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.05&quot;,&#125; 299708.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.07&quot;,&#125; 299874.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.1&quot;,&#125; 299937.0</span><br><span class="line"></span><br><span class="line">#分组统计</span><br><span class="line">&lt;= 0.003s: 97.8057%</span><br><span class="line">&lt;= 0.005s: 99.3593%</span><br><span class="line">&lt;= 0.010s: 99.4190%</span><br><span class="line">&lt;= 0.030s: 99.5260%</span><br><span class="line">&lt;= 0.050s: 99.7590%</span><br><span class="line">&lt;= 0.100s: 99.9580%</span><br><span class="line">&lt;= 1.00s: 100.0000%</span><br></pre></td></tr></table></figure></div>
+
+
+<p>5000 QPS 5min</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#原始数据</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.001&quot;,&#125; 507148.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.002&quot;,&#125; 1452890.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.003&quot;,&#125; 1469155.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.004&quot;,&#125; 1473658.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.005&quot;,&#125; 1475649.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.01&quot;,&#125; 1479310.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.03&quot;,&#125; 1486384.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.05&quot;,&#125; 1492447.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.07&quot;,&#125; 1497304.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.1&quot;,&#125; 1499464.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.2&quot;,&#125; 1499868.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.3&quot;,&#125; 1500000.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.5&quot;,&#125; 1500000.0</span><br><span class="line"></span><br><span class="line">&lt;= 0.003s: 96.8593%</span><br><span class="line">&lt;= 0.005s: 98.2439%</span><br><span class="line">&lt;= 0.010s: 98.3766%</span><br><span class="line">&lt;= 0.030s: 98.6207%</span><br><span class="line">&lt;= 0.050s: 99.0923%</span><br><span class="line">&lt;= 0.100s: 99.8203%</span><br><span class="line">&lt;= 0.300s: 99.9912%</span><br><span class="line">&lt;= 1.00s: 100.0000%</span><br><span class="line"></span><br><span class="line">50ms内获得99.09%</span><br></pre></td></tr></table></figure></div>
+
+<p>10000QPS 压测5min 50ms内完成的保证率96.8%</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;= 0.003s: 85.0273%</span><br><span class="line">&lt;= 0.005s: 93.5555%</span><br><span class="line">&lt;= 0.010s: 94.5312%</span><br><span class="line">&lt;= 0.030s: 95.8351%</span><br><span class="line">&lt;= 0.050s: 96.8317%</span><br><span class="line">&lt;= 0.100s: 98.2430%</span><br><span class="line">&lt;= 0.300s: 99.0106%</span><br><span class="line">&lt;= 1.00s: 99.0889%</span><br><span class="line">&lt;= 100.00s: 100.0000%</span><br></pre></td></tr></table></figure></div>
+
+<p>phn-&gt;md5</p>
+<p>1000QPS 压测5min,50ms完成数据查询的保证率是99.54%</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.001&quot;,&#125; 18608.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.002&quot;,&#125; 236088.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.003&quot;,&#125; 293617.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.004&quot;,&#125; 295297.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.005&quot;,&#125; 295717.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.01&quot;,&#125; 296435.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.03&quot;,&#125; 298607.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.05&quot;,&#125; 299254.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.07&quot;,&#125; 299767.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.1&quot;,&#125; 299874.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.2&quot;,&#125; 299964.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.3&quot;,&#125; 300000.0</span><br><span class="line"></span><br><span class="line">&lt;= 0.003s: 78.6960%</span><br><span class="line">&lt;= 0.005s: 98.4323%</span><br><span class="line">&lt;= 0.010s: 98.5723%</span><br><span class="line">&lt;= 0.030s: 98.8117%</span><br><span class="line">&lt;= 0.050s: 99.5357%</span><br><span class="line">&lt;= 0.100s: 99.9223%</span><br><span class="line">&lt;= 0.300s: 99.9880%</span><br><span class="line">&lt;= 1.00s: 100.0000%</span><br></pre></td></tr></table></figure></div>
+
+<p>5000 QPS  98.49%</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.001&quot;,&#125; 396370.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.002&quot;,&#125; 1361611.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.003&quot;,&#125; 1418054.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.004&quot;,&#125; 1428237.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.005&quot;,&#125; 1433294.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.01&quot;,&#125; 1445295.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.03&quot;,&#125; 1483337.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.05&quot;,&#125; 1491844.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.07&quot;,&#125; 1495328.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.1&quot;,&#125; 1497847.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.2&quot;,&#125; 1499612.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.3&quot;,&#125; 1499998.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.5&quot;,&#125; 1500000.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;1.0&quot;,&#125; 1500000.0</span><br><span class="line"></span><br><span class="line">&lt;= 0.003s: 89.8795%</span><br><span class="line">&lt;= 0.005s: 94.6331%</span><br><span class="line">&lt;= 0.010s: 95.0378%</span><br><span class="line">&lt;= 0.030s: 95.9085%</span><br><span class="line">&lt;= 0.050s: 98.4923%</span><br><span class="line">&lt;= 0.100s: 99.4963%</span><br><span class="line">&lt;= 0.300s: 99.9624%</span><br><span class="line">&lt;= 1.00s: 100.0000%</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>10000 QPS 50ms内完成的保证率是 97.03%</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.001&quot;,&#125; 634865.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.002&quot;,&#125; 2409485.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.003&quot;,&#125; 2645172.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.004&quot;,&#125; 2682787.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.005&quot;,&#125; 2702355.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.01&quot;,&#125; 2756471.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.03&quot;,&#125; 2910921.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.05&quot;,&#125; 2964501.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.07&quot;,&#125; 2984026.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.1&quot;,&#125; 2992563.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.2&quot;,&#125; 2996912.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.3&quot;,&#125; 2998432.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.5&quot;,&#125; 3000000.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;1.0&quot;,&#125; 3000000.0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;= 0.003s: 80.3162%</span><br><span class="line">&lt;= 0.005s: 89.4262%</span><br><span class="line">&lt;= 0.010s: 90.0785%</span><br><span class="line">&lt;= 0.030s: 91.8824%</span><br><span class="line">&lt;= 0.050s: 97.0307%</span><br><span class="line">&lt;= 0.100s: 99.4675%</span><br><span class="line">&lt;= 0.300s: 99.8971%</span><br><span class="line">&lt;= 1.00s: 100.0000%</span><br></pre></td></tr></table></figure></div>
+
+<p>phn-&gt; sha 
+ 1000 QPS</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;= 0.003s: 85.7930%</span><br><span class="line">&lt;= 0.005s: 98.6920%</span><br><span class="line">&lt;= 0.010s: 98.7637%</span><br><span class="line">&lt;= 0.030s: 98.9577%</span><br><span class="line">&lt;= 0.050s: 99.6313%</span><br><span class="line">&lt;= 0.100s: 99.9657%</span><br><span class="line">&lt;= 0.300s: 99.9967%</span><br><span class="line">&lt;= 1.00s: 100.0000%</span><br><span class="line">==</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.001&quot;,&#125; 0.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.002&quot;,&#125; 176738.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.003&quot;,&#125; 264181.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.004&quot;,&#125; 273169.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.005&quot;,&#125; 276434.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.01&quot;,&#125; 281144.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.03&quot;,&#125; 294238.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.05&quot;,&#125; 297820.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.07&quot;,&#125; 298523.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.1&quot;,&#125; 298747.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.2&quot;,&#125; 298958.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.3&quot;,&#125; 299062.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;0.5&quot;,&#125; 299263.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;1.0&quot;,&#125; 299766.0</span><br><span class="line">micro_service_latency_seconds_bucket&#123;api=&quot;get_doc_id&quot;,le=&quot;2.0&quot;,&#125; 300000.0</span><br><span class="line">````</span><br><span class="line"></span><br><span class="line">ES集群3节点9分片9副本性能测试</span><br><span class="line">2018年04月12日 13:40:12</span><br><span class="line">====================</span><br><span class="line"></span><br><span class="line">1000 QPS进行压力测试（系统Iowait大 ES陷入瘫痪)</span><br><span class="line"></span><br><span class="line">100 QPS 查询5分钟，50ms内完成查询的保证率是54.2133%</span><br></pre></td></tr></table></figure></div>
+<p>&lt;&#x3D; 0.003s: 1.6500%
+&lt;&#x3D; 0.005s: 3.0767%
+&lt;&#x3D; 0.010s: 3.3467%
+&lt;&#x3D; 0.030s: 9.2067%
+&lt;&#x3D; 0.050s: 54.2133%
+&lt;&#x3D; 0.100s: 71.1700%
+&lt;&#x3D; 0.500s: 75.9567%
+&lt;&#x3D; 1.00s: 76.3367%
+&lt;&#x3D; 1.50s: 77.1800%
+&lt;&#x3D; 5.00s: 80.4633%
+&lt;&#x3D; 10.00s: 85.0067%</p>
+<p>micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.001&quot;,} 60.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.002&quot;,} 495.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.003&quot;,} 808.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.004&quot;,} 923.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.005&quot;,} 1004.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.01&quot;,} 2762.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.03&quot;,} 16264.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.05&quot;,} 19874.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.07&quot;,} 21351.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.1&quot;,} 22230.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.2&quot;,} 22681.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.3&quot;,} 22787.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.5&quot;,} 22901.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;1.0&quot;,} 23154.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;2.0&quot;,} 23591.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;3.0&quot;,} 24139.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;5.0&quot;,} 25502.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;10.0&quot;,} 28667.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;60.0&quot;,} 30000.0</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">phn-&gt;sha 使用phnSuffix作路由查询</span><br><span class="line">1000QPS 5分钟,50ms内完成查询的保证率是 95.4333%</span><br></pre></td></tr></table></figure></div>
+<p>&lt;&#x3D; 0.003s: 4.2433%
+&lt;&#x3D; 0.005s: 15.3133%
+&lt;&#x3D; 0.010s: 16.4600%
+&lt;&#x3D; 0.030s: 30.9367%
+&lt;&#x3D; 0.050s: 95.4333%
+&lt;&#x3D; 0.100s: 96.2867%
+&lt;&#x3D; 0.500s: 97.0267%
+&lt;&#x3D; 1.00s: 97.5433%
+&lt;&#x3D; 1.50s: 98.1867%
+&lt;&#x3D; 5.00s: 99.6367%
+&lt;&#x3D; 10.00s: 100.0000%</p>
+<p>micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.001&quot;,} 5.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.002&quot;,} 1273.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.003&quot;,} 3849.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.004&quot;,} 4594.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.005&quot;,} 4938.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.01&quot;,} 9281.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.03&quot;,} 28630.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.05&quot;,} 28852.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.07&quot;,} 28886.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.1&quot;,} 28937.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.2&quot;,} 29024.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.3&quot;,} 29108.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.5&quot;,} 29263.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;1.0&quot;,} 29456.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;2.0&quot;,} 29706.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;3.0&quot;,} 29891.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;5.0&quot;,} 30000.0</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sha-&gt;md5 无路由，无docId</span><br><span class="line">1000QPS 5分钟,50ms内完成查询的保证率是 (大量的Iowait和延时，导致ES集群陷入瘫痪)</span><br></pre></td></tr></table></figure></div>
+
+
+
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">=====</span><br><span class="line">3节点 200分片</span><br></pre></td></tr></table></figure></div>
+<p>micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.001&quot;,} 336.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.002&quot;,} 1661.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.003&quot;,} 2430.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.004&quot;,} 2736.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.005&quot;,} 2966.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.01&quot;,} 5761.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.03&quot;,} 20475.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.05&quot;,} 23756.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.07&quot;,} 24880.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.1&quot;,} 25569.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.2&quot;,} 26236.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.3&quot;,} 26469.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.5&quot;,} 26767.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;1.0&quot;,} 27360.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;2.0&quot;,} 28287.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;3.0&quot;,} 29020.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;5.0&quot;,} 29900.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;10.0&quot;,} 30000.0</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">========</span><br><span class="line">3节点 3分片 2副本，共计九个节点 100QPS</span><br><span class="line">QPS  docId</span><br></pre></td></tr></table></figure></div>
+<p>micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.001&quot;,} 0.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.002&quot;,} 0.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.003&quot;,} 0.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.004&quot;,} 0.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.005&quot;,} 0.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.01&quot;,} 0.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.03&quot;,} 0.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.05&quot;,} 0.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.07&quot;,} 0.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.1&quot;,} 0.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.2&quot;,} 0.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.3&quot;,} 1.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.5&quot;,} 2.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;1.0&quot;,} 5.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;2.0&quot;,} 26.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;3.0&quot;,} 49.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;5.0&quot;,} 92.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;10.0&quot;,} 299.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;60.0&quot;,} 4279.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;+Inf&quot;,} 29564.0</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">phn-&gt;sha </span><br></pre></td></tr></table></figure></div>
+<p>micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.001&quot;,} 0.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.002&quot;,} 453.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.003&quot;,} 1334.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.004&quot;,} 1682.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.005&quot;,} 1839.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.01&quot;,} 3787.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.03&quot;,} 25333.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.05&quot;,} 27199.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.07&quot;,} 27473.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.1&quot;,} 27563.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.2&quot;,} 27729.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.3&quot;,} 27880.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.5&quot;,} 28125.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;1.0&quot;,} 28628.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;2.0&quot;,} 29390.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;3.0&quot;,} 29818.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;5.0&quot;,} 30000.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;10.0&quot;,} 30000.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;60.0&quot;,} 30000.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;+Inf&quot;,} 30000.0</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">=========</span><br><span class="line">1分片 2分布</span><br><span class="line"></span><br><span class="line">phn-&gt;sha 100 QPS 系统iowait扛不住了</span><br></pre></td></tr></table></figure></div>
+<p>micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.001&quot;,} 0.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.002&quot;,} 10.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.003&quot;,} 40.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.004&quot;,} 78.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.005&quot;,} 99.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.01&quot;,} 110.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.03&quot;,} 127.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.05&quot;,} 138.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.07&quot;,} 162.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.1&quot;,} 242.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.2&quot;,} 1283.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.3&quot;,} 3215.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.5&quot;,} 7024.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;1.0&quot;,} 10063.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;2.0&quot;,} 11130.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;3.0&quot;,} 11992.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;5.0&quot;,} 13336.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;10.0&quot;,} 15688.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;60.0&quot;,} 19109.0</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">https://www.elastic.co/guide/en/elasticsearch/reference/5.2/tune-for-indexing-speed.html</span><br><span class="line"></span><br><span class="line">=====</span><br><span class="line">调整索引策略  将每个索引的大小控制在30G左右</span><br><span class="line"></span><br><span class="line">3节点 2shard 2份副本</span><br><span class="line"></span><br><span class="line">phn-&gt;sha routing  100QPS 5min</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>&lt;&#x3D; 0.003s: 43.0667%
+&lt;&#x3D; 0.005s: 93.5100%
+&lt;&#x3D; 0.010s: 94.5500%
+&lt;&#x3D; 0.030s: 96.0333%
+&lt;&#x3D; 0.050s: 99.5133%
+&lt;&#x3D; 0.100s: 99.8367%</p>
+<p>micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.001&quot;,} 529.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.002&quot;,} 12920.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.003&quot;,} 26713.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.004&quot;,} 28053.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.005&quot;,} 28365.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.01&quot;,} 28810.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.03&quot;,} 29854.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.05&quot;,} 29942.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.07&quot;,} 29951.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.1&quot;,} 29964.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.2&quot;,} 29990.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.3&quot;,} 30000.0</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">phn-&gt;sha routing  1000QPS 5min</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.001&quot;,} 25208.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.002&quot;,} 198962.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.003&quot;,} 275536.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.004&quot;,} 285326.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.005&quot;,} 288791.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.01&quot;,} 294614.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.03&quot;,} 297922.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.05&quot;,} 298695.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.07&quot;,} 298936.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.1&quot;,} 299258.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.2&quot;,} 299748.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.3&quot;,} 299889.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.5&quot;,} 300000.0</p>
+<p>&lt;&#x3D; 0.001s: 8.4027%
+&lt;&#x3D; 0.003s: 91.8453%
+&lt;&#x3D; 0.005s: 96.2637%
+&lt;&#x3D; 0.010s: 98.2047%
+&lt;&#x3D; 0.030s: 99.3073%
+&lt;&#x3D; 0.050s: 99.5650%
+&lt;&#x3D; 0.100s: 99.7527%
+&lt;&#x3D; 0.500s: 100.0000%</p>
+<p>&lt;&#x3D; 0.001s: 8.9920%
+&lt;&#x3D; 0.003s: 88.6590%
+&lt;&#x3D; 0.005s: 93.2140%
+&lt;&#x3D; 0.010s: 95.5363%
+&lt;&#x3D; 0.030s: 97.4300%
+&lt;&#x3D; 0.050s: 97.7613%
+&lt;&#x3D; 0.100s: 98.1437%
+&lt;&#x3D; 0.500s: 99.2203%
+&lt;&#x3D; 1.00s: 99.8280%
+&lt;&#x3D; 2.00s: 100.0000%</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">phn-&gt;sha routing 10K QPS  5min</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>&lt;&#x3D; 0.003s: 61.3570%
+&lt;&#x3D; 0.005s: 84.0936%
+&lt;&#x3D; 0.010s: 86.6701%
+&lt;&#x3D; 0.030s: 90.4551%
+&lt;&#x3D; 0.050s: 95.5499%
+&lt;&#x3D; 0.100s: 98.9746%
+&lt;&#x3D; 0.500s: 99.6846%
+&lt;&#x3D; 1.00s: 99.7707%
+&lt;&#x3D; 1.50s: 99.9340%
+&lt;&#x3D; 5.00s: 100.0000%</p>
+<p>micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.001&quot;,} 437013.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.002&quot;,} 1840710.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.003&quot;,} 2352389.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.004&quot;,} 2522807.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.005&quot;,} 2600103.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.01&quot;,} 2713654.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.03&quot;,} 2866497.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.05&quot;,} 2941196.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.07&quot;,} 2969239.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.1&quot;,} 2981318.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.2&quot;,} 2987595.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.3&quot;,} 2990537.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.5&quot;,} 2993121.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;1.0&quot;,} 2998019.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;2.0&quot;,} 3000000.0</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">===</span><br><span class="line">phn-&gt;md5 docId 100QPS 5min</span><br></pre></td></tr></table></figure></div>
+<p>&lt;&#x3D; 0.003s: 30.1567%
+&lt;&#x3D; 0.005s: 91.5900%
+&lt;&#x3D; 0.010s: 94.0267%
+&lt;&#x3D; 0.030s: 96.9433%
+&lt;&#x3D; 0.050s: 98.4400%
+&lt;&#x3D; 0.100s: 98.6033%
+&lt;&#x3D; 0.500s: 98.9400%
+&lt;&#x3D; 1.00s: 99.0800%
+&lt;&#x3D; 1.50s: 99.2833%
+&lt;&#x3D; 2.00s: 100.0000%
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.001&quot;,} 135.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.002&quot;,} 10460.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.003&quot;,} 27368.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.004&quot;,} 29207.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.005&quot;,} 29553.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.01&quot;,} 29806.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.03&quot;,} 29913.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.05&quot;,} 29967.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.07&quot;,} 29977.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.1&quot;,} 29988.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.2&quot;,} 29996.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.3&quot;,} 30000.0</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">phn-&gt;md5 docId 1K QPS 5min</span><br></pre></td></tr></table></figure></div>
+
+<p>&lt;&#x3D; 0.001s: 8.5163%
+&lt;&#x3D; 0.003s: 93.1640%
+&lt;&#x3D; 0.005s: 97.6767%
+&lt;&#x3D; 0.010s: 98.6833%
+&lt;&#x3D; 0.030s: 99.2490%
+&lt;&#x3D; 0.050s: 99.4887%
+&lt;&#x3D; 0.100s: 99.6923%
+&lt;&#x3D; 0.500s: 100.0000%</p>
+<p>micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.001&quot;,} 25549.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.002&quot;,} 206372.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.003&quot;,} 279492.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.004&quot;,} 290066.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.005&quot;,} 293030.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.01&quot;,} 296050.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.03&quot;,} 297747.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.05&quot;,} 298466.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.07&quot;,} 298774.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.1&quot;,} 299077.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.2&quot;,} 299706.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.3&quot;,} 299960.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.5&quot;,} 300000.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;1.0&quot;,} 300000.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;2.0&quot;,} 300000.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;3.0&quot;,} 300000.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;5.0&quot;,} 300000.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;10.0&quot;,} 300000.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;60.0&quot;,} 300000.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;+Inf&quot;,} 300000.0</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">10k QPS phn docId</span><br></pre></td></tr></table></figure></div>
+<p>&lt;&#x3D; 0.001s: 15.5621%
+&lt;&#x3D; 0.003s: 79.7102%
+&lt;&#x3D; 0.005s: 88.3068%
+&lt;&#x3D; 0.010s: 92.2587%
+&lt;&#x3D; 0.030s: 96.4028%
+&lt;&#x3D; 0.050s: 98.4555%
+&lt;&#x3D; 0.100s: 99.5161%
+&lt;&#x3D; 0.500s: 99.9964%
+&lt;&#x3D; 1.00s: 100.0000%</p>
+<p>micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.001&quot;,} 466862.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.002&quot;,} 1895290.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.003&quot;,} 2391306.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.004&quot;,} 2566861.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.005&quot;,} 2649203.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.01&quot;,} 2767761.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.03&quot;,} 2892083.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.05&quot;,} 2953664.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.07&quot;,} 2976181.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.1&quot;,} 2985482.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.2&quot;,} 2992554.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.3&quot;,} 2996161.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;0.5&quot;,} 2999892.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_doc_id&quot;,le&#x3D;&quot;1.0&quot;,} 3000000.0</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sha-&gt;md5 无docId 和routing  100QPS 5min</span><br></pre></td></tr></table></figure></div>
+<p>&lt;&#x3D; 0.001s: 0.0000%
+&lt;&#x3D; 0.003s: 24.5905%
+&lt;&#x3D; 0.005s: 67.0432%
+&lt;&#x3D; 0.010s: 82.6737%
+&lt;&#x3D; 0.030s: 92.0674%
+&lt;&#x3D; 0.050s: 92.3850%
+&lt;&#x3D; 0.100s: 92.6032%
+&lt;&#x3D; 0.500s: 93.4981%
+&lt;&#x3D; 1.00s: 93.7108%
+&lt;&#x3D; 2.00s: 94.0809%
+&lt;&#x3D; 5.00s: 95.0753%
+&lt;&#x3D; 10.00s: 96.6413%
+&lt;&#x3D; 60.00s: 100.0000%</p>
+<p>micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.001&quot;,} 0.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.002&quot;,} 331.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.003&quot;,} 8875.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.004&quot;,} 19181.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.005&quot;,} 24040.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.01&quot;,} 28495.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.03&quot;,} 29623.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.05&quot;,} 29706.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.07&quot;,} 29730.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.1&quot;,} 29770.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.2&quot;,} 29885.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.3&quot;,} 29960.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.5&quot;,} 30000.0</p>
+<p>&lt;&#x3D; 0.001s: 0.0000%
+&lt;&#x3D; 0.003s: 29.5833%
+&lt;&#x3D; 0.005s: 80.1333%
+&lt;&#x3D; 0.010s: 94.9833%
+&lt;&#x3D; 0.030s: 98.7433%
+&lt;&#x3D; 0.050s: 99.0200%
+&lt;&#x3D; 0.100s: 99.2333%
+&lt;&#x3D; 0.500s: 100.0000%</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sha-&gt;md5 1000 QPS</span><br></pre></td></tr></table></figure></div>
+<p>micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.001&quot;,} 0.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.002&quot;,} 37866.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.003&quot;,} 131994.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.004&quot;,} 190104.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.005&quot;,} 215932.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.01&quot;,} 255075.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.03&quot;,} 277297.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.05&quot;,} 282983.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.07&quot;,} 286445.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.1&quot;,} 290133.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.2&quot;,} 296199.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.3&quot;,} 298368.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;0.5&quot;,} 299830.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_sha&quot;,le&#x3D;&quot;1.0&quot;,} 300000.0</p>
+<p>300000.0
+&lt;&#x3D; 0.001s: 0.0000%
+&lt;&#x3D; 0.003s: 43.9980%
+&lt;&#x3D; 0.005s: 71.9773%
+&lt;&#x3D; 0.010s: 85.0250%
+&lt;&#x3D; 0.030s: 92.4323%
+&lt;&#x3D; 0.050s: 94.3277%
+&lt;&#x3D; 0.100s: 96.7110%
+&lt;&#x3D; 0.500s: 99.9433%
+&lt;&#x3D; 1.00s: 100.0000%</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">=====</span><br><span class="line">phn-&gt; md5 routing  5min 1K QPS，50ms保证率99.7887%</span><br><span class="line">2018年04月17日 17:53:25</span><br></pre></td></tr></table></figure></div>
+<p>micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.001&quot;,} 31914.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.002&quot;,} 227564.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.003&quot;,} 285241.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.004&quot;,} 292444.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.005&quot;,} 294729.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.01&quot;,} 296807.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.03&quot;,} 298454.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.05&quot;,} 299366.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.07&quot;,} 299721.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.1&quot;,} 299863.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.2&quot;,} 299998.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.3&quot;,} 300000.0</p>
+<p>300000.0
+&lt;&#x3D; 0.001s: 10.6380%
+&lt;&#x3D; 0.003s: 95.0803%
+&lt;&#x3D; 0.005s: 98.2430%
+&lt;&#x3D; 0.010s: 98.9357%
+&lt;&#x3D; 0.030s: 99.4847%
+&lt;&#x3D; 0.050s: 99.7887%
+&lt;&#x3D; 0.100s: 99.9543%
+&lt;&#x3D; 0.500s: 100.0000%</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">10K QPS</span><br></pre></td></tr></table></figure></div>
+<p>micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.001&quot;,} 461119.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.002&quot;,} 1977262.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.003&quot;,} 2475505.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.004&quot;,} 2619217.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.005&quot;,} 2679664.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.01&quot;,} 2766618.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.03&quot;,} 2890699.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.05&quot;,} 2954801.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.07&quot;,} 2977103.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.1&quot;,} 2987720.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.2&quot;,} 2995430.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.3&quot;,} 2998140.0
+micro_service_latency_seconds_bucket{api&#x3D;&quot;get_filed_phn&quot;,le&#x3D;&quot;0.5&quot;,} 3000000.0</p>
+<p>&lt;&#x3D; 0.001s: 15.3706%
+&lt;&#x3D; 0.003s: 82.5168%
+&lt;&#x3D; 0.005s: 89.3221%
+&lt;&#x3D; 0.010s: 92.2206%
+&lt;&#x3D; 0.030s: 96.3566%
+&lt;&#x3D; 0.050s: 98.4934%
+&lt;&#x3D; 0.100s: 99.5907%
+&lt;&#x3D; 0.500s: 100.0000%
+&#96;&#96;&#96;</p>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> 使用ElasticSearch构建彩虹表</li>
+        <li><strong>Author:</strong> Ordiy</li>
+        <li><strong>Created at
+                :</strong> 2019-01-01 00:00:00</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-03-26 09:39:38
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://ordiy.github.io/posts/2019-06-11-elasticsearch-rainbow-table-guide/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/blog/">#blog</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/ElasticSearch/">#ElasticSearch</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/posts/2019-01-01-supervisord-init-md/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">使用supervisord管理进程</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/posts/2019-centos7-init-system/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">Centos7 init env and config security</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">使用ElasticSearch构建彩虹表</div>
+		<ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%87%8F%E9%A2%84%E4%BC%B0"><span class="nav-text">数据量预估</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ES%E5%AD%98%E5%82%A8%E8%AE%BE%E8%AE%A1"><span class="nav-text">ES存储设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ES%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1-Es-5-3"><span class="nav-text">ES存储结构设计(Es 5.3)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E8%AE%BE%E8%AE%A1"><span class="nav-text">查询设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ES%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%BE%E8%AE%A1"><span class="nav-text">ES的监控设计</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ordiy</a>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>

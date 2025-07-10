@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en,zh-cn,default">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Ordiy">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://ordiy.github.io/posts/2020-01-01-tls-study-md/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TLS握手过程">
+<meta property="og:url" content="https://ordiy.github.io/posts/2020-01-01-tls-study-md/index.html">
+<meta property="og:site_name" content="Ordiy&#39;s Blog">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ordiy.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2020-01-01T22:24:11.000Z">
+<meta property="article:modified_time" content="2025-03-26T09:39:38.225Z">
+<meta property="article:author" content="Ordiy">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="TLS">
+<meta property="article:tag" content="HTTPS">
+<meta property="article:tag" content="HTTP2">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ordiy.github.io/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            TLS握手过程 | Ordiy Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"ordiy.github.io","root":"/","language":["en","zh-cn","default"],"path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"atom-one-light","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/530e8906-4109-4871-b851-3301fee1e1bb.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"The truth sets me free","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ordiy Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/categories"
+                        >
+                            <span>Categories</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">107</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">35</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">91</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">TLS握手过程</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/redefine-avatar.svg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Ordiy</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2020-01-01 22:24:11</span>
+        <span class="mobile">2020-01-01 22:24:11</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-03-26 09:39:38</span>
+            <span class="mobile">2025-03-26 09:39:38</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/tech/TLS/">TLS</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Java/">Java</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/TLS/">TLS</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/HTTPS/">HTTPS</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/HTTP2/">HTTP2</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h2 id="TLS握手过程"><a href="#TLS握手过程" class="headerlink" title="TLS握手过程"></a>TLS握手过程</h2><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">https request</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl -i https://dev-local.17xyx.app:2001/test_dir/hello.txt</span> </span><br></pre></td></tr></table></figure></div>
+
+<p>Network Working Group定义的完整的TLS握手过程：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Client                                               Server</span><br><span class="line"></span><br><span class="line">ClientHello                  --------&gt;</span><br><span class="line">                                                ServerHello</span><br><span class="line">                                               Certificate*</span><br><span class="line">                                         ServerKeyExchange*</span><br><span class="line">                                        CertificateRequest*</span><br><span class="line">                             &lt;--------      ServerHelloDone</span><br><span class="line">Certificate*</span><br><span class="line">ClientKeyExchange</span><br><span class="line">CertificateVerify*</span><br><span class="line">[ChangeCipherSpec]</span><br><span class="line">Finished                     --------&gt;</span><br><span class="line">                                         [ChangeCipherSpec]</span><br><span class="line">                             &lt;--------             Finished</span><br><span class="line">Application Data             &lt;-------&gt;     Application Data</span><br></pre></td></tr></table></figure></div>
+<p>*表示可选 该类消息不总会发送</p>
+<ul>
+<li><p>Wireshark 抓包TLS握手通信过程：
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20200731171745.png"
+                      alt="images"
+                ></p>
+</li>
+<li><p>TLS1.2 TLS握手过程图解：
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20200731182242.png"
+                      alt="images"
+                >
+注意：在这通信过程中Client的CertificateVerify和服务端CertificateRequest未出现</p>
+</li>
+</ul>
+<p>客户端使用会话的会话ID通过发送ClientHello到，服务器检查其会话缓存匹配，可以进行简单握手(abbreviated handshake),握手过程如下：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Client                                                Server</span><br><span class="line"></span><br><span class="line">ClientHello                   --------&gt;</span><br><span class="line">                                                 ServerHello</span><br><span class="line">                                          [ChangeCipherSpec]</span><br><span class="line">                              &lt;--------             Finished</span><br><span class="line">[ChangeCipherSpec]</span><br><span class="line">Finished                      --------&gt;</span><br><span class="line">Application Data              &lt;-------&gt;     Application Data</span><br></pre></td></tr></table></figure></div>
+<h3 id="传输数据解析"><a href="#传输数据解析" class="headerlink" title="传输数据解析"></a>传输数据解析</h3><h4 id="Client-Hello"><a href="#Client-Hello" class="headerlink" title="Client Hello"></a>Client Hello</h4><p>Client Hello 整个Frame除TCP信息外56Byte外，其余Hex Data结构可以表示为：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">struct &#123;</span><br><span class="line">        ProtocolVersion client_version;</span><br><span class="line">        Random random;</span><br><span class="line">        SessionID session_id;</span><br><span class="line">        CipherSuite cipher_suites&lt;2..2^16-2&gt;;</span><br><span class="line">        CompressionMethod compression_methods&lt;1..2^8-1&gt;;</span><br><span class="line">        select (extensions_present) &#123;</span><br><span class="line">            case false:</span><br><span class="line">                struct &#123;&#125;;</span><br><span class="line">            case true:</span><br><span class="line">                Extension extensions&lt;0..2^16-1&gt;;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125; ClientHello;</span><br></pre></td></tr></table></figure></div>
+<p>数据报文与Wireshark解析结果：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Hex Data</span></span><br><span class="line">0000   16 03 01 00 d7 01 00 00 d3 03 03 1e 82 28 e4 0c   .............(..</span><br><span class="line">0010   04 79 5b 6e 71 6e f3 a9 9e 1f c2 df 93 a7 0e dd   .y[nqn..........</span><br><span class="line">0020   16 b9 9a 58 0c fe 61 73 5c 1a 42 00 00 54 c0 30   ...X..as\.B..T.0</span><br><span class="line">0030   c0 2c c0 28 c0 24 c0 14 c0 0a 00 9f 00 6b 00 39   .,.(.$.......k.9</span><br><span class="line">0040   cc a9 cc a8 cc aa ff 85 00 c4 00 88 00 81 00 9d   ................</span><br><span class="line">0050   00 3d 00 35 00 c0 00 84 c0 2f c0 2b c0 27 c0 23   .=.5...../.+.&#x27;.#</span><br><span class="line">0060   c0 13 c0 09 00 9e 00 67 00 33 00 be 00 45 00 9c   .......g.3...E..</span><br><span class="line">0070   00 3c 00 2f 00 ba 00 41 c0 12 c0 08 00 16 00 0a   .&lt;./...A........</span><br><span class="line">0080   00 ff 01 00 00 56 00 00 00 0e 00 0c 00 00 09 6c   .....V.........l</span><br><span class="line">0090   6f 63 61 6c 68 6f 73 74 00 0b 00 02 01 00 00 0a   ocalhost........</span><br><span class="line">00a0   00 08 00 06 00 1d 00 17 00 18 00 0d 00 1c 00 1a   ................</span><br><span class="line">00b0   06 01 06 03 ef ef 05 01 05 03 04 01 04 03 ee ee   ................</span><br><span class="line">00c0   ed ed 03 01 03 03 02 01 02 03 00 10 00 0e 00 0c   ................</span><br><span class="line">00d0   02 68 32 08 68 74 74 70 2f 31 2e 31               .h2.http/1.1</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Wireshark TLS解析后的结果</span>                     </span><br><span class="line">Transmission Control Protocol, Src Port: 53384, Dst Port: 2001, Seq: 1, Ack: 1, Len: 220</span><br><span class="line">Transport Layer Security</span><br><span class="line">    TLSv1.2 Record Layer: Handshake Protocol: Client Hello</span><br><span class="line">        Content Type: Handshake (22)</span><br><span class="line">        Version: TLS 1.0 (0x0301)</span><br><span class="line">        Length: 215</span><br><span class="line">        Handshake Protocol: Client Hello</span><br><span class="line">            Handshake Type: Client Hello (1)</span><br><span class="line">            Length: 211</span><br><span class="line">            Version: TLS 1.2 (0x0303)</span><br><span class="line">            Random: 1e8228e40c04795b6e716ef3a99e1fc2df93a70edd16b99a…</span><br><span class="line">                GMT Unix Time: Mar 22, 1986 11:37:08.000000000 CST</span><br><span class="line">                Random Bytes: 0c04795b6e716ef3a99e1fc2df93a70edd16b99a580cfe61…</span><br><span class="line">            Session ID Length: 0</span><br><span class="line">            Cipher Suites Length: 84</span><br><span class="line">            Cipher Suites (42 suites)</span><br><span class="line">                Cipher Suite: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (0xc030)</span><br><span class="line">                Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 (0xc02c)</span><br><span class="line">                Cipher Suite: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384 (0xc028)</span><br><span class="line">                Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384 (0xc024)</span><br><span class="line">                Cipher Suite: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (0xc014)</span><br><span class="line">                .....</span><br><span class="line">                Cipher Suite: TLS_EMPTY_RENEGOTIATION_INFO_SCSV (0x00ff)</span><br><span class="line">            Compression Methods Length: 1</span><br><span class="line">            Compression Methods (1 method)</span><br><span class="line">                Compression Method: null (0)</span><br><span class="line">            Extensions Length: 86</span><br><span class="line">            Extension: server_name (len=14)</span><br><span class="line">                Type: server_name (0)</span><br><span class="line">                Length: 14</span><br><span class="line">                Server Name Indication extension</span><br><span class="line">            Extension: ec_point_formats (len=2)</span><br><span class="line">                Type: ec_point_formats (11)</span><br><span class="line">                Length: 2</span><br><span class="line">                EC point formats Length: 1</span><br><span class="line">                Elliptic curves point formats (1)</span><br><span class="line">                    EC point format: uncompressed (0)</span><br><span class="line">            Extension: supported_groups (len=8)</span><br><span class="line">                Type: supported_groups (10)</span><br><span class="line">                Length: 8</span><br><span class="line">                Supported Groups List Length: 6</span><br><span class="line">                Supported Groups (3 groups)</span><br><span class="line">                    Supported Group: x25519 (0x001d)</span><br><span class="line">                    Supported Group: secp256r1 (0x0017)</span><br><span class="line">                    Supported Group: secp384r1 (0x0018)</span><br><span class="line">            Extension: signature_algorithms (len=28)</span><br><span class="line">                Type: signature_algorithms (13)</span><br><span class="line">                Length: 28</span><br><span class="line">                Signature Hash Algorithms Length: 26</span><br><span class="line">                Signature Hash Algorithms (13 algorithms)</span><br><span class="line">            Extension: application_layer_protocol_negotiation (len=14)</span><br><span class="line">                Type: application_layer_protocol_negotiation (16)</span><br><span class="line">                Length: 14</span><br><span class="line">                ALPN Extension Length: 12</span><br><span class="line">                ALPN Protocol</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Server-Hello-结构"><a href="#Server-Hello-结构" class="headerlink" title="Server Hello 结构"></a>Server Hello 结构</h3><p>整个Frame除TCP信息外56Byte外，其余Hex Data结构可以表示为：</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"> struct &#123;</span><br><span class="line">     ProtocolVersion server_version;</span><br><span class="line">     Random random;</span><br><span class="line">     SessionID session_id;</span><br><span class="line">     CipherSuite cipher_suite;</span><br><span class="line">     CompressionMethod compression_method;</span><br><span class="line">     select (extensions_present) &#123;</span><br><span class="line">         case false:</span><br><span class="line">             struct &#123;&#125;;</span><br><span class="line">         case true:</span><br><span class="line">             Extension extensions&lt;0..2^16-1&gt;;</span><br><span class="line">     &#125;;</span><br><span class="line"> &#125; ServerHello;</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">The extension format is:</span></span><br><span class="line"> struct &#123;</span><br><span class="line">     ExtensionType extension_type;</span><br><span class="line">     opaque extension_data&lt;0..2^16-1&gt;;</span><br><span class="line"> &#125; Extension;</span><br><span class="line"></span><br><span class="line"> enum &#123;</span><br><span class="line">     signature_algorithms(13), (65535)</span><br><span class="line"> &#125; ExtensionType;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>TLS1.2 ServerHello TSL握手除了<code>ServerHello</code>,还包含了几个ExtensionType，具体如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">ExtensionType</th>
+<th align="left">desc</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>Certificate</code></td>
+<td align="left">证书信息</td>
+</tr>
+<tr>
+<td align="left"><code>Server Key Exchange</code></td>
+<td align="left">证书和密钥交换</td>
+</tr>
+<tr>
+<td align="left"><code>Server Hello Done</code></td>
+<td align="left">证书信息</td>
+</tr>
+</tbody></table>
+<p><code>CipherSuite</code></p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">0000   02 00 00 00 45 00 00 8e 00 00 40 00 40 06 00 00   ....E.....@.@...</span><br><span class="line">0010   7f 00 00 01 7f 00 00 01 07 d1 db 05 4f db 4c ba   ............O.L.</span><br><span class="line">0020   af a4 17 f7 80 18 18 e3 fe 82 00 00 01 01 08 0a   ................</span><br><span class="line">0030   17 fb 61 30 17 fb 61 30 16 03 03 00 55 02 00 00   ..a0..a0....U...</span><br><span class="line">0040   51 03 03 5f 22 ac 4e 6f 61 21 6b 29 77 4a e5 5b   Q.._&quot;.Noa!k)wJ.[</span><br><span class="line">0050   64 3b f0 9c f7 d6 45 c9 bb 12 29 4d f1 0b 4d 51   d;....E...)M..MQ</span><br><span class="line">0060   48 9a 33 20 5f 22 ac 41 a5 f7 21 90 3b c4 87 26   H.3 _&quot;.A..!.;..&amp;</span><br><span class="line">0070   01 94 81 64 03 52 93 2c 0a 06 57 02 23 b7 65 6e   ...d.R.,..W.#.en</span><br><span class="line">0080   25 c2 0c 70 c0 2f 00 00 09 ff 01 00 01 00 00 17   %..p./..........</span><br><span class="line">0090   00 00                                             ..</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">wireshark 解析</span></span><br><span class="line">Transport Layer Security</span><br><span class="line">    TLSv1.2 Record Layer: Handshake Protocol: Server Hello</span><br><span class="line">        Content Type: Handshake (22)</span><br><span class="line">        Version: TLS 1.2 (0x0303)</span><br><span class="line">        Length: 85</span><br><span class="line">        Handshake Protocol: Server Hello</span><br><span class="line">            Handshake Type: Server Hello (2)</span><br><span class="line">            Length: 81</span><br><span class="line">            Version: TLS 1.2 (0x0303)</span><br><span class="line">            Random: 5f22ac4e6f61216b29774ae55b643bf09cf7d645c9bb1229…</span><br><span class="line">            Session ID Length: 32</span><br><span class="line">            Session ID: 5f22ac41a5f721903bc48726019481640352932c0a065702…</span><br><span class="line">            Cipher Suite: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (0xc02f)</span><br><span class="line">            Compression Method: null (0)</span><br><span class="line">            Extensions Length: 9</span><br><span class="line">            Extension: renegotiation_info (len=1)</span><br><span class="line">            Extension: extended_master_secret (len=0)</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">TLS 信息解析</span></span><br><span class="line">Transport Layer Security</span><br><span class="line">    TLSv1.2 Record Layer: Handshake Protocol: Multiple Handshake Messages</span><br><span class="line">        Content Type: Handshake (22)</span><br><span class="line">        Version: TLS 1.2 (0x0303)</span><br><span class="line">        Length: 2736</span><br><span class="line">        Handshake Protocol: Server Hello</span><br><span class="line">        Handshake Protocol: Certificate</span><br><span class="line">            Handshake Type: Certificate (11)</span><br><span class="line">            Length: 2499</span><br><span class="line">            Certificates Length: 2496</span><br><span class="line">            Certificates (2496 bytes)</span><br><span class="line">                Certificate Length: 975</span><br><span class="line">                Certificate: 308203cb308201b302147059083695fc34358b5511db272c… (pkcs-9-at-emailAddress=it@17xyx.app,id-at-commonName=dev-local.17xyx.app,id-at-organizationalUnitName=Ltd,id-at-organizationName=Singapoe Dev ltd,id-at-localityName=SG,id-at</span><br><span class="line">                Certificate Length: 1515</span><br><span class="line">                Certificate: 308205e7308203cfa0030201020214505c0f62efd92247c9… (pkcs-9-at-emailAddress=it@17xyx.app,id-at-commonName=17xyx.app,id-at-organizationalUnitName=Ltd,id-at-organizationName=Sg 17xyx Tech.Ltd,id-at-localityName=SG,id-at-stateOrP</span><br><span class="line">        Handshake Protocol: Server Key Exchange</span><br><span class="line">            Handshake Type: Server Key Exchange (12)</span><br><span class="line">            Length: 144</span><br><span class="line">            EC Diffie-Hellman Server Params</span><br><span class="line">                Curve Type: named_curve (0x03)</span><br><span class="line">                Named Curve: secp256r1 (0x0017)</span><br><span class="line">                Pubkey Length: 65</span><br><span class="line">                Pubkey: 04078ee25e7303d05a141e56a2303eeb54902766933474b1…</span><br><span class="line">                Signature Algorithm: ecdsa_secp521r1_sha512 (0x0603)</span><br><span class="line">                Signature Length: 71</span><br><span class="line">                Signature: 3045022100c4ab04ba8fa2f5c90cf251be846a8c4bdc30a7…</span><br><span class="line">        Handshake Protocol: Server Hello Done</span><br><span class="line">            Handshake Type: Server Hello Done (14)</span><br><span class="line">            Length: 0</span><br></pre></td></tr></table></figure></div>
+<h3 id="Client-Key-Exchange-部分"><a href="#Client-Key-Exchange-部分" class="headerlink" title="Client Key Exchange 部分"></a>Client Key Exchange 部分</h3><table>
+<thead>
+<tr>
+<th align="left">message</th>
+<th align="left">desc</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Client Key Exchange</td>
+<td align="left">收到ServerHelloDone后，可以通过直接设置premaster机密RSA加密机密的传输或通过允许双方达成共识的Diffie-Hellman参数相同的Premaster秘诀</td>
+</tr>
+<tr>
+<td align="left">Change Cipher Spec</td>
+<td align="left">更改密码规范协议以信号转换加密策略</td>
+</tr>
+<tr>
+<td align="left">Finished</td>
+<td align="left">第一条正式加密数据 （The Finished message is the first one protected with the just negotiated algorithms, keys, and secrets）</td>
+</tr>
+</tbody></table>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">0000   16 03 03 00 46 10 00 00 42 41 04 73 9d 45 fb 08   ....F...BA.s.E..</span><br><span class="line">0010   0b c5 61 8f 28 d8 87 02 d0 2b 96 82 4e dd 36 90   ..a.(....+..N.6.</span><br><span class="line">0020   a0 8d a6 76 28 f5 ab 5c 1b 03 2e c0 56 9e a5 a3   ...v(..\....V...</span><br><span class="line">0030   95 34 02 2a 84 15 af fb 1e 94 b9 92 0e 09 c5 4a   .4.*...........J</span><br><span class="line">0040   5c ec c1 c2 c8 51 02 d0 7f 93 5f                  \....Q...._</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">TLS body</span> </span><br><span class="line">Transport Layer Security</span><br><span class="line">    TLSv1.2 Record Layer: Handshake Protocol: Client Key Exchange</span><br><span class="line">        Content Type: Handshake (22)</span><br><span class="line">        Version: TLS 1.2 (0x0303)</span><br><span class="line">        Length: 70</span><br><span class="line">        Handshake Protocol: Client Key Exchange</span><br><span class="line">            Handshake Type: Client Key Exchange (16)</span><br><span class="line">            Length: 66</span><br><span class="line">            EC Diffie-Hellman Client Params</span><br><span class="line">                Pubkey Length: 65</span><br><span class="line">                Pubkey: 04739d45fb080bc5618f28d88702d02b96824edd3690a08d…</span><br><span class="line">    TLSv1.2 Record Layer: Change Cipher Spec Protocol: Change Cipher Spec</span><br><span class="line">        Content Type: Change Cipher Spec (20)</span><br><span class="line">        Version: TLS 1.2 (0x0303)</span><br><span class="line">        Length: 1</span><br><span class="line">        Change Cipher Spec Message</span><br><span class="line">    TLSv1.2 Record Layer: Handshake Protocol: Encrypted Handshake Message</span><br><span class="line">        Content Type: Handshake (22)</span><br><span class="line">        Version: TLS 1.2 (0x0303)</span><br><span class="line">        Length: 40</span><br><span class="line">        Handshake Protocol: Encrypted Handshake Message</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a class="link"   target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc5246#section-7.4.1.2" >RFC5246-SECTION-7.4.1.2<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> TLS握手过程</li>
+        <li><strong>Author:</strong> Ordiy</li>
+        <li><strong>Created at
+                :</strong> 2020-01-01 22:24:11</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-03-26 09:39:38
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://ordiy.github.io/posts/2020-01-01-tls-study-md/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/Java/">#Java</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/TLS/">#TLS</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/HTTPS/">#HTTPS</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/HTTP2/">#HTTP2</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/posts/2020-01-01-data-set-coll/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">各种DataSet汇总和简介</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/posts/2020-01-01-tls-truststores-md/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">HTTP2 TLS加密通信理解与应用</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">TLS握手过程</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#TLS%E6%8F%A1%E6%89%8B%E8%BF%87%E7%A8%8B"><span class="nav-text">TLS握手过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E6%95%B0%E6%8D%AE%E8%A7%A3%E6%9E%90"><span class="nav-text">传输数据解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Server-Hello-%E7%BB%93%E6%9E%84"><span class="nav-text">Server Hello 结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Client-Key-Exchange-%E9%83%A8%E5%88%86"><span class="nav-text">Client Key Exchange 部分</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-text">参考</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ordiy</a>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>

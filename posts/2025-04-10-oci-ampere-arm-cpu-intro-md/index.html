@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en,zh-cn,default">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Ordiy">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://ordiy.github.io/posts/2025-04-10-oci-ampere-arm-cpu-intro-md/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ARM CPU 在Cloud上大规模应用的场景以及几点思考">
+<meta property="og:url" content="https://ordiy.github.io/posts/2025-04-10-oci-ampere-arm-cpu-intro-md/index.html">
+<meta property="og:site_name" content="Ordiy&#39;s Blog">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ordiy.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2025-04-27T11:06:31.000Z">
+<meta property="article:modified_time" content="2025-07-09T02:41:15.602Z">
+<meta property="article:author" content="Ordiy">
+<meta property="article:tag" content="vm">
+<meta property="article:tag" content="OCI">
+<meta property="article:tag" content="AWS">
+<meta property="article:tag" content="benchmark">
+<meta property="article:tag" content="ARM">
+<meta property="article:tag" content="CPU">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ordiy.github.io/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            ARM CPU 在Cloud上大规模应用的场景以及几点思考 | Ordiy Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"ordiy.github.io","root":"/","language":["en","zh-cn","default"],"path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"atom-one-light","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/530e8906-4109-4871-b851-3301fee1e1bb.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"The truth sets me free","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ordiy Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/categories"
+                        >
+                            <span>Categories</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">107</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">35</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">91</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">ARM CPU 在Cloud上大规模应用的场景以及几点思考</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/redefine-avatar.svg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Ordiy</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-04-27 11:06:31</span>
+        <span class="mobile">2025-04-27 11:06:31</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-07-09 02:41:15</span>
+            <span class="mobile">2025-07-09 02:41:15</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/vm/">vm</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/OCI/">OCI</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/AWS/">AWS</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/benchmark/">benchmark</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/ARM/">ARM</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/CPU/">CPU</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h1 id="ARM-CPU-on-cloud"><a href="#ARM-CPU-on-cloud" class="headerlink" title="ARM CPU on cloud"></a>ARM CPU on cloud</h1><p>目前云厂商大规模部署基于ARM CPU的服务器的典型产品:</p>
+<ul>
+<li>AWS Graviton </li>
+<li>Azure cobalt 100 </li>
+<li>Google Cloud TPU
+独立的第三方厂商AmpereComputing(已经可以规大规模出货)。（服务器成本在IDC建设中大约占到60%-75%，电力成本在IDC运营期间占50%——60%左右， 云厂商使用ARM CPU服务器的高密度部署&#x2F;低功耗，可能在未来云市场中会有更大市场份额）。</li>
+</ul>
+<h1 id="主要的ARM-CPU基本信息"><a href="#主要的ARM-CPU基本信息" class="headerlink" title="主要的ARM CPU基本信息"></a>主要的ARM CPU基本信息</h1><h2 id="OCI-Ampere-A1"><a href="#OCI-Ampere-A1" class="headerlink" title="OCI Ampere A1"></a>OCI Ampere A1</h2><p>OCI Ampere A1 采用 AmpereComputing的 <code>altra</code> ARM 机器（基于ARM N1 架构，最大核心数80核）</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">vm shap 与 信息</span></span><br><span class="line">VM.Standard.A1.Flex	 --&gt; (OCPU is 1 core of an Altra processor)   7nm</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>配置参数：</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/2024/202504271112180.png"
+                     
+                ></p>
+<ul>
+<li>Altra 芯片架构（ARMV8 架构 +  N1技术 + 自研扩展技术）</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/2024/202504271113033.png"
+                     
+                ></p>
+<ul>
+<li>AmpereComputing 白皮书资料</li>
+</ul>
+<p><a class="link"   target="_blank" rel="noopener" href="https://amperecomputing.com/assets/AmpereOne_Efficiency_White_Paper_3bc51280f9.pdf" >https://amperecomputing.com/assets/AmpereOne_Efficiency_White_Paper_3bc51280f9.pdf<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://amperecomputing.com/assets/Altra_Rev_A1_DS_v1_50_20240130_3375c3dec5_1c5d4604fa.pdf" >https://amperecomputing.com/assets/Altra_Rev_A1_DS_v1_50_20240130_3375c3dec5_1c5d4604fa.pdf<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>Ampere Computing A1 lscpu info:</p>
+<div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Architecture</span>:             aarch64</span><br><span class="line">  <span class="variable constant_">CPU</span> op-<span class="title function_">mode</span>(s):         <span class="number">32</span>-bit, <span class="number">64</span>-bit</span><br><span class="line">  <span class="title class_">Byte</span> <span class="title class_">Order</span>:             <span class="title class_">Little</span> <span class="title class_">Endian</span></span><br><span class="line"><span class="title function_">CPU</span>(s):                   <span class="number">12</span></span><br><span class="line">  <span class="title class_">On</span>-line <span class="title function_">CPU</span>(s) <span class="attr">list</span>:    <span class="number">0</span>-<span class="number">11</span></span><br><span class="line"><span class="title class_">Vendor</span> <span class="attr">ID</span>:                <span class="variable constant_">ARM</span></span><br><span class="line">  <span class="title class_">Model</span> <span class="attr">name</span>:             <span class="title class_">Neoverse</span>-<span class="variable constant_">N1</span></span><br><span class="line">    <span class="title class_">Model</span>:                <span class="number">1</span></span><br><span class="line">    <span class="title class_">Thread</span>(s) per <span class="attr">core</span>:   <span class="number">1</span></span><br><span class="line">    <span class="title class_">Core</span>(s) per <span class="attr">socket</span>:   <span class="number">12</span></span><br><span class="line">    <span class="title class_">Socket</span>(s):            <span class="number">1</span></span><br><span class="line">    <span class="title class_">Stepping</span>:             r3p1</span><br><span class="line">    <span class="title class_">BogoMIPS</span>:             <span class="number">50.00</span></span><br><span class="line">    <span class="title class_">Flags</span>:                fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp ssbs</span><br><span class="line"><span class="attr">NUMA</span>:</span><br><span class="line">  <span class="variable constant_">NUMA</span> <span class="title function_">node</span>(s):           <span class="number">1</span></span><br><span class="line">  <span class="variable constant_">NUMA</span> node0 <span class="title function_">CPU</span>(s):      <span class="number">0</span>-<span class="number">11</span></span><br><span class="line"><span class="title class_">Vulnerabilities</span>:</span><br><span class="line">  <span class="title class_">Gather</span> data <span class="attr">sampling</span>:   <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Itlb</span> <span class="attr">multihit</span>:          <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="attr">L1tf</span>:                   <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Mds</span>:                    <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Meltdown</span>:               <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Mmio</span> stale <span class="attr">data</span>:        <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Reg</span> file data <span class="attr">sampling</span>: <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Retbleed</span>:               <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Spec</span> rstack <span class="attr">overflow</span>:   <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Spec</span> store <span class="attr">bypass</span>:      <span class="title class_">Mitigation</span>; <span class="title class_">Speculative</span> <span class="title class_">Store</span> <span class="title class_">Bypass</span> disabled via prctl</span><br><span class="line">  <span class="title class_">Spectre</span> <span class="attr">v1</span>:             <span class="title class_">Mitigation</span>; __user pointer sanitization</span><br><span class="line">  <span class="title class_">Spectre</span> <span class="attr">v2</span>:             <span class="title class_">Mitigation</span>; <span class="title class_">CSV2</span>, <span class="variable constant_">BHB</span></span><br><span class="line">  <span class="title class_">Srbds</span>:                  <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Tsx</span> <span class="keyword">async</span> <span class="attr">abort</span>:        <span class="title class_">Not</span> affected</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Ampere-Computing-A2-CPU-info"><a href="#Ampere-Computing-A2-CPU-info" class="headerlink" title="Ampere Computing A2 CPU info"></a>Ampere Computing A2 CPU info</h2><p>OCI ARM A2采用 AmpereComputing的 <code>AmpereOne</code> ARM CPU服务器（基于ARM N2 架构，最大核心数156核）</p>
+<div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">ARMv8</span><span class="number">.6</span>+ </span><br><span class="line"><span class="variable constant_">TSMC</span> <span class="number">5</span> nm <span class="title class_">FinFET</span></span><br><span class="line"><span class="title class_">AmpereOne</span>  </span><br><span class="line"><span class="title class_">Consistent</span> <span class="title class_">Freq</span> up to <span class="number">3.7</span> <span class="title class_">GHz</span>​</span><br><span class="line"></span><br><span class="line"><span class="variable constant_">VM</span>.<span class="property">Standard</span>.<span class="property">A1</span>.<span class="property">Flex</span>	 --&gt; (1oCPU is <span class="number">2</span> core <span class="keyword">of</span>  core processor)   5nm</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>A2 lscpu info:</p>
+<div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Architecture</span>:             aarch64</span><br><span class="line">  <span class="variable constant_">CPU</span> op-<span class="title function_">mode</span>(s):         <span class="number">64</span>-bit</span><br><span class="line">  <span class="title class_">Byte</span> <span class="title class_">Order</span>:             <span class="title class_">Little</span> <span class="title class_">Endian</span></span><br><span class="line"><span class="title function_">CPU</span>(s):                   <span class="number">12</span></span><br><span class="line">  <span class="title class_">On</span>-line <span class="title function_">CPU</span>(s) <span class="attr">list</span>:    <span class="number">0</span>-<span class="number">11</span></span><br><span class="line"><span class="title class_">Vendor</span> <span class="attr">ID</span>:                <span class="title class_">Ampere</span></span><br><span class="line">  <span class="title class_">Model</span> <span class="attr">name</span>:             <span class="title class_">Ampere</span>-<span class="number">1</span></span><br><span class="line">    <span class="title class_">Model</span>:                <span class="number">1</span></span><br><span class="line">    <span class="title class_">Thread</span>(s) per <span class="attr">core</span>:   <span class="number">1</span></span><br><span class="line">    <span class="title class_">Core</span>(s) per <span class="attr">socket</span>:   <span class="number">12</span></span><br><span class="line">    <span class="title class_">Socket</span>(s):            <span class="number">1</span></span><br><span class="line">    <span class="title class_">Stepping</span>:             <span class="number">0x0</span></span><br><span class="line">    <span class="title class_">BogoMIPS</span>:             <span class="number">2000.00</span></span><br><span class="line">    <span class="title class_">Flags</span>:                fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 asimddp sha512 asimdfhm dit uscat ilrcpc flagm ssbs sb pac</span><br><span class="line">                          a pacg dcpodp flagm2 frint i8mm bf16 rng bti ecv</span><br><span class="line"><span class="attr">NUMA</span>:</span><br><span class="line">  <span class="variable constant_">NUMA</span> <span class="title function_">node</span>(s):           <span class="number">1</span></span><br><span class="line">  <span class="variable constant_">NUMA</span> node0 <span class="title function_">CPU</span>(s):      <span class="number">0</span>-<span class="number">11</span></span><br><span class="line"><span class="title class_">Vulnerabilities</span>:</span><br><span class="line">  <span class="title class_">Gather</span> data <span class="attr">sampling</span>:   <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Itlb</span> <span class="attr">multihit</span>:          <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="attr">L1tf</span>:                   <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Mds</span>:                    <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Meltdown</span>:               <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Mmio</span> stale <span class="attr">data</span>:        <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Reg</span> file data <span class="attr">sampling</span>: <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Retbleed</span>:               <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Spec</span> rstack <span class="attr">overflow</span>:   <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Spec</span> store <span class="attr">bypass</span>:      <span class="title class_">Mitigation</span>; <span class="title class_">Speculative</span> <span class="title class_">Store</span> <span class="title class_">Bypass</span> disabled via prctl</span><br><span class="line">  <span class="title class_">Spectre</span> <span class="attr">v1</span>:             <span class="title class_">Mitigation</span>; __user pointer sanitization</span><br><span class="line">  <span class="title class_">Spectre</span> <span class="attr">v2</span>:             <span class="title class_">Mitigation</span>; <span class="title class_">CSV2</span>, <span class="variable constant_">BHB</span></span><br><span class="line">  <span class="title class_">Srbds</span>:                  <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Tsx</span> <span class="keyword">async</span> <span class="attr">abort</span>:        <span class="title class_">Not</span> affected</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="AWS-Graviton-ARM-CPU-系列"><a href="#AWS-Graviton-ARM-CPU-系列" class="headerlink" title="AWS Graviton ARM CPU 系列"></a>AWS Graviton ARM CPU 系列</h2><p>AWS Graviton ARM CPU 目前主要有 Graviton2(X6g系列) ， Graviton3（X7g系列,最大64Core）,Graviton3（X8g系列,最大96Core）.</p>
+<h3 id="AWS-Graviton-3-info"><a href="#AWS-Graviton-3-info" class="headerlink" title="AWS Graviton 3 info"></a>AWS Graviton 3 info</h3><p> AWS Graviton 3 CPU info:</p>
+<div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><figcaption><span>x</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"> <span class="title class_">Architecture</span>:             aarch64</span><br><span class="line">  <span class="variable constant_">CPU</span> op-<span class="title function_">mode</span>(s):         <span class="number">32</span>-bit, <span class="number">64</span>-bit</span><br><span class="line">  <span class="title class_">Byte</span> <span class="title class_">Order</span>:             <span class="title class_">Little</span> <span class="title class_">Endian</span></span><br><span class="line"><span class="title function_">CPU</span>(s):                   <span class="number">16</span></span><br><span class="line">  <span class="title class_">On</span>-line <span class="title function_">CPU</span>(s) <span class="attr">list</span>:    <span class="number">0</span>-<span class="number">15</span></span><br><span class="line"><span class="title class_">Vendor</span> <span class="attr">ID</span>:                <span class="variable constant_">ARM</span></span><br><span class="line">  <span class="title class_">Model</span> <span class="attr">name</span>:             <span class="title class_">Neoverse</span>-<span class="variable constant_">N1</span></span><br><span class="line">    <span class="title class_">Model</span>:                <span class="number">1</span></span><br><span class="line">    <span class="title class_">Thread</span>(s) per <span class="attr">core</span>:   <span class="number">1</span></span><br><span class="line">    <span class="title class_">Core</span>(s) per <span class="attr">socket</span>:   <span class="number">16</span></span><br><span class="line">    <span class="title class_">Socket</span>(s):            <span class="number">1</span></span><br><span class="line">    <span class="title class_">Stepping</span>:             r3p1</span><br><span class="line">    <span class="title class_">BogoMIPS</span>:             <span class="number">243.75</span></span><br><span class="line">    <span class="title class_">Flags</span>:                fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp ssbs</span><br><span class="line"><span class="title class_">Caches</span> (sum <span class="keyword">of</span> all):</span><br><span class="line">  <span class="attr">L1d</span>:                    <span class="number">1</span> <span class="title class_">MiB</span> (<span class="number">16</span> instances)</span><br><span class="line">  <span class="attr">L1i</span>:                    <span class="number">1</span> <span class="title class_">MiB</span> (<span class="number">16</span> instances)</span><br><span class="line">  <span class="attr">L2</span>:                     <span class="number">16</span> <span class="title class_">MiB</span> (<span class="number">16</span> instances)</span><br><span class="line">  <span class="attr">L3</span>:                     <span class="number">32</span> <span class="title class_">MiB</span> (<span class="number">1</span> instance)</span><br><span class="line"><span class="attr">NUMA</span>:</span><br><span class="line">  <span class="variable constant_">NUMA</span> <span class="title function_">node</span>(s):           <span class="number">1</span></span><br><span class="line">  <span class="variable constant_">NUMA</span> node0 <span class="title function_">CPU</span>(s):      <span class="number">0</span>-<span class="number">15</span></span><br><span class="line"><span class="title class_">Vulnerabilities</span>:</span><br><span class="line">  <span class="title class_">Gather</span> data <span class="attr">sampling</span>:   <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Itlb</span> <span class="attr">multihit</span>:          <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="attr">L1tf</span>:                   <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Mds</span>:                    <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Meltdown</span>:               <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Mmio</span> stale <span class="attr">data</span>:        <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Reg</span> file data <span class="attr">sampling</span>: <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Retbleed</span>:               <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Spec</span> rstack <span class="attr">overflow</span>:   <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Spec</span> store <span class="attr">bypass</span>:      <span class="title class_">Mitigation</span>; <span class="title class_">Speculative</span> <span class="title class_">Store</span> <span class="title class_">Bypass</span> disabled via prctl</span><br><span class="line">  <span class="title class_">Spectre</span> <span class="attr">v1</span>:             <span class="title class_">Mitigation</span>; __user pointer sanitization</span><br><span class="line">  <span class="title class_">Spectre</span> <span class="attr">v2</span>:             <span class="title class_">Mitigation</span>; <span class="title class_">CSV2</span>, <span class="variable constant_">BHB</span></span><br><span class="line">  <span class="title class_">Srbds</span>:                  <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Tsx</span> <span class="keyword">async</span> <span class="attr">abort</span>:        <span class="title class_">Not</span> affected</span><br><span class="line">  </span><br></pre></td></tr></table></figure></div>
+
+<h2 id="AWS-Graviton-3-info-1"><a href="#AWS-Graviton-3-info-1" class="headerlink" title="AWS Graviton 3 info"></a>AWS Graviton 3 info</h2><p>AWS Graviton 3 lscpu info:</p>
+<div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Architecture</span>:             aarch64</span><br><span class="line">  <span class="variable constant_">CPU</span> op-<span class="title function_">mode</span>(s):         <span class="number">32</span>-bit, <span class="number">64</span>-bit</span><br><span class="line">  <span class="title class_">Byte</span> <span class="title class_">Order</span>:             <span class="title class_">Little</span> <span class="title class_">Endian</span></span><br><span class="line"><span class="title function_">CPU</span>(s):                   <span class="number">48</span></span><br><span class="line">  <span class="title class_">On</span>-line <span class="title function_">CPU</span>(s) <span class="attr">list</span>:    <span class="number">0</span>-<span class="number">47</span></span><br><span class="line"><span class="title class_">Vendor</span> <span class="attr">ID</span>:                <span class="variable constant_">ARM</span></span><br><span class="line">  <span class="variable constant_">BIOS</span> <span class="title class_">Vendor</span> <span class="attr">ID</span>:         <span class="variable constant_">AWS</span></span><br><span class="line">  <span class="title class_">Model</span> <span class="attr">name</span>:             <span class="title class_">Neoverse</span>-<span class="variable constant_">V1</span></span><br><span class="line">    <span class="variable constant_">BIOS</span> <span class="title class_">Model</span> <span class="attr">name</span>:      <span class="variable constant_">AWS</span> <span class="title class_">Graviton3</span> <span class="variable constant_">AWS</span> <span class="title class_">Graviton3</span> <span class="variable constant_">CPU</span> @ <span class="number">2.</span>6GHz</span><br><span class="line">    <span class="variable constant_">BIOS</span> <span class="variable constant_">CPU</span> <span class="attr">family</span>:      <span class="number">257</span></span><br><span class="line">    <span class="title class_">Model</span>:                <span class="number">1</span></span><br><span class="line">    <span class="title class_">Thread</span>(s) per <span class="attr">core</span>:   <span class="number">1</span></span><br><span class="line">    <span class="title class_">Core</span>(s) per <span class="attr">socket</span>:   <span class="number">48</span></span><br><span class="line">    <span class="title class_">Socket</span>(s):            <span class="number">1</span></span><br><span class="line">    <span class="title class_">Stepping</span>:             r1p1</span><br><span class="line">    <span class="title class_">BogoMIPS</span>:             <span class="number">2100.00</span></span><br><span class="line">    <span class="title class_">Flags</span>:                fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 sm3 sm4 asimddp sha512 sve asimdfhm dit uscat ilrcpc flagm</span><br><span class="line">                           ssbs paca pacg dcpodp svei8mm svebf16 i8mm bf16 dgh rng</span><br><span class="line"><span class="title class_">Caches</span> (sum <span class="keyword">of</span> all):</span><br><span class="line">  <span class="attr">L1d</span>:                    <span class="number">3</span> <span class="title class_">MiB</span> (<span class="number">48</span> instances)</span><br><span class="line">  <span class="attr">L1i</span>:                    <span class="number">3</span> <span class="title class_">MiB</span> (<span class="number">48</span> instances)</span><br><span class="line">  <span class="attr">L2</span>:                     <span class="number">48</span> <span class="title class_">MiB</span> (<span class="number">48</span> instances)</span><br><span class="line">  <span class="attr">L3</span>:                     <span class="number">32</span> <span class="title class_">MiB</span> (<span class="number">1</span> instance)</span><br><span class="line"><span class="attr">NUMA</span>:</span><br><span class="line">  <span class="variable constant_">NUMA</span> <span class="title function_">node</span>(s):           <span class="number">1</span></span><br><span class="line">  <span class="variable constant_">NUMA</span> node0 <span class="title function_">CPU</span>(s):      <span class="number">0</span>-<span class="number">47</span></span><br><span class="line"><span class="title class_">Vulnerabilities</span>:</span><br><span class="line">  <span class="title class_">Gather</span> data <span class="attr">sampling</span>:   <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Itlb</span> <span class="attr">multihit</span>:          <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="attr">L1tf</span>:                   <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Mds</span>:                    <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Meltdown</span>:               <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Mmio</span> stale <span class="attr">data</span>:        <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Reg</span> file data <span class="attr">sampling</span>: <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Retbleed</span>:               <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Spec</span> rstack <span class="attr">overflow</span>:   <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Spec</span> store <span class="attr">bypass</span>:      <span class="title class_">Mitigation</span>; <span class="title class_">Speculative</span> <span class="title class_">Store</span> <span class="title class_">Bypass</span> disabled via prctl</span><br><span class="line">  <span class="title class_">Spectre</span> <span class="attr">v1</span>:             <span class="title class_">Mitigation</span>; __user pointer sanitization</span><br><span class="line">  <span class="title class_">Spectre</span> <span class="attr">v2</span>:             <span class="title class_">Mitigation</span>; <span class="title class_">CSV2</span>, <span class="variable constant_">BHB</span></span><br><span class="line">  <span class="title class_">Srbds</span>:                  <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Tsx</span> <span class="keyword">async</span> <span class="attr">abort</span>:        <span class="title class_">Not</span> affected</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Ampere-Computing-A1-CPU-info"><a href="#Ampere-Computing-A1-CPU-info" class="headerlink" title="Ampere Computing A1 CPU info"></a>Ampere Computing A1 CPU info</h3><h3 id="对比组-AMD-X86-AMD-EPYC-7J13"><a href="#对比组-AMD-X86-AMD-EPYC-7J13" class="headerlink" title="对比组 AMD X86 (AMD EPYC 7J13)"></a>对比组 AMD X86 (AMD EPYC 7J13)</h3><div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Architecture</span>:             x86_64</span><br><span class="line">  <span class="variable constant_">CPU</span> op-<span class="title function_">mode</span>(s):         <span class="number">32</span>-bit, <span class="number">64</span>-bit</span><br><span class="line">  <span class="title class_">Address</span> <span class="attr">sizes</span>:          <span class="number">40</span> bits physical, <span class="number">48</span> bits virtual</span><br><span class="line">  <span class="title class_">Byte</span> <span class="title class_">Order</span>:             <span class="title class_">Little</span> <span class="title class_">Endian</span></span><br><span class="line"><span class="title function_">CPU</span>(s):                   <span class="number">16</span></span><br><span class="line">  <span class="title class_">On</span>-line <span class="title function_">CPU</span>(s) <span class="attr">list</span>:    <span class="number">0</span>-<span class="number">15</span></span><br><span class="line"><span class="title class_">Vendor</span> <span class="attr">ID</span>:                <span class="title class_">AuthenticAMD</span></span><br><span class="line">  <span class="title class_">Model</span> <span class="attr">name</span>:             <span class="variable constant_">AMD</span> <span class="variable constant_">EPYC</span> 7J13 <span class="number">64</span>-<span class="title class_">Core</span> <span class="title class_">Processor</span></span><br><span class="line">    <span class="variable constant_">CPU</span> <span class="attr">family</span>:           <span class="number">25</span></span><br><span class="line">    <span class="title class_">Model</span>:                <span class="number">1</span></span><br><span class="line">    <span class="title class_">Thread</span>(s) per <span class="attr">core</span>:   <span class="number">2</span></span><br><span class="line">    <span class="title class_">Core</span>(s) per <span class="attr">socket</span>:   <span class="number">8</span></span><br><span class="line">    <span class="title class_">Socket</span>(s):            <span class="number">1</span></span><br><span class="line">    <span class="title class_">Stepping</span>:             <span class="number">1</span></span><br><span class="line">    <span class="title class_">BogoMIPS</span>:             <span class="number">4890.80</span></span><br><span class="line">    <span class="title class_">Flags</span>:                fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm rep_good nopl cpuid</span><br><span class="line">                           extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm cmp_l</span><br><span class="line">                          egacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid</span><br><span class="line">                          rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr wbnoinvd arat npt nrip_save umip pku ospke vaes vpclmulqdq rdpid fsrm arch_ca</span><br><span class="line">                          pabilities</span><br><span class="line"><span class="title class_">Virtualization</span> <span class="attr">features</span>:</span><br><span class="line">  <span class="title class_">Virtualization</span>:         <span class="variable constant_">AMD</span>-V</span><br><span class="line">  <span class="title class_">Hypervisor</span> <span class="attr">vendor</span>:      <span class="variable constant_">KVM</span></span><br><span class="line">  <span class="title class_">Virtualization</span> <span class="attr">type</span>:    full</span><br><span class="line"><span class="title class_">Caches</span> (sum <span class="keyword">of</span> all):</span><br><span class="line">  <span class="attr">L1d</span>:                    <span class="number">512</span> <span class="title class_">KiB</span> (<span class="number">8</span> instances)</span><br><span class="line">  <span class="attr">L1i</span>:                    <span class="number">512</span> <span class="title class_">KiB</span> (<span class="number">8</span> instances)</span><br><span class="line">  <span class="attr">L2</span>:                     <span class="number">4</span> <span class="title class_">MiB</span> (<span class="number">8</span> instances)</span><br><span class="line">  <span class="attr">L3</span>:                     <span class="number">16</span> <span class="title class_">MiB</span> (<span class="number">1</span> instance)</span><br><span class="line"><span class="attr">NUMA</span>:</span><br><span class="line">  <span class="variable constant_">NUMA</span> <span class="title function_">node</span>(s):           <span class="number">1</span></span><br><span class="line">  <span class="variable constant_">NUMA</span> node0 <span class="title function_">CPU</span>(s):      <span class="number">0</span>-<span class="number">15</span></span><br><span class="line"><span class="title class_">Vulnerabilities</span>:</span><br><span class="line">  <span class="title class_">Gather</span> data <span class="attr">sampling</span>:   <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Itlb</span> <span class="attr">multihit</span>:          <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="attr">L1tf</span>:                   <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Mds</span>:                    <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Meltdown</span>:               <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Mmio</span> stale <span class="attr">data</span>:        <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Reg</span> file data <span class="attr">sampling</span>: <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Retbleed</span>:               <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Spec</span> rstack <span class="attr">overflow</span>:   <span class="title class_">Vulnerable</span>: <span class="title class_">Safe</span> <span class="variable constant_">RET</span>, no microcode</span><br><span class="line">  <span class="title class_">Spec</span> store <span class="attr">bypass</span>:      <span class="title class_">Mitigation</span>; <span class="title class_">Speculative</span> <span class="title class_">Store</span> <span class="title class_">Bypass</span> disabled via prctl</span><br><span class="line">  <span class="title class_">Spectre</span> <span class="attr">v1</span>:             <span class="title class_">Mitigation</span>; usercopy/swapgs barriers and __user pointer sanitization</span><br><span class="line">  <span class="title class_">Spectre</span> <span class="attr">v2</span>:             <span class="title class_">Mitigation</span>; <span class="title class_">Retpolines</span>; <span class="variable constant_">IBPB</span> conditional; <span class="variable constant_">IBRS_FW</span>; <span class="variable constant_">STIBP</span> always-on; <span class="variable constant_">RSB</span> filling; <span class="variable constant_">PBRSB</span>-eIBRS <span class="title class_">Not</span> affected; <span class="variable constant_">BHI</span> <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Srbds</span>:                  <span class="title class_">Not</span> affected</span><br><span class="line">  <span class="title class_">Tsx</span> <span class="keyword">async</span> <span class="attr">abort</span>:        <span class="title class_">Not</span> affected</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h1 id="各云厂商AMR-CPU性能测试"><a href="#各云厂商AMR-CPU性能测试" class="headerlink" title="各云厂商AMR CPU性能测试"></a>各云厂商AMR CPU性能测试</h1><h2 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h2><p>以典型的计算素数场景，测试ARM CPU在多核环境下的并行处理能力(内存+CPU整体并行能力）。</p>
+<div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install sysbench</span><br><span class="line"></span><br><span class="line">sysbench cpu --threads=<span class="number">3</span> run</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<table>
+<thead>
+<tr>
+<th align="left">CPU</th>
+<th align="left">E4（ AMD AMD EPYC 7J13)  X86</th>
+<th align="left">Ampere A2 ARM</th>
+<th align="left">Ampere A1 ARM</th>
+<th align="left">AWS G3 ARM</th>
+<th align="left">AWS G2 ARM</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">CPU event per second</td>
+<td align="left">12491.67</td>
+<td align="left">2321.38</td>
+<td align="left">10046.69</td>
+<td align="left">9047.54</td>
+<td align="left">5863.11</td>
+</tr>
+</tbody></table>
+<h2 id="详细的测试信息"><a href="#详细的测试信息" class="headerlink" title="详细的测试信息"></a>详细的测试信息</h2><h3 id="A1-sysbench-cpu-log"><a href="#A1-sysbench-cpu-log" class="headerlink" title="A1 sysbench cpu log"></a>A1 sysbench cpu log</h3><div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Prime</span> numbers <span class="attr">limit</span>: <span class="number">10000</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Initializing</span> worker threads...</span><br><span class="line"></span><br><span class="line"><span class="title class_">Threads</span> started!</span><br><span class="line"></span><br><span class="line"><span class="variable constant_">CPU</span> <span class="attr">speed</span>:</span><br><span class="line">    events per <span class="attr">second</span>: <span class="number">10095.26</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">General</span> <span class="attr">statistics</span>:</span><br><span class="line">    total <span class="attr">time</span>:                          <span class="number">10.</span>0003s</span><br><span class="line">    total number <span class="keyword">of</span> <span class="attr">events</span>:              <span class="number">100977</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Latency</span> (ms):</span><br><span class="line">         <span class="attr">min</span>:                                    <span class="number">0.30</span></span><br><span class="line">         <span class="attr">avg</span>:                                    <span class="number">0.30</span></span><br><span class="line">         <span class="attr">max</span>:                                    <span class="number">0.46</span></span><br><span class="line">         95th <span class="attr">percentile</span>:                        <span class="number">0.30</span></span><br><span class="line">         <span class="attr">sum</span>:                                <span class="number">29979.11</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Threads</span> <span class="attr">fairness</span>:</span><br><span class="line">    <span class="title function_">events</span> (avg/stddev):           <span class="number">33659.0000</span>/<span class="number">5.10</span></span><br><span class="line">    execution <span class="title function_">time</span> (avg/stddev):   <span class="number">9.9930</span>/<span class="number">0.00</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="A2-sysbench-cpu-log"><a href="#A2-sysbench-cpu-log" class="headerlink" title="A2 sysbench cpu log"></a>A2 sysbench cpu log</h3><div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Prime</span> numbers <span class="attr">limit</span>: <span class="number">10000</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Initializing</span> worker threads...</span><br><span class="line"></span><br><span class="line"><span class="title class_">Threads</span> started!</span><br><span class="line"></span><br><span class="line"><span class="variable constant_">CPU</span> <span class="attr">speed</span>:</span><br><span class="line">    events per <span class="attr">second</span>:  <span class="number">2321.38</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">General</span> <span class="attr">statistics</span>:</span><br><span class="line">    total <span class="attr">time</span>:                          <span class="number">10.</span>0011s</span><br><span class="line">    total number <span class="keyword">of</span> <span class="attr">events</span>:              <span class="number">23223</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Latency</span> (ms):</span><br><span class="line">         <span class="attr">min</span>:                                    <span class="number">1.28</span></span><br><span class="line">         <span class="attr">avg</span>:                                    <span class="number">1.29</span></span><br><span class="line">         <span class="attr">max</span>:                                    <span class="number">1.58</span></span><br><span class="line">         95th <span class="attr">percentile</span>:                        <span class="number">1.30</span></span><br><span class="line">         <span class="attr">sum</span>:                                <span class="number">29995.06</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Threads</span> <span class="attr">fairness</span>:</span><br><span class="line">    <span class="title function_">events</span> (avg/stddev):           <span class="number">7741.0000</span>/<span class="number">4.32</span></span><br><span class="line">    execution <span class="title function_">time</span> (avg/stddev):   <span class="number">9.9984</span>/<span class="number">0.00</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="AWS-G3-sysbench-cpu-log"><a href="#AWS-G3-sysbench-cpu-log" class="headerlink" title="AWS G3 sysbench cpu log"></a>AWS G3 sysbench cpu log</h3><div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#<span class="variable constant_">AWS</span> c7g</span><br><span class="line"><span class="title class_">Prime</span> numbers <span class="attr">limit</span>: <span class="number">10000</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Initializing</span> worker threads...</span><br><span class="line"></span><br><span class="line"><span class="title class_">Threads</span> started!</span><br><span class="line"></span><br><span class="line"><span class="variable constant_">CPU</span> <span class="attr">speed</span>:</span><br><span class="line">    events per <span class="attr">second</span>:  <span class="number">9047.54</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">General</span> <span class="attr">statistics</span>:</span><br><span class="line">    total <span class="attr">time</span>:                          <span class="number">10.</span>0002s</span><br><span class="line">    total number <span class="keyword">of</span> <span class="attr">events</span>:              <span class="number">90489</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Latency</span> (ms):</span><br><span class="line">         <span class="attr">min</span>:                                    <span class="number">0.33</span></span><br><span class="line">         <span class="attr">avg</span>:                                    <span class="number">0.33</span></span><br><span class="line">         <span class="attr">max</span>:                                    <span class="number">0.44</span></span><br><span class="line">         95th <span class="attr">percentile</span>:                        <span class="number">0.34</span></span><br><span class="line">         <span class="attr">sum</span>:                                <span class="number">29981.87</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Threads</span> <span class="attr">fairness</span>:</span><br><span class="line">    <span class="title function_">events</span> (avg/stddev):           <span class="number">30163.0000</span>/<span class="number">16.39</span></span><br><span class="line">    execution <span class="title function_">time</span> (avg/stddev):   <span class="number">9.9940</span>/<span class="number">0.00</span></span><br><span class="line">    </span><br></pre></td></tr></table></figure></div>
+<h3 id="AWS-G2-sysbench-cpu-log"><a href="#AWS-G2-sysbench-cpu-log" class="headerlink" title="AWS G2 sysbench cpu log"></a>AWS G2 sysbench cpu log</h3><div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">sysbench <span class="number">1.0</span><span class="number">.20</span> (<span class="keyword">using</span> system <span class="title class_">LuaJIT</span> <span class="number">2.1</span><span class="number">.0</span>-beta3)</span><br><span class="line"></span><br><span class="line"><span class="title class_">Running</span> the test <span class="keyword">with</span> following <span class="attr">options</span>:</span><br><span class="line"><span class="title class_">Number</span> <span class="keyword">of</span> <span class="attr">threads</span>: <span class="number">2</span></span><br><span class="line"><span class="title class_">Initializing</span> random number generator <span class="keyword">from</span> current time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title class_">Prime</span> numbers <span class="attr">limit</span>: <span class="number">10000</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Initializing</span> worker threads...</span><br><span class="line"></span><br><span class="line"><span class="title class_">Threads</span> started!</span><br><span class="line"></span><br><span class="line"><span class="variable constant_">CPU</span> <span class="attr">speed</span>:</span><br><span class="line">    events per <span class="attr">second</span>:  <span class="number">5863.11</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">General</span> <span class="attr">statistics</span>:</span><br><span class="line">    total <span class="attr">time</span>:                          <span class="number">10.</span>0004s</span><br><span class="line">    total number <span class="keyword">of</span> <span class="attr">events</span>:              <span class="number">58643</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Latency</span> (ms):</span><br><span class="line">         <span class="attr">min</span>:                                    <span class="number">0.33</span></span><br><span class="line">         <span class="attr">avg</span>:                                    <span class="number">0.34</span></span><br><span class="line">         <span class="attr">max</span>:                                    <span class="number">0.46</span></span><br><span class="line">         95th <span class="attr">percentile</span>:                        <span class="number">0.35</span></span><br><span class="line">         <span class="attr">sum</span>:                                <span class="number">19988.03</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Threads</span> <span class="attr">fairness</span>:</span><br><span class="line">    <span class="title function_">events</span> (avg/stddev):           <span class="number">29321.5000</span>/<span class="number">424.50</span></span><br><span class="line">    execution <span class="title function_">time</span> (avg/stddev):   <span class="number">9.9940</span>/<span class="number">0.00</span></span><br></pre></td></tr></table></figure></div>
+
+<p><strong>部分机器测试得到的<code>avg/stddev</code>的标准方差波动较大， 我猜可能是但是机器还有其它高负载的任务在运行，导致<code>avg/stddev</code>可能不能完全反映波动性。</strong></p>
+<h2 id="CPU测试-AES-加密性能"><a href="#CPU测试-AES-加密性能" class="headerlink" title="CPU测试 AES 加密性能"></a>CPU测试 AES 加密性能</h2><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">taskset 0x10 openssl speed -evp aes-256-cbc</span><br></pre></td></tr></table></figure></div>
+<h3 id="测试结果-1"><a href="#测试结果-1" class="headerlink" title="测试结果"></a>测试结果</h3><table>
+<thead>
+<tr>
+<th align="left">AMD</th>
+<th align="left">E4</th>
+<th align="left">A2</th>
+<th align="left">A1</th>
+<th align="left">AWS C7g</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">16k</td>
+<td align="left">1024611.67</td>
+<td align="left">1493336.06</td>
+<td align="left">1692734.81</td>
+<td align="left">1464937.13</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">与A2的比值</td>
+<td align="left">69%</td>
+<td align="left">100%</td>
+<td align="left">113%</td>
+<td align="left">98%</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">1k</td>
+<td align="left">1024097.28</td>
+<td align="left">1468620.12</td>
+<td align="left">1658306.22</td>
+<td align="left">1453796.01</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">与A2的比值</td>
+<td align="left">70%</td>
+<td align="left">100%</td>
+<td align="left">113%</td>
+<td align="left">99%</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h3 id="测试日志"><a href="#测试日志" class="headerlink" title="测试日志"></a>测试日志</h3><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">===node1 X86 </span><br><span class="line"></span><br><span class="line">type             16 bytes     64 bytes    256 bytes   1024 bytes   8192 bytes  16384 bytes</span><br><span class="line">AES-256-CBC     873110.44k   983650.90k  1015745.54k  1024097.28k  1025736.70k  1024611.67k</span><br><span class="line"></span><br><span class="line">node3 A2</span><br><span class="line">====</span><br><span class="line">type             16 bytes     64 bytes    256 bytes   1024 bytes   8192 bytes  16384 bytes</span><br><span class="line">AES-256-CBC     663972.72k  1166063.94k  1396305.32k  1468620.12k  1491359.06k  1493336.06k</span><br><span class="line"></span><br><span class="line">node6 A1</span><br><span class="line">type             16 bytes     64 bytes    256 bytes   1024 bytes   8192 bytes  16384 bytes</span><br><span class="line">AES-256-CBC     690535.32k  1258101.72k  1564840.28k  1658306.22k  1696467.63k  1692734.81k</span><br><span class="line"></span><br><span class="line">AWS C7g:</span><br><span class="line"></span><br><span class="line">The &#x27;numbers&#x27; are in 1000s of bytes per second processed.</span><br><span class="line">type             16 bytes     64 bytes    256 bytes   1024 bytes   8192 bytes  16384 bytes</span><br><span class="line">AES-256-CBC    1022386.66k  1331757.89k  1434859.26k  1453796.01k  1464814.25k  1464937.13k</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="CPU-压缩-解压数据包测试"><a href="#CPU-压缩-解压数据包测试" class="headerlink" title="CPU 压缩&#x2F;解压数据包测试"></a>CPU 压缩&#x2F;解压数据包测试</h2><h3 id="测试结果-2"><a href="#测试结果-2" class="headerlink" title="测试结果"></a>测试结果</h3><p>CPU单核解压性能差距很小。
+在压缩性能上有30%左右的性能差异（X86表现更好，这可能和指令集优化有关）</p>
+<table>
+<thead>
+<tr>
+<th align="left">类别</th>
+<th align="left">X86 AMD</th>
+<th align="left">A2</th>
+<th align="left">A1</th>
+<th align="left">C7g</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">压缩性能</td>
+<td align="left">5385</td>
+<td align="left">3736</td>
+<td align="left">4057</td>
+<td align="left">4419</td>
+</tr>
+<tr>
+<td align="left">差距</td>
+<td align="left">0</td>
+<td align="left">-31%</td>
+<td align="left">-25%</td>
+<td align="left">-18%</td>
+</tr>
+</tbody></table>
+<h3 id="测试数据"><a href="#测试数据" class="headerlink" title="测试数据"></a>测试数据</h3><div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># <span class="variable constant_">G3</span> <span class="variable constant_">AWS</span> C7g  </span><br><span class="line"></span><br><span class="line">1T <span class="variable constant_">CPU</span> <span class="title class_">Freq</span> (<span class="title class_">MHz</span>):  <span class="number">2578</span>  <span class="number">2581</span>  <span class="number">2582</span>  <span class="number">2579</span>  <span class="number">2582</span>  <span class="number">2581</span>  <span class="number">2581</span></span><br><span class="line"></span><br><span class="line"><span class="variable constant_">RAM</span> <span class="attr">size</span>:   <span class="number">31491</span> <span class="variable constant_">MB</span>,  # <span class="variable constant_">CPU</span> hardware <span class="attr">threads</span>:  <span class="number">16</span></span><br><span class="line"><span class="variable constant_">RAM</span> <span class="attr">usage</span>:    <span class="number">437</span> <span class="variable constant_">MB</span>,  # <span class="title class_">Benchmark</span> <span class="attr">threads</span>:      <span class="number">1</span></span><br><span class="line"></span><br><span class="line">                       <span class="title class_">Compressing</span>  |                  <span class="title class_">Decompressing</span></span><br><span class="line"><span class="title class_">Dict</span>     <span class="title class_">Speed</span> <span class="title class_">Usage</span>    R/U <span class="title class_">Rating</span>  |      <span class="title class_">Speed</span> <span class="title class_">Usage</span>    R/U <span class="title class_">Rating</span></span><br><span class="line">         <span class="title class_">KiB</span>/s     %   <span class="variable constant_">MIPS</span>   <span class="variable constant_">MIPS</span>  |      <span class="title class_">KiB</span>/s     %   <span class="variable constant_">MIPS</span>   <span class="variable constant_">MIPS</span></span><br><span class="line"></span><br><span class="line"><span class="number">22</span>:       <span class="number">4619</span>   <span class="number">100</span>   <span class="number">4513</span>   <span class="number">4494</span>  |      <span class="number">53972</span>   <span class="number">100</span>   <span class="number">4608</span>   <span class="number">4608</span></span><br><span class="line"><span class="number">23</span>:       <span class="number">4191</span>   <span class="number">100</span>   <span class="number">4270</span>   <span class="number">4271</span>  |      <span class="number">52899</span>   <span class="number">100</span>   <span class="number">4574</span>   <span class="number">4579</span></span><br><span class="line"><span class="number">24</span>:       <span class="number">3914</span>   <span class="number">100</span>   <span class="number">4201</span>   <span class="number">4209</span>  |      <span class="number">51663</span>   <span class="number">100</span>   <span class="number">4538</span>   <span class="number">4535</span></span><br><span class="line"><span class="number">25</span>:       <span class="number">3667</span>   <span class="number">100</span>   <span class="number">4188</span>   <span class="number">4187</span>  |      <span class="number">50200</span>   <span class="number">100</span>   <span class="number">4468</span>   <span class="number">4468</span></span><br><span class="line">----------------------------------  | ------------------------------</span><br><span class="line"><span class="title class_">Avr</span>:      <span class="number">4098</span>   <span class="number">100</span>   <span class="number">4293</span>   <span class="number">4290</span>  |      <span class="number">52184</span>   <span class="number">100</span>   <span class="number">4547</span>   <span class="number">4548</span></span><br><span class="line"><span class="title class_">Tot</span>:             <span class="number">100</span>   <span class="number">4420</span>   <span class="number">4419</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>Aepere A1</li>
+</ul>
+<div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">7z b -mmt1</span><br><span class="line"></span><br><span class="line"><span class="number">7</span>-<span class="title class_">Zip</span> <span class="number">23.01</span> (arm64) : <span class="title class_">Copyright</span> (c) <span class="number">1999</span>-<span class="number">2023</span> <span class="title class_">Igor</span> <span class="title class_">Pavlov</span> : <span class="number">2023</span>-<span class="number">06</span>-<span class="number">20</span></span><br><span class="line"> <span class="number">64</span>-bit <span class="attr">arm_v</span>:<span class="number">8</span> locale=C.<span class="property">UTF</span>-<span class="number">8</span> <span class="title class_">Threads</span>:<span class="number">16</span> <span class="attr">OPEN_MAX</span>:<span class="number">1024</span></span><br><span class="line"></span><br><span class="line"> mt1</span><br><span class="line"><span class="title class_">Compiler</span>: <span class="number">13.2</span><span class="number">.0</span> <span class="variable constant_">GCC</span> <span class="number">13.2</span><span class="number">.0</span></span><br><span class="line"><span class="title class_">Linux</span> : <span class="number">6.8</span><span class="number">.0</span>-<span class="number">1013</span>-oracle : #<span class="number">13</span>-<span class="title class_">Ubuntu</span> <span class="variable constant_">SMP</span> <span class="title class_">Mon</span> <span class="title class_">Sep</span>  <span class="number">2</span> <span class="number">12</span>:<span class="number">04</span>:<span class="number">50</span> <span class="variable constant_">UTC</span> <span class="number">2024</span> : aarch64</span><br><span class="line"><span class="title class_">PageSize</span>:4KB <span class="attr">THP</span>:madvise <span class="attr">hwcap</span>:10119<span class="attr">FFF</span>:<span class="title class_">CRC32</span>:<span class="title class_">SHA1</span>:<span class="title class_">SHA2</span>:<span class="attr">AES</span>:<span class="variable constant_">ASIMD</span></span><br><span class="line"><span class="variable constant_">LE</span></span><br><span class="line"></span><br><span class="line">1T <span class="variable constant_">CPU</span> <span class="title class_">Freq</span> (<span class="title class_">MHz</span>):  <span class="number">2975</span>  <span class="number">2988</span>  <span class="number">2988</span>  <span class="number">2989</span>  <span class="number">2989</span>  <span class="number">2989</span>  <span class="number">2988</span></span><br><span class="line"></span><br><span class="line"><span class="variable constant_">RAM</span> <span class="attr">size</span>:   <span class="number">64169</span> <span class="variable constant_">MB</span>,  # <span class="variable constant_">CPU</span> hardware <span class="attr">threads</span>:  <span class="number">16</span></span><br><span class="line"><span class="variable constant_">RAM</span> <span class="attr">usage</span>:    <span class="number">437</span> <span class="variable constant_">MB</span>,  # <span class="title class_">Benchmark</span> <span class="attr">threads</span>:      <span class="number">1</span></span><br><span class="line"></span><br><span class="line">                       <span class="title class_">Compressing</span>  |                  <span class="title class_">Decompressing</span></span><br><span class="line"><span class="title class_">Dict</span>     <span class="title class_">Speed</span> <span class="title class_">Usage</span>    R/U <span class="title class_">Rating</span>  |      <span class="title class_">Speed</span> <span class="title class_">Usage</span>    R/U <span class="title class_">Rating</span></span><br><span class="line">         <span class="title class_">KiB</span>/s     %   <span class="variable constant_">MIPS</span>   <span class="variable constant_">MIPS</span>  |      <span class="title class_">KiB</span>/s     %   <span class="variable constant_">MIPS</span>   <span class="variable constant_">MIPS</span></span><br><span class="line"></span><br><span class="line"><span class="number">22</span>:       <span class="number">3981</span>   <span class="number">100</span>   <span class="number">3879</span>   <span class="number">3873</span>  |      <span class="number">51928</span>   <span class="number">100</span>   <span class="number">4428</span>   <span class="number">4434</span></span><br><span class="line"><span class="number">23</span>:       <span class="number">3659</span>   <span class="number">100</span>   <span class="number">3739</span>   <span class="number">3729</span>  |      <span class="number">50670</span>   <span class="number">100</span>   <span class="number">4375</span>   <span class="number">4386</span></span><br><span class="line"><span class="number">24</span>:       <span class="number">3473</span>   <span class="number">100</span>   <span class="number">3739</span>   <span class="number">3735</span>  |      <span class="number">49331</span>   <span class="number">100</span>   <span class="number">4316</span>   <span class="number">4331</span></span><br><span class="line"><span class="number">25</span>:       <span class="number">3227</span>   <span class="number">100</span>   <span class="number">3682</span>   <span class="number">3685</span>  |      <span class="number">48114</span>   <span class="number">100</span>   <span class="number">4297</span>   <span class="number">4283</span></span><br><span class="line">----------------------------------  | ------------------------------</span><br><span class="line"><span class="title class_">Avr</span>:      <span class="number">3585</span>   <span class="number">100</span>   <span class="number">3760</span>   <span class="number">3755</span>  |      <span class="number">50011</span>   <span class="number">100</span>   <span class="number">4354</span>   <span class="number">4358</span></span><br><span class="line"><span class="title class_">Tot</span>:             <span class="number">100</span>   <span class="number">4057</span>   <span class="number">4057</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>Ampere A2</li>
+</ul>
+<div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">1T <span class="variable constant_">CPU</span> <span class="title class_">Freq</span> (<span class="title class_">MHz</span>):  <span class="number">2978</span>  <span class="number">2989</span>  <span class="number">2989</span>  <span class="number">2988</span>  <span class="number">2989</span>  <span class="number">2987</span>  <span class="number">2989</span></span><br><span class="line"></span><br><span class="line"><span class="variable constant_">RAM</span> <span class="attr">size</span>:   <span class="number">64166</span> <span class="variable constant_">MB</span>,  # <span class="variable constant_">CPU</span> hardware <span class="attr">threads</span>:  <span class="number">32</span></span><br><span class="line"><span class="variable constant_">RAM</span> <span class="attr">usage</span>:    <span class="number">437</span> <span class="variable constant_">MB</span>,  # <span class="title class_">Benchmark</span> <span class="attr">threads</span>:      <span class="number">1</span></span><br><span class="line"></span><br><span class="line">                       <span class="title class_">Compressing</span>  |                  <span class="title class_">Decompressing</span></span><br><span class="line"><span class="title class_">Dict</span>     <span class="title class_">Speed</span> <span class="title class_">Usage</span>    R/U <span class="title class_">Rating</span>  |      <span class="title class_">Speed</span> <span class="title class_">Usage</span>    R/U <span class="title class_">Rating</span></span><br><span class="line">         <span class="title class_">KiB</span>/s     %   <span class="variable constant_">MIPS</span>   <span class="variable constant_">MIPS</span>  |      <span class="title class_">KiB</span>/s     %   <span class="variable constant_">MIPS</span>   <span class="variable constant_">MIPS</span></span><br><span class="line"></span><br><span class="line"><span class="number">22</span>:       <span class="number">3705</span>   <span class="number">100</span>   <span class="number">3603</span>   <span class="number">3605</span>  |      <span class="number">54395</span>   <span class="number">100</span>   <span class="number">4645</span>   <span class="number">4644</span></span><br><span class="line"><span class="number">23</span>:       <span class="number">2909</span>   <span class="number">100</span>   <span class="number">2952</span>   <span class="number">2964</span>  |      <span class="number">53468</span>   <span class="number">100</span>   <span class="number">4635</span>   <span class="number">4628</span></span><br><span class="line"><span class="number">24</span>:       <span class="number">2430</span>   <span class="number">100</span>   <span class="number">2612</span>   <span class="number">2613</span>  |      <span class="number">51752</span>   <span class="number">100</span>   <span class="number">4551</span>   <span class="number">4543</span></span><br><span class="line"><span class="number">25</span>:       <span class="number">2157</span>   <span class="number">100</span>   <span class="number">2463</span>   <span class="number">2463</span>  |      <span class="number">49757</span>   <span class="number">100</span>   <span class="number">4428</span>   <span class="number">4429</span></span><br><span class="line">----------------------------------  | ------------------------------</span><br><span class="line"><span class="title class_">Avr</span>:      <span class="number">2800</span>   <span class="number">100</span>   <span class="number">2907</span>   <span class="number">2911</span>  |      <span class="number">52343</span>   <span class="number">100</span>   <span class="number">4565</span>   <span class="number">4561</span></span><br><span class="line"><span class="title class_">Tot</span>:             <span class="number">100</span>   <span class="number">3736</span>   <span class="number">3736</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>-AMD X86 </p>
+<div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">1T <span class="variable constant_">CPU</span> <span class="title class_">Freq</span> (<span class="title class_">MHz</span>):  <span class="number">3646</span>  <span class="number">3659</span>  <span class="number">3662</span>  <span class="number">3660</span>  <span class="number">3660</span>  <span class="number">3660</span>  <span class="number">3660</span></span><br><span class="line"></span><br><span class="line"><span class="variable constant_">RAM</span> <span class="attr">size</span>:   <span class="number">64289</span> <span class="variable constant_">MB</span>,  # <span class="variable constant_">CPU</span> hardware <span class="attr">threads</span>:  <span class="number">32</span></span><br><span class="line"><span class="variable constant_">RAM</span> <span class="attr">usage</span>:    <span class="number">437</span> <span class="variable constant_">MB</span>,  # <span class="title class_">Benchmark</span> <span class="attr">threads</span>:      <span class="number">1</span></span><br><span class="line"></span><br><span class="line">                       <span class="title class_">Compressing</span>  |                  <span class="title class_">Decompressing</span></span><br><span class="line"><span class="title class_">Dict</span>     <span class="title class_">Speed</span> <span class="title class_">Usage</span>    R/U <span class="title class_">Rating</span>  |      <span class="title class_">Speed</span> <span class="title class_">Usage</span>    R/U <span class="title class_">Rating</span></span><br><span class="line">         <span class="title class_">KiB</span>/s     %   <span class="variable constant_">MIPS</span>   <span class="variable constant_">MIPS</span>  |      <span class="title class_">KiB</span>/s     %   <span class="variable constant_">MIPS</span>   <span class="variable constant_">MIPS</span></span><br><span class="line"></span><br><span class="line"><span class="number">22</span>:       <span class="number">7408</span>   <span class="number">100</span>   <span class="number">7227</span>   <span class="number">7207</span>  |      <span class="number">56424</span>   <span class="number">100</span>   <span class="number">4816</span>   <span class="number">4818</span></span><br><span class="line"><span class="number">23</span>:       <span class="number">5961</span>   <span class="number">100</span>   <span class="number">6096</span>   <span class="number">6074</span>  |      <span class="number">55781</span>   <span class="number">100</span>   <span class="number">4831</span>   <span class="number">4828</span></span><br><span class="line"><span class="number">24</span>:       <span class="number">5056</span>   <span class="number">100</span>   <span class="number">5442</span>   <span class="number">5437</span>  |      <span class="number">54705</span>   <span class="number">100</span>   <span class="number">4799</span>   <span class="number">4803</span></span><br><span class="line"><span class="number">25</span>:       <span class="number">4513</span>   <span class="number">100</span>   <span class="number">5163</span>   <span class="number">5153</span>  |      <span class="number">53444</span>   <span class="number">101</span>   <span class="number">4729</span>   <span class="number">4757</span></span><br><span class="line">----------------------------------  | ------------------------------</span><br><span class="line"><span class="title class_">Avr</span>:      <span class="number">5735</span>   <span class="number">100</span>   <span class="number">5982</span>   <span class="number">5968</span>  |      <span class="number">55089</span>   <span class="number">100</span>   <span class="number">4794</span>   <span class="number">4801</span></span><br><span class="line"><span class="title class_">Tot</span>:             <span class="number">100</span>   <span class="number">5388</span>   <span class="number">5385</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h1 id="价格对比"><a href="#价格对比" class="headerlink" title="价格对比"></a>价格对比</h1><ul>
+<li>相比X86 CPU vm, 使用ARM CPU可以节省25%左右的费用。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>oCPU*小时</th>
+<th>1G内存*小时</th>
+<th>块存储*月</th>
+<th>性能单位（KIOPS)*月</th>
+<th>备注</th>
+<th>CPU 与A2相比的价差</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OCI A1</td>
+<td>0.01</td>
+<td>0.0015</td>
+<td>0.03</td>
+<td>0.02</td>
+<td>RAM DDR4</td>
+<td>142.90%</td>
+</tr>
+<tr>
+<td>OCI A2</td>
+<td>0.007</td>
+<td>0.002</td>
+<td>0.03</td>
+<td>0.02</td>
+<td>RAM DDR5 1oCPU 2Core</td>
+<td>100.00%</td>
+</tr>
+<tr>
+<td>OCI E3</td>
+<td>0.0125</td>
+<td>0.0015</td>
+<td>0.03</td>
+<td></td>
+<td>1oCPU 2Core</td>
+<td>178.60%</td>
+</tr>
+<tr>
+<td>OCI E4</td>
+<td>0.0125</td>
+<td>0.0015</td>
+<td>0.03</td>
+<td></td>
+<td>1oCPU 2Core</td>
+<td>178.60%</td>
+</tr>
+<tr>
+<td>OCI E5</td>
+<td>0.015</td>
+<td>0.002</td>
+<td>0.03</td>
+<td></td>
+<td>1oCPU 2Core</td>
+<td>214.30%</td>
+</tr>
+</tbody></table>
+<ul>
+<li>厂商机型角度对比：
+This content is only supported in a Feishu Docs</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>机型</th>
+<th>机型价格-小时</th>
+<th>价格(H*$)</th>
+<th>价差</th>
+<th>块存储 GB*月 (AWS GP3)</th>
+<th>块存储 GB*月 (GP2)</th>
+<th>块存储 GB*月 (Balanced 型)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>C7g.4xlarge</td>
+<td>16VCPU 32G</td>
+<td>0.58</td>
+<td>330%</td>
+<td>0.08</td>
+<td>0.01</td>
+<td></td>
+</tr>
+<tr>
+<td>c6g.4xlarge</td>
+<td>16VCPU 32G</td>
+<td>0.544</td>
+<td>309%</td>
+<td>0.08</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>A1</td>
+<td>16OCPU 32G</td>
+<td>0.208</td>
+<td>118%</td>
+<td>0.03</td>
+<td>0.0425</td>
+<td></td>
+</tr>
+<tr>
+<td>A2</td>
+<td>16OCPU 32G</td>
+<td>0.176</td>
+<td>100%</td>
+<td>0.03</td>
+<td>0.0425</td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id="ARM-CPU-在Cloud上的应用展望"><a href="#ARM-CPU-在Cloud上的应用展望" class="headerlink" title="ARM CPU 在Cloud上的应用展望"></a>ARM CPU 在Cloud上的应用展望</h1><p>从总体上看AmpereComputing基于ARM N1&#x2F;N2架构的ARM CPU 服务器在云上的大规模应用，以及持续迭代，证明了ARM CPU在Cloud上大规模部署有其性能和经济优势。ARM CPU执行任务有更强的可预测性。随着大模型的逐步应用和推广，更大的蒜泥需求，可能会推动ARM CPU在更多的算力场景下的使用。</p>
+<ul>
+<li>Wittich 希望人们习惯于思考这三种架构之间的差异，并制作了这张图表，展示了上述运行Stress-ng 负载生成器的服务器平台各自的可扩展性。下图绘制了每个系统中核心数（对于 Altra）或线程数（对于 Epyc 或 Xeon SP）逐个递增至最大时相对性能的变化。*
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/2024/202505141149507.png"
+                     
+                >
+<em>参考： <a class="link"   target="_blank" rel="noopener" href="https://wiki.ubuntu.com/Kernel/Reference/stress-ng" >https://wiki.ubuntu.com/Kernel/Reference/stress-ng<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></em></li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><p>Oracle ARM
+<a class="link"   target="_blank" rel="noopener" href="https://blogs.oracle.com/cloud-infrastructure/post/introducing-oci-ampere-a2-ARM-cloud-compute" >https://blogs.oracle.com/cloud-infrastructure/post/introducing-oci-ampere-a2-ARM-cloud-compute<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+</li>
+<li><p>Ampere ARM CPU 
+<a class="link"   target="_blank" rel="noopener" href="https://amperecomputing.com/press/next-generation-ampere" >https://amperecomputing.com/press/next-generation-ampere<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+</li>
+<li><p>JDK AArch64 support
+<a class="link"   target="_blank" rel="noopener" href="https://openjdk.org/jeps/237" >https://openjdk.org/jeps/237<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+</li>
+<li><p>AmpereComputing 路线图
+<a class="link"   target="_blank" rel="noopener" href="https://www.nextplatform.com/2022/05/27/ampere-roadmap-has-four-future-ARM-server-chips/" >https://www.nextplatform.com/2022/05/27/ampere-roadmap-has-four-future-ARM-server-chips/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+</li>
+<li><p>ARM 公司 CPU 系列
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/2024/202506271157428.png"
+                     
+                ></p>
+</li>
+</ul>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> ARM CPU 在Cloud上大规模应用的场景以及几点思考</li>
+        <li><strong>Author:</strong> Ordiy</li>
+        <li><strong>Created at
+                :</strong> 2025-04-27 11:06:31</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-07-09 02:41:15
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://ordiy.github.io/posts/2025-04-10-oci-ampere-arm-cpu-intro-md/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/vm/">#vm</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/OCI/">#OCI</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/AWS/">#AWS</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/benchmark/">#benchmark</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/ARM/">#ARM</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/CPU/">#CPU</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/posts/2024-10-10-kafka-connect-config-source-and-sink-task/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">Kafka Connect 配置source task and sink task 操作手册</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/posts/2025-01-01-clickhouse-external-disk-with-s3/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">Clickhouse add external disk</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">ARM CPU 在Cloud上大规模应用的场景以及几点思考</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ARM-CPU-on-cloud"><span class="nav-text">ARM CPU on cloud</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E7%9A%84ARM-CPU%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-text">主要的ARM CPU基本信息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OCI-Ampere-A1"><span class="nav-text">OCI Ampere A1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ampere-Computing-A2-CPU-info"><span class="nav-text">Ampere Computing A2 CPU info</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AWS-Graviton-ARM-CPU-%E7%B3%BB%E5%88%97"><span class="nav-text">AWS Graviton ARM CPU 系列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AWS-Graviton-3-info"><span class="nav-text">AWS Graviton 3 info</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AWS-Graviton-3-info-1"><span class="nav-text">AWS Graviton 3 info</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ampere-Computing-A1-CPU-info"><span class="nav-text">Ampere Computing A1 CPU info</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E6%AF%94%E7%BB%84-AMD-X86-AMD-EPYC-7J13"><span class="nav-text">对比组 AMD X86 (AMD EPYC 7J13)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%84%E4%BA%91%E5%8E%82%E5%95%86AMR-CPU%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95"><span class="nav-text">各云厂商AMR CPU性能测试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="nav-text">测试结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%A6%E7%BB%86%E7%9A%84%E6%B5%8B%E8%AF%95%E4%BF%A1%E6%81%AF"><span class="nav-text">详细的测试信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A1-sysbench-cpu-log"><span class="nav-text">A1 sysbench cpu log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A2-sysbench-cpu-log"><span class="nav-text">A2 sysbench cpu log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AWS-G3-sysbench-cpu-log"><span class="nav-text">AWS G3 sysbench cpu log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AWS-G2-sysbench-cpu-log"><span class="nav-text">AWS G2 sysbench cpu log</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU%E6%B5%8B%E8%AF%95-AES-%E5%8A%A0%E5%AF%86%E6%80%A7%E8%83%BD"><span class="nav-text">CPU测试 AES 加密性能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C-1"><span class="nav-text">测试结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E6%97%A5%E5%BF%97"><span class="nav-text">测试日志</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU-%E5%8E%8B%E7%BC%A9-%E8%A7%A3%E5%8E%8B%E6%95%B0%E6%8D%AE%E5%8C%85%E6%B5%8B%E8%AF%95"><span class="nav-text">CPU 压缩&#x2F;解压数据包测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C-2"><span class="nav-text">测试结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE"><span class="nav-text">测试数据</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%B7%E6%A0%BC%E5%AF%B9%E6%AF%94"><span class="nav-text">价格对比</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ARM-CPU-%E5%9C%A8Cloud%E4%B8%8A%E7%9A%84%E5%BA%94%E7%94%A8%E5%B1%95%E6%9C%9B"><span class="nav-text">ARM CPU 在Cloud上的应用展望</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-text">参考</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ordiy</a>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>

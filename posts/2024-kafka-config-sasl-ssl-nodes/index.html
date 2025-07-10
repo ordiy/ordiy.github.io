@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en,zh-cn,default">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Ordiy">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://ordiy.github.io/posts/2024-kafka-config-sasl-ssl-nodes/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka broker 配置PLAINTEXT和SASL_SSL双协议">
+<meta property="og:url" content="https://ordiy.github.io/posts/2024-kafka-config-sasl-ssl-nodes/index.html">
+<meta property="og:site_name" content="Ordiy&#39;s Blog">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ordiy.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2024-12-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-04-22T08:44:05.335Z">
+<meta property="article:author" content="Ordiy">
+<meta property="article:tag" content="kafka">
+<meta property="article:tag" content="tech">
+<meta property="article:tag" content="sasl_ssl">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ordiy.github.io/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Kafka broker 配置PLAINTEXT和SASL_SSL双协议 | Ordiy Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"ordiy.github.io","root":"/","language":["en","zh-cn","default"],"path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"atom-one-light","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/530e8906-4109-4871-b851-3301fee1e1bb.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"The truth sets me free","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ordiy Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/categories"
+                        >
+                            <span>Categories</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">107</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">35</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">91</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Kafka broker 配置PLAINTEXT和SASL_SSL双协议</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/redefine-avatar.svg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Ordiy</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-12-01</span>
+        <span class="mobile">2024-12-01</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-04-22 08:44:05</span>
+            <span class="mobile">2025-04-22 08:44:05</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/blog/">blog</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/kafka/">kafka</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/tech/">tech</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/sasl-ssl/">sasl_ssl</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p> Kafka 同一个集群实现，内网使用PLAINTEXT协议, 公网使用SASL_SSL。</p>
+<div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">client --<span class="variable constant_">SASL_SSL</span> --&gt; <span class="title function_">LB</span>(<span class="variable constant_">NAT</span>) ---&gt; kafka_broker </span><br><span class="line"></span><br><span class="line">client ---<span class="variable constant_">PLAINTEXT</span> ----&gt; kafka_broker </span><br><span class="line"> </span><br></pre></td></tr></table></figure></div>
+
+<h1 id="先配置PLAINTEXT-实现集群正常"><a href="#先配置PLAINTEXT-实现集群正常" class="headerlink" title="先配置PLAINTEXT 实现集群正常"></a>先配置PLAINTEXT 实现集群正常</h1><h2 id="install-broker"><a href="#install-broker" class="headerlink" title="install broker"></a>install broker</h2><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sudo chown ubuntu:ubuntu -R /data</span><br><span class="line">sudo apt install openjdk-17-jdk -y</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">download jdk https://jdk.java.net/archive/</span></span><br><span class="line"></span><br><span class="line">cd /data/</span><br><span class="line">wget https://downloads.apache.org/kafka/3.8.0/kafka_2.13-3.8.0.tgz</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">sudo chown ubuntu:ubuntu -R /data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sudo  apt-get update</span><br><span class="line">sudo apt install openjdk-17-jdk -y </span><br><span class="line"></span><br><span class="line">cd /data/</span><br><span class="line">wget https://downloads.apache.org/kafka/3.8.0/kafka_2.13-3.8.0.tgz </span><br><span class="line"></span><br><span class="line">tar -zxvf kafka_2.13-3.8.0.tgz </span><br><span class="line">ln -s kafka_2.13-3.8.0 kafka-bin</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">config zk</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">NODES=(<span class="string">&quot;10.10.157.141&quot;</span> <span class="string">&quot;10.10.148.147&quot;</span> <span class="string">&quot;10.10.149.188&quot;</span>)</span></span><br><span class="line">export KAFKA_BROKER_DIR=/data/kafka-bin</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="built_in">mkdir</span> <span class="variable">$ZOOKEEPER_DIR</span>/conf</span></span><br><span class="line"></span><br><span class="line">cd $KAFKA_BROKER_DIR</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">step 1</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">config properties</span> </span><br><span class="line"></span><br><span class="line">cp config/server.properties config/server.properties.bak</span><br><span class="line">broker_server_config=&quot;config/server.properties&quot;</span><br><span class="line">broker_id=&quot;1&quot;</span><br><span class="line"></span><br><span class="line">sed -i &quot;s/localhost:2181/10.10.157.141:2181,10.10.148.147:2181,10.10.149.188:2181/g&quot; $broker_server_config</span><br><span class="line">sed &quot;s/^broker.id=.*/broker.id=$&#123;broker_id&#125;/g&quot; $broker_server_config</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">config kafka broker data <span class="built_in">dir</span></span> </span><br><span class="line">mkdir /data/kafka-data</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">sed <span class="string">&quot;s/log.dirs\=\/tmp\/kafka-logs/log.dirs\=\/data\/kafka-data/g&quot;</span> <span class="variable">$broker_server_config</span>  | grep <span class="string">&quot;log.dir&quot;</span></span></span><br><span class="line">sed  -i &quot;s/log.dirs\=\/tmp\/kafka-logs/log.dirs\=\/data\/kafka-data/g&quot; $broker_server_config </span><br><span class="line"></span><br><span class="line">sewd -i </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">step 2</span> </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">config  jvm</span></span><br><span class="line">old_string=&quot;1G&quot;</span><br><span class="line">new_string=&quot;3G&quot;</span><br><span class="line">file_path=&quot;./bin/kafka-server-start.sh&quot;</span><br><span class="line">sed -i &quot;s/$&#123;old_string&#125;/$&#123;new_string&#125;/g&quot; &quot;$file_path&quot; </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">step3</span> </span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">config service</span></span><br><span class="line"></span><br><span class="line">sudo bash -c &#x27;cat &gt; /usr/lib/systemd/system/kafka.service &lt;&lt; EOF</span><br><span class="line">  [Unit]</span><br><span class="line">  Description=Apache Kafka Service</span><br><span class="line">  After=network.target</span><br><span class="line">  After=time-sync.target network-online.target</span><br><span class="line">  Wants=time-sync.target</span><br><span class="line"></span><br><span class="line">  [Service]</span><br><span class="line">  Type=simple</span><br><span class="line">  User=ubuntu</span><br><span class="line">  Group=ubuntu</span><br><span class="line">  ExecStart=/data/kafka/bin/kafka-server-start.sh /data/kafka/config/server.properties</span><br><span class="line">  ExecStop=/data/kafka/bin/kafka-server-stop.sh</span><br><span class="line">  Restart=always</span><br><span class="line">  RestartSec=30</span><br><span class="line">  TimeoutStopSec=300</span><br><span class="line">  LimitNOFILE=65536</span><br><span class="line">  StandardOutput=null</span><br><span class="line">  StandardError=null</span><br><span class="line"></span><br><span class="line">  [Install]</span><br><span class="line">  WantedBy=multi-user.target</span><br><span class="line">EOF&#x27;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">config jmx</span> </span><br><span class="line">cd /data/kafka </span><br><span class="line">mkdir prometheus </span><br><span class="line">cd prometheus</span><br><span class="line">wget https://repo.maven.apache.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/1.0.1/jmx_prometheus_javaagent-1.0.1.jar </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bash -c &#x27; cat &gt; kafka-2_0_0.yml &lt;&lt; EOF </span><br><span class="line">rules:</span><br><span class="line">  - pattern: kafka.server&lt;type=(\w+), name=(\w+)(, topic=(\w+))?.*&gt;</span><br><span class="line">    name: kafka_server_$1_$2</span><br><span class="line">    labels:</span><br><span class="line">      topic: &quot;$4&quot;</span><br><span class="line">  - pattern: kafka.network&lt;type=(\w+), name=(\w+), request=(\w+),.*&gt;</span><br><span class="line">    name: kafka_network_$1_$2</span><br><span class="line">    labels:</span><br><span class="line">      request: &quot;$3&quot;</span><br><span class="line">  - pattern: kafka.network&lt;type=RequestMetrics, name=(\w+), request=(\w+),.*&gt;</span><br><span class="line">    name: kafka_request_metrics_$1</span><br><span class="line">    labels:</span><br><span class="line">      request: &quot;$2&quot;</span><br><span class="line"></span><br><span class="line">EOF&#x27;</span><br><span class="line"></span><br><span class="line">cd /data/kafka</span><br><span class="line"></span><br><span class="line">sed -i &#x27;16a\ export KAFKA_OPTS=&quot;$KAFKA_OPTS -javaagent:/data/kafka/prometheus/jmx_prometheus_javaagent-1.0.1.jar=7071:/data/kafka/prometheus/kafka-2_0_0.yml&quot; &#x27; bin/kafka-server-start.sh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart kafka </span><br><span class="line">sudo systemctl status kafka</span><br><span class="line">sudo systemctl enable kafka </span><br><span class="line">sudo systemctl status kafka</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># show log </span><br><span class="line"></span><br><span class="line">tail -f logs/server.<span class="property">log</span> </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h1 id="配置-SASL-SSL-协议"><a href="#配置-SASL-SSL-协议" class="headerlink" title="配置 SASL_SSL 协议"></a>配置 SASL_SSL 协议</h1><h2 id="JKS证书生成"><a href="#JKS证书生成" class="headerlink" title="JKS证书生成"></a>JKS证书生成</h2><div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mkdir security</span><br><span class="line">cd security/</span><br><span class="line"></span><br><span class="line">sudo openssl req -<span class="keyword">new</span> -x509 -keyout /tmp/snakeoil-ca-<span class="number">1.</span>key -out /tmp/snakeoil-ca-<span class="number">1.</span>crt -days <span class="number">365</span> -subj <span class="string">&#x27;/CN=ca1.test.confluent.io/OU=TEST/O=CONFLUENT/L=PaloAlto/ST=Ca/C=US&#x27;</span> -passin <span class="attr">pass</span>:confluent -passout <span class="attr">pass</span>:confluent</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">keytool -genkeypair -alias kafka-broker -keyalg <span class="variable constant_">RSA</span> -keysize <span class="number">2048</span> \</span><br><span class="line">-validity <span class="number">3650</span> -keystore kafka-broker-keystore.<span class="property">jks</span> -dname <span class="string">&quot;CN=b8c4-fa18b654c0b2-data.my-cluster-prod.com, OU=my-cluster-prod, O=my-cluster-prod, L=Los_Angeles, ST=California, C=US&quot;</span> \ -storepass pwdXX2024P87d98ac9wz -keypass oker2024P87d98ac9wz </span><br><span class="line"></span><br><span class="line">keytool -<span class="keyword">export</span> -alias kafka-broker -file kafka-broker-cert.<span class="property">crt</span> -keystore kafka-broker-keystore.<span class="property">jks</span> -storepass pwdXX2024P87d98ac9wz</span><br><span class="line"></span><br><span class="line">keytool -list -v -keystore  kafka-broker-keystore.<span class="property">jks</span> -storepass pwdXX2024P87d98ac9wz</span><br><span class="line"></span><br><span class="line">keytool -<span class="keyword">import</span> -alias kafka-broker -file kafka-broker-cert.<span class="property">crt</span> -keystore truststore.<span class="property">jks</span> -storepass pwdXX2024P87d98ac9wz</span><br><span class="line"></span><br><span class="line">keytool -list -v -keystore truststore.<span class="property">jks</span> -storepass truststore_password</span><br><span class="line"></span><br><span class="line">keytool -list -v -keystore truststore.<span class="property">jks</span> -storepass pwdXX2024P87d98ac9wz</span><br><span class="line"></span><br><span class="line"># load </span><br><span class="line">keytool -<span class="keyword">import</span> -trustcacerts -file broker-cmm-certificate.<span class="property">crt</span>   -keystore broker-cmm-truststore.<span class="property">jks</span>   -storetype <span class="variable constant_">JKS</span>   -storepass pwdPassword8e95-942e564afa33   -alias pwdPassword8e95-942e564afa33</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="配置broker-sasl-ssl"><a href="#配置broker-sasl-ssl" class="headerlink" title="配置broker sasl_ssl"></a>配置broker sasl_ssl</h2><div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">broker.<span class="property">id</span>=<span class="number">1</span></span><br><span class="line">#需要配置 listeners <span class="variable constant_">PLAINTEXT</span> + <span class="variable constant_">SASL_SSL</span> </span><br><span class="line">listeners=<span class="attr">PLAINTEXT</span>:<span class="comment">//0.0.0.0:9092,SASL_SSL://0.0.0.0:19098</span></span><br><span class="line"></span><br><span class="line">#需要配置 advertised.<span class="property">listeners</span> <span class="variable constant_">PLAINTEXT</span> + <span class="variable constant_">SASL_SSL</span> </span><br><span class="line">advertised.<span class="property">listeners</span>=<span class="attr">PLAINTEXT</span>:<span class="comment">//10.21.100.21:9092,SASL_SSL://node03.kafka-broker-data.my-prod-host.com:19091</span></span><br><span class="line">listener.<span class="property">security</span>.<span class="property">protocol</span>.<span class="property">map</span>=<span class="attr">PLAINTEXT</span>:<span class="variable constant_">PLAINTEXT</span>,<span class="attr">SASL_SSL</span>:<span class="variable constant_">SASL_SSL</span></span><br><span class="line"></span><br><span class="line">#broker内部通信使用<span class="variable constant_">PLAINTEXT</span></span><br><span class="line"></span><br><span class="line">security.<span class="property">inter</span>.<span class="property">broker</span>.<span class="property">protocol</span>=<span class="variable constant_">PLAINTEXT</span></span><br><span class="line"></span><br><span class="line">sasl.<span class="property">mechanism</span>.<span class="property">inter</span>.<span class="property">broker</span>.<span class="property">protocol</span>=<span class="variable constant_">PLAIN</span></span><br><span class="line">security.<span class="property">protocol</span>=<span class="variable constant_">SASL_SSL</span></span><br><span class="line">sasl.<span class="property">enabled</span>.<span class="property">mechanisms</span>=<span class="variable constant_">PLAIN</span></span><br><span class="line"></span><br><span class="line">ssl.<span class="property">keystore</span>.<span class="property">location</span>=<span class="regexp">/data/</span>kafka-bin/security/broker-cmm-keystore.<span class="property">jks</span></span><br><span class="line">ssl.<span class="property">keystore</span>.<span class="property">password</span>=xxx-942e564afa33</span><br><span class="line">ssl.<span class="property">key</span>.<span class="property">password</span>=xxx-942e564afa33</span><br><span class="line">ssl.<span class="property">truststore</span>.<span class="property">location</span>=<span class="regexp">/data/</span>kafka-bin/security/broker-cmm-truststore.<span class="property">jks</span></span><br><span class="line">ssl.<span class="property">truststore</span>.<span class="property">password</span>=xxxx-942e564afa33</span><br><span class="line">ssl.<span class="property">endpoint</span>.<span class="property">identification</span>.<span class="property">algorithm</span>=</span><br><span class="line"># <span class="variable constant_">SSL</span> config 验证client 证书</span><br><span class="line">ssl.<span class="property">client</span>.<span class="property">auth</span>=required</span><br><span class="line"></span><br><span class="line">num.<span class="property">network</span>.<span class="property">threads</span>=<span class="number">6</span></span><br><span class="line">num.<span class="property">io</span>.<span class="property">threads</span>=<span class="number">12</span></span><br><span class="line">socket.<span class="property">send</span>.<span class="property">buffer</span>.<span class="property">bytes</span>=<span class="number">524288</span></span><br><span class="line">socket.<span class="property">receive</span>.<span class="property">buffer</span>.<span class="property">bytes</span>=<span class="number">524288</span></span><br><span class="line">socket.<span class="property">request</span>.<span class="property">max</span>.<span class="property">bytes</span>=<span class="number">104857600</span></span><br><span class="line">log.<span class="property">dirs</span>=<span class="regexp">/data/</span>kafka-data</span><br><span class="line">num.<span class="property">partitions</span>=<span class="number">1</span></span><br><span class="line">num.<span class="property">recovery</span>.<span class="property">threads</span>.<span class="property">per</span>.<span class="property">data</span>.<span class="property">dir</span>=<span class="number">1</span></span><br><span class="line">offsets.<span class="property">topic</span>.<span class="property">replication</span>.<span class="property">factor</span>=<span class="number">1</span></span><br><span class="line">transaction.<span class="property">state</span>.<span class="property">log</span>.<span class="property">replication</span>.<span class="property">factor</span>=<span class="number">1</span></span><br><span class="line">transaction.<span class="property">state</span>.<span class="property">log</span>.<span class="property">min</span>.<span class="property">isr</span>=<span class="number">1</span></span><br><span class="line">log.<span class="property">retention</span>.<span class="property">hours</span>=<span class="number">168</span></span><br><span class="line">log.<span class="property">retention</span>.<span class="property">check</span>.<span class="property">interval</span>.<span class="property">ms</span>=<span class="number">300000</span></span><br><span class="line"></span><br><span class="line">compression.<span class="property">type</span>=zstd</span><br><span class="line"></span><br><span class="line">zookeeper.<span class="property">connect</span>=<span class="number">10.21</span><span class="number">.100</span><span class="number">.88</span>:<span class="number">2181</span>,<span class="number">10.21</span><span class="number">.100</span><span class="number">.46</span>:<span class="number">2181</span>,<span class="number">10.21</span><span class="number">.100</span><span class="number">.211</span>:<span class="number">2181</span>/prod-kafka-cluster-bigdata</span><br><span class="line">zookeeper.<span class="property">connection</span>.<span class="property">timeout</span>.<span class="property">ms</span>=<span class="number">18000</span></span><br><span class="line">group.<span class="property">initial</span>.<span class="property">rebalance</span>.<span class="property">delay</span>.<span class="property">ms</span>=<span class="number">0</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="配置-servcie"><a href="#配置-servcie" class="headerlink" title="配置 servcie"></a>配置 servcie</h2><div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[<span class="title class_">Unit</span>]</span><br><span class="line"><span class="title class_">Description</span>=<span class="title class_">Apache</span> <span class="title class_">Kafka</span> <span class="title class_">Service</span></span><br><span class="line"><span class="title class_">After</span>=network.<span class="property">target</span></span><br><span class="line"><span class="title class_">After</span>=time-sync.<span class="property">target</span> network-online.<span class="property">target</span></span><br><span class="line"><span class="title class_">Wants</span>=time-sync.<span class="property">target</span></span><br><span class="line"></span><br><span class="line">[<span class="title class_">Service</span>]</span><br><span class="line"><span class="title class_">Type</span>=forking</span><br><span class="line"><span class="title class_">User</span>=ubuntu</span><br><span class="line"><span class="title class_">Group</span>=ubuntu</span><br><span class="line"><span class="title class_">Restart</span>=on-failure</span><br><span class="line"><span class="title class_">RestartSec</span>=<span class="number">5</span></span><br><span class="line"><span class="title class_">TimeoutStopSec</span>=<span class="number">300</span></span><br><span class="line"><span class="title class_">LimitNOFILE</span>=<span class="number">260000</span></span><br><span class="line"><span class="title class_">LimitFSIZE</span>=infinity</span><br><span class="line"><span class="title class_">Environment</span>=<span class="string">&quot;KAFKA_OPTS= -Djava.security.auth.login.config=/data/kafka-bin/security/kafka_server_jaas.conf -javaagent:/data/kafka-bin/prometheus/jmx_prometheus_javaagent-1.0.1.jar=10071:/data/kafka-bin/prometheus/kafka_broker.yml&quot;</span></span><br><span class="line"><span class="title class_">Environment</span>=<span class="string">&quot;KAFKA_HEAP_OPTS=-Xms8G -Xmx8G &quot;</span></span><br><span class="line"><span class="title class_">ExecStart</span>=<span class="regexp">/data/</span>kafka-bin/bin/kafka-server-start.<span class="property">sh</span> -daemon /data/kafka-bin/config/server.<span class="property">properties</span></span><br><span class="line"></span><br><span class="line">[<span class="title class_">Install</span>]</span><br><span class="line"><span class="title class_">WantedBy</span>=multi-user.<span class="property">target</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h1 id="client-test"><a href="#client-test" class="headerlink" title="client test"></a>client test</h1><div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./bin/kafka-<span class="variable language_">console</span>-consumer.<span class="property">sh</span> --bootstrap-server node01.<span class="property">kafka</span>-broker-data.<span class="property">my</span>-host-pord.<span class="property">com</span>:<span class="number">19096</span>,node02.<span class="property">kafka</span>-broker-data. my-host-pord.<span class="property">com</span>:<span class="number">19096</span>,node03.<span class="property">kafka</span>-broker-data. my-host-pord.<span class="property">com</span>:<span class="number">19096</span>        --topic source.<span class="property">pro</span>-pro-connect-offsets-v2     --consumer.<span class="property">config</span> kafka-client-sasl-ssl-plain.<span class="property">properties</span>     --partition <span class="number">0</span>     --property print.<span class="property">value</span>=<span class="literal">true</span> --<span class="keyword">from</span>-beginning</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Kafka broker 配置PLAINTEXT和SASL_SSL双协议</li>
+        <li><strong>Author:</strong> Ordiy</li>
+        <li><strong>Created at
+                :</strong> 2024-12-01 00:00:00</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-04-22 08:44:05
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://ordiy.github.io/posts/2024-kafka-config-sasl-ssl-nodes/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/kafka/">#kafka</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/tech/">#tech</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/sasl-ssl/">#sasl_ssl</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/posts/2024-12-01-flink-connect-ck/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">Flink job query data form clickhouse</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/posts/2024-12-01-hexo-init-github-pages/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">Hexo blog site start and deploy github pages</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">Kafka broker 配置PLAINTEXT和SASL_SSL双协议</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9C%80%E6%B1%82"><span class="nav-text">需求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%88%E9%85%8D%E7%BD%AEPLAINTEXT-%E5%AE%9E%E7%8E%B0%E9%9B%86%E7%BE%A4%E6%AD%A3%E5%B8%B8"><span class="nav-text">先配置PLAINTEXT 实现集群正常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#install-broker"><span class="nav-text">install broker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#test"><span class="nav-text">test</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-SASL-SSL-%E5%8D%8F%E8%AE%AE"><span class="nav-text">配置 SASL_SSL 协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JKS%E8%AF%81%E4%B9%A6%E7%94%9F%E6%88%90"><span class="nav-text">JKS证书生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEbroker-sasl-ssl"><span class="nav-text">配置broker sasl_ssl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-servcie"><span class="nav-text">配置 servcie</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#client-test"><span class="nav-text">client test</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ordiy</a>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>

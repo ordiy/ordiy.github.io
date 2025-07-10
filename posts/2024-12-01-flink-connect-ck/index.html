@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en,zh-cn,default">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Ordiy">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://ordiy.github.io/posts/2024-12-01-flink-connect-ck/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flink job query data form clickhouse">
+<meta property="og:url" content="https://ordiy.github.io/posts/2024-12-01-flink-connect-ck/index.html">
+<meta property="og:site_name" content="Ordiy&#39;s Blog">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ordiy.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2024-12-01T17:51:37.000Z">
+<meta property="article:modified_time" content="2025-03-27T12:08:18.895Z">
+<meta property="article:author" content="Ordiy">
+<meta property="article:tag" content="Flink">
+<meta property="article:tag" content="Clickhouse">
+<meta property="article:tag" content="ETL">
+<meta property="article:tag" content="实时数仓">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ordiy.github.io/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Flink job query data form clickhouse | Ordiy Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"ordiy.github.io","root":"/","language":["en","zh-cn","default"],"path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"atom-one-light","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/530e8906-4109-4871-b851-3301fee1e1bb.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"The truth sets me free","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ordiy Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/categories"
+                        >
+                            <span>Categories</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">107</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">35</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">91</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Flink job query data form clickhouse</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/redefine-avatar.svg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Ordiy</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-12-01 17:51:37</span>
+        <span class="mobile">2024-12-01 17:51:37</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-03-27 12:08:18</span>
+            <span class="mobile">2025-03-27 12:08:18</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Data/">Data</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Flink/">Flink</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Clickhouse/">Clickhouse</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/ETL/">ETL</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E5%AE%9E%E6%97%B6%E6%95%B0%E4%BB%93/">实时数仓</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h1 id="query-data-from-clickhouse"><a href="#query-data-from-clickhouse" class="headerlink" title="query data from clickhouse"></a>query data from clickhouse</h1><p>应用场景：需要将流的物化结果表，从Clickhouse中进行读取</p>
+<p>在flink project pom.xml 添加以下dependency:</p>
+<div class="code-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.clickhouse<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>clickhouse-jdbc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">version</span>&gt;</span>0.7.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- use uber jar with all dependencies included, change classifier to http for smaller jar --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">classifier</span>&gt;</span>shaded-all<span class="tag">&lt;/<span class="name">classifier</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">       <span class="comment">&lt;!-- flink 1.17 + jdk 8 , HikariCP version  &lt; 5.x--&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.zaxxer<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>HikariCP<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">version</span>&gt;</span>4.0.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h1 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h1><p>在Flink RichMap中读取数据 （ 如果是Flink SQL 可以定一个 UDF 来实现）</p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="type">ParameterTool</span> <span class="variable">params</span> <span class="operator">=</span> ParameterTool.fromArgs(args);</span><br><span class="line"><span class="keyword">final</span> <span class="type">StreamExecutionEnvironment</span> <span class="variable">env</span> <span class="operator">=</span> StreamExecutionEnvironment.getExecutionEnvironment();</span><br><span class="line">env.getConfig().setGlobalJobParameters(params);</span><br><span class="line"></span><br><span class="line"><span class="comment">//env soruce ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//env stream </span></span><br><span class="line"> kafkaStream</span><br><span class="line">            .keyBy(MyPojo::getKeyID)</span><br><span class="line">            .map(<span class="keyword">new</span> <span class="title class_">RichMapFunction</span>&lt;MyPojo, Tuple2&lt;String, String&gt;&gt;() &#123;</span><br><span class="line">                <span class="comment">// version convert</span></span><br><span class="line">                <span class="keyword">private</span> ObjectMapper objectMapper;</span><br><span class="line">                <span class="keyword">private</span> <span class="keyword">transient</span> HikariDataSource dataSource; <span class="comment">// 需要序列化</span></span><br><span class="line"></span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">open</span><span class="params">(Configuration parameters)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">                    <span class="comment">// 从 env GlobalJobParameters 读取配置信息</span></span><br><span class="line">                    <span class="type">ExecutionConfig</span> <span class="variable">executionConfig</span> <span class="operator">=</span> getRuntimeContext().getExecutionConfig();</span><br><span class="line">                    ExecutionConfig.<span class="type">GlobalJobParameters</span> <span class="variable">jobParameters</span> <span class="operator">=</span> executionConfig.getGlobalJobParameters();</span><br><span class="line">                    Map&lt;String, String&gt; map = jobParameters.toMap();</span><br><span class="line">                    <span class="type">String</span> <span class="variable">url</span> <span class="operator">=</span> map.get(<span class="string">&quot;clickhouse_jdbc_url&quot;</span>);</span><br><span class="line">                    <span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span> map.get(<span class="string">&quot;clickhouse_username&quot;</span>);</span><br><span class="line">                    <span class="type">String</span> <span class="variable">password</span> <span class="operator">=</span> map.get(<span class="string">&quot;clickhouse_password&quot;</span>);</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 配置 HikariCP 连接池</span></span><br><span class="line">                    <span class="type">HikariConfig</span> <span class="variable">config</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HikariConfig</span>();</span><br><span class="line">                    config.setJdbcUrl(url);</span><br><span class="line">                    config.setUsername(username);</span><br><span class="line">                    config.setPassword(password);</span><br><span class="line">                    config.setDriverClassName(<span class="string">&quot;com.clickhouse.jdbc.ClickHouseDriver&quot;</span>);</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 配置连接池属性</span></span><br><span class="line">                    config.setMaximumPoolSize(<span class="number">30</span>); <span class="comment">// 最大连接数，根据并发量调整</span></span><br><span class="line">                    config.setMinimumIdle(<span class="number">5</span>);     <span class="comment">// 最小空闲连接数</span></span><br><span class="line">                    config.setIdleTimeout(<span class="number">30000</span>); <span class="comment">// 空闲连接超时时间（毫秒）</span></span><br><span class="line">                    config.setConnectionTimeout(<span class="number">10000</span>); <span class="comment">// 获取连接的超时时间（毫秒）</span></span><br><span class="line">                    config.setLeakDetectionThreshold(<span class="number">2000</span>); <span class="comment">// 检测连接泄漏的时间（毫秒）</span></span><br><span class="line">                    config.setKeepaliveTime(Long.MAX_VALUE);</span><br><span class="line">                    config.addDataSourceProperty(<span class="string">&quot;socket_keepalive&quot;</span>, <span class="string">&quot;true&quot;</span>);</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 初始化连接池</span></span><br><span class="line">                    <span class="built_in">this</span>.dataSource = <span class="keyword">new</span> <span class="title class_">HikariDataSource</span>(config);</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 测试连接池</span></span><br><span class="line">                    <span class="keyword">try</span> (<span class="type">Connection</span> <span class="variable">conn</span> <span class="operator">=</span> dataSource.getConnection();</span><br><span class="line">                         <span class="type">Statement</span> <span class="variable">stmt</span> <span class="operator">=</span> conn.createStatement()) &#123;</span><br><span class="line">                        <span class="type">ResultSet</span> <span class="variable">resultSet</span> <span class="operator">=</span> stmt.executeQuery(<span class="string">&quot; SELECT version() &quot;</span>);</span><br><span class="line">                        <span class="keyword">if</span> (resultSet.next()) &#123;</span><br><span class="line">                            logger.info(<span class="string">&quot;Connection test successful, current time: &#123;&#125;&quot;</span>, resultSet.getString(<span class="number">1</span>));</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    objectMapper = <span class="keyword">new</span> <span class="title class_">ObjectMapper</span>();</span><br><span class="line">                    <span class="comment">// 配置忽略未知字段</span></span><br><span class="line">                    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, <span class="literal">false</span>);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="keyword">public</span> Tuple2&lt;String, String&gt; <span class="title function_">map</span><span class="params">(Pojo InPojo)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">                    <span class="comment">// 业务代码</span></span><br><span class="line">                     <span class="type">String</span> <span class="variable">sql</span> <span class="operator">=</span> <span class="string">&quot;select key from data_ods.key_dict_cache where value = %s limit 1 &quot;</span>;</span><br><span class="line">                      sql = String.fromt(sql, InPojo.getId ) ;</span><br><span class="line"></span><br><span class="line">                       <span class="comment">// 从连接池获取连接</span></span><br><span class="line">                    <span class="keyword">try</span> (<span class="type">Connection</span> <span class="variable">conn</span> <span class="operator">=</span> dataSource.getConnection();</span><br><span class="line">                         <span class="type">Statement</span> <span class="variable">stmt</span> <span class="operator">=</span> conn.createStatement();</span><br><span class="line">                         <span class="type">ResultSet</span> <span class="variable">resultSet</span> <span class="operator">=</span> stmt.executeQuery(sql);) &#123;</span><br><span class="line">                            <span class="keyword">while</span> (resultSet.next()) &#123;</span><br><span class="line">                                <span class="comment">//handle query result </span></span><br><span class="line"></span><br><span class="line">                            &#125;</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                        logger.error(<span class="string">&quot;query clickhouse error,cause:&quot;</span>, e);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="debug-日志"><a href="#debug-日志" class="headerlink" title="debug  日志"></a>debug  日志</h2><div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># log4j2.<span class="property">properties</span> </span><br><span class="line"># 可以将clickhouse pakage 设置一个 level = debug </span><br><span class="line"></span><br><span class="line">rootLogger.<span class="property">level</span> = <span class="variable constant_">DEBUG</span></span><br><span class="line">rootLogger.<span class="property">appenderRef</span>.<span class="property">console</span>.<span class="property">ref</span> = <span class="title class_">ConsoleAppender</span></span><br><span class="line"></span><br><span class="line">appender.<span class="property">console</span>.<span class="property">name</span> = <span class="title class_">ConsoleAppender</span></span><br><span class="line">appender.<span class="property">console</span>.<span class="property">type</span> = <span class="variable constant_">CONSOLE</span></span><br><span class="line">appender.<span class="property">console</span>.<span class="property">layout</span>.<span class="property">type</span> = <span class="title class_">PatternLayout</span></span><br><span class="line">appender.<span class="property">console</span>.<span class="property">layout</span>.<span class="property">pattern</span> = %d&#123;<span class="attr">HH</span>:<span class="attr">mm</span>:ss,<span class="variable constant_">SSS</span>&#125; %-5p [%t] %-60c %x - %m%n</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>Clickhouse client debug 日志信息</li>
+</ul>
+<p> Clickhouse JDBC 使用的是HTTP协议进行通信（ 也支持HTTPS&#x2F;gRPC)</p>
+<div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">6</span> &gt;&gt; <span class="string">&quot;POST /?compress=1&amp;max_result_rows=100&amp;extremes=0&amp;query_id=ec8a8354-b8b7-4927-9b1e-ace3740781dc HTTP/1.1[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">6</span> &gt;&gt; <span class="string">&quot;accept: */*[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">6</span> &gt;&gt; <span class="string">&quot;user-agent: ClickHouse-JdbcDriver ClickHouse-JavaClient/0.7.2-SNAPSHOT (OpenJDK 64-Bit Server VM/25.422-b05; Apache-HttpClient/5.2.1)[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">6</span> &gt;&gt; <span class="string">&quot;Authorization: Basic c3RnX3Rlc3RfYWRtaW46UnB6MUkycDFLbE1PSXZG[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">6</span> &gt;&gt; <span class="string">&quot;x-clickhouse-database: data_ods[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">6</span> &gt;&gt; <span class="string">&quot;x-clickhouse-format: RowBinaryWithNamesAndTypes[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">6</span> &gt;&gt; <span class="string">&quot;accept-encoding: lz4[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">6</span> &gt;&gt; <span class="string">&quot;Content-Type: text/plain; charset=UTF-8[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">6</span> &gt;&gt; <span class="string">&quot;Transfer-Encoding: chunked[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">6</span> &gt;&gt; <span class="string">&quot;Host: 54.225.8.41:16464[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">6</span> &gt;&gt; <span class="string">&quot;Connection: keep-alive[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">6</span> &gt;&gt; <span class="string">&quot;[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">6</span> &gt;&gt; <span class="string">&quot;12[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">6</span> &gt;&gt; <span class="string">&quot; SELECT version() [\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">6</span> &gt;&gt; <span class="string">&quot;0[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">6</span> &gt;&gt; <span class="string">&quot;[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">0</span> &gt;&gt; <span class="string">&quot;POST /?compress=1&amp;max_result_rows=100&amp;extremes=0&amp;query_id=0c773532-708c-487e-b2f4-8afb809df84b HTTP/1.1[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">0</span> &gt;&gt; <span class="string">&quot;accept: */*[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">0</span> &gt;&gt; <span class="string">&quot;user-agent: ClickHouse-JdbcDriver ClickHouse-JavaClient/0.7.2-SNAPSHOT (OpenJDK 64-Bit Server VM/25.422-b05; Apache-HttpClient/5.2.1)[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">0</span> &gt;&gt; <span class="string">&quot;Authorization: Basic c3RnX3Rlc3RfYWRtaW46UnB6MUkycDFLbE1PSXZG[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">4</span> &gt;&gt; <span class="string">&quot;user-agent: ClickHouse-JdbcDriver ClickHouse-JavaClient/0.7.2-SNAPSHOT (OpenJDK 64-Bit Server VM/25.422-b05; Apache-HttpClient/5.2.1)[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">0</span> &gt;&gt; <span class="string">&quot;x-clickhouse-database: data_ods[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">2</span> &gt;&gt; <span class="string">&quot;user-agent: ClickHouse-JdbcDriver ClickHouse-JavaClient/0.7.2-SNAPSHOT (OpenJDK 64-Bit Server VM/25.422-b05; Apache-HttpClient/5.2.1)[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">2</span> &gt;&gt; <span class="string">&quot;Authorization: Basic c3RnX3Rlc3RfYWRtaW46UnB6MUkycDFLbE1PSXZG[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">2</span> &gt;&gt; <span class="string">&quot;x-clickhouse-database: data_ods[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">2</span> &gt;&gt; <span class="string">&quot;x-clickhouse-format: RowBinaryWithNamesAndTypes[\r][\n]&quot;</span></span><br><span class="line"><span class="number">18</span>:<span class="number">14</span>:<span class="number">56</span>,<span class="number">587</span> <span class="variable constant_">DEBUG</span>  com.<span class="property">clickhouse</span>.<span class="property">client</span>.<span class="property">internal</span>.<span class="property">apache</span>.<span class="property">hc</span>.<span class="property">client5</span>.<span class="property">http</span>.<span class="property">wire</span>   [] - http-outgoing-<span class="number">2</span> &gt;&gt; <span class="string">&quot;accept-encoding: lz4[\r][\n]&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<h1 id="UDF-中使用"><a href="#UDF-中使用" class="headerlink" title="UDF 中使用"></a>UDF 中使用</h1><p>extends ScalarFunction 实现自定义 UDF.  </p>
+<div class="code-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * GeoIp2 cache</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyUDFKeyValueDict</span> <span class="keyword">extends</span> <span class="title class_">ScalarFunction</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(MyUDFIPToCountryCodeDict.class);</span><br><span class="line">    <span class="keyword">static</span> <span class="type">String</span> <span class="variable">default_value</span> <span class="operator">=</span> <span class="string">&quot;Other&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="type">String</span> <span class="variable">default_value</span> <span class="operator">=</span> <span class="string">&quot;Other&quot;</span>;</span><br><span class="line">    <span class="comment">// 使用 Guava Cache 存储字典映射</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Cache&lt;String, String&gt; cache = CacheBuilder.newBuilder()</span><br><span class="line">            .expireAfterWrite(<span class="number">120</span>, TimeUnit.SECONDS)  <span class="comment">// 设置缓存有效期</span></span><br><span class="line">            .maximumSize(<span class="number">1000</span>)  <span class="comment">// 设置缓存最大条目数</span></span><br><span class="line">            .build();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     <span class="keyword">private</span> <span class="keyword">transient</span> HikariDataSource dataSource; <span class="comment">// 需要序列化</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">open</span><span class="params">(FunctionContext context)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">           <span class="comment">//初始化 dataSource </span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 配置 HikariCP 连接池</span></span><br><span class="line">        <span class="type">HikariConfig</span> <span class="variable">config</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HikariConfig</span>();</span><br><span class="line">        config.setJdbcUrl(url);</span><br><span class="line">        config.setUsername(username);</span><br><span class="line">        config.setPassword(password);</span><br><span class="line">        config.setDriverClassName(<span class="string">&quot;com.clickhouse.jdbc.ClickHouseDriver&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 配置连接池属性</span></span><br><span class="line">        config.setMaximumPoolSize(<span class="number">30</span>); <span class="comment">// 最大连接数，根据并发量调整</span></span><br><span class="line">        config.setMinimumIdle(<span class="number">5</span>);     <span class="comment">// 最小空闲连接数</span></span><br><span class="line">        config.setIdleTimeout(<span class="number">30000</span>); <span class="comment">// 空闲连接超时时间（毫秒）</span></span><br><span class="line">        config.setConnectionTimeout(<span class="number">10000</span>); <span class="comment">// 获取连接的超时时间（毫秒）</span></span><br><span class="line">        config.setLeakDetectionThreshold(<span class="number">2000</span>); <span class="comment">// 检测连接泄漏的时间（毫秒）</span></span><br><span class="line">        config.setKeepaliveTime(Long.MAX_VALUE);</span><br><span class="line"></span><br><span class="line">        dataSource =  <span class="keyword">new</span> <span class="title class_">HikariDataSource</span>(config); </span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> (   <span class="type">Connection</span> <span class="variable">conn</span> <span class="operator">=</span> dataSource.getConnection();</span><br><span class="line">             <span class="type">Statement</span> <span class="variable">stmt</span> <span class="operator">=</span> conn.createStatement()) &#123;</span><br><span class="line">            <span class="type">ResultSet</span> <span class="variable">resultSet</span> <span class="operator">=</span> stmt.executeQuery(<span class="string">&quot; SELECT VERSION() &quot;</span> );</span><br><span class="line">            <span class="keyword">if</span>(resultSet.next)&#123;</span><br><span class="line">                <span class="comment">//logger </span></span><br><span class="line">                logger.info(<span class="string">&quot;test ck cnn result:&#123;&#125;&quot;</span>, resultSet.getObject(<span class="number">1</span>))</span><br><span class="line">            &#125;</span><br><span class="line">           </span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;Failed to initialize  database&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 核心 方法</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ipAddress</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">eval</span><span class="params">(String value)</span> &#123;</span><br><span class="line">        <span class="comment">//  定义查询方法</span></span><br><span class="line">        <span class="comment">// 如果缓存中没有，则查询数据库</span></span><br><span class="line">        <span class="keyword">if</span> (Objects.isNull(value))&#123;</span><br><span class="line">            <span class="keyword">return</span> default_value;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">String</span> <span class="variable">myKey</span> <span class="operator">=</span> cache.getIfPresent(value);</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isBlank(myKey) &#123;</span><br><span class="line">            <span class="keyword">try</span> (</span><br><span class="line">            <span class="type">Connection</span> <span class="variable">conn</span> <span class="operator">=</span> dataSource.getConnection();</span><br><span class="line">             <span class="type">Statement</span> <span class="variable">stmt</span> <span class="operator">=</span> conn.createStatement()) &#123;</span><br><span class="line">                <span class="type">String</span> <span class="variable">sql</span> <span class="operator">=</span> <span class="string">&quot;SELECT XXX &quot;</span> ;</span><br><span class="line">             <span class="type">ResultSet</span> <span class="variable">resultSet</span> <span class="operator">=</span> stmt.executeQuery(sql) ;</span><br><span class="line">             <span class="comment">// 获取数据结果 并进行处理  </span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">close</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">if</span> (dataSource != <span class="literal">null</span>) &#123;</span><br><span class="line">            dataSource.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<h2 id="Flink-SQL-中调用方法"><a href="#Flink-SQL-中调用方法" class="headerlink" title="Flink SQL 中调用方法"></a>Flink SQL 中调用方法</h2><div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 配置 jar 包到 FLink JobManager </span><br><span class="line"></span><br><span class="line">  <span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> guava_cache_key_value_dict <span class="keyword">AS</span> <span class="string">&#x27;ordiy.github.io.MyUDFKeyValueDict&#x27;</span> ;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h1 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h1><p>在其它一些Flink 批处理场景中，可能需要使用Clickhouse作为Source, 需要谨慎使用这种场景，Clickhouse实时数仓CPU可能面临很高的负载，大量从Clickhouse中拉取数据会加剧资源紧张导致系统query 延迟增加。</p>
+<p>CPU&#x2F;IO 资源耗尽导致的QueryFailed:
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/2024202501241832665.png"
+                     
+                ></p>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Flink job query data form clickhouse</li>
+        <li><strong>Author:</strong> Ordiy</li>
+        <li><strong>Created at
+                :</strong> 2024-12-01 17:51:37</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-03-27 12:08:18
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://ordiy.github.io/posts/2024-12-01-flink-connect-ck/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/Flink/">#Flink</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/Clickhouse/">#Clickhouse</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/ETL/">#ETL</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E5%AE%9E%E6%97%B6%E6%95%B0%E4%BB%93/">#实时数仓</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/posts/2024-10-10-flink-quick-start-md/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">Flink Quick Start With Command</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/posts/2024-kafka-config-sasl-ssl-nodes/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">Kafka broker 配置PLAINTEXT和SASL_SSL双协议</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">Flink job query data form clickhouse</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#query-data-from-clickhouse"><span class="nav-text">query data from clickhouse</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#debug-%E6%97%A5%E5%BF%97"><span class="nav-text">debug  日志</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#UDF-%E4%B8%AD%E4%BD%BF%E7%94%A8"><span class="nav-text">UDF 中使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Flink-SQL-%E4%B8%AD%E8%B0%83%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-text">Flink SQL 中调用方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E5%AE%83"><span class="nav-text">其它</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ordiy</a>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>
