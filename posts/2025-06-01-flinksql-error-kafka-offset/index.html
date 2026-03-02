@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en,zh-cn,default">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Ordiy">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://ordiy.github.io/posts/2025-06-01-flinksql-error-kafka-offset/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FlinkSQL Error —— OffsetOutOfRangeException">
+<meta property="og:url" content="https://ordiy.github.io/posts/2025-06-01-flinksql-error-kafka-offset/index.html">
+<meta property="og:site_name" content="Ordiy&#39;s Blog">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ordiy.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2025-07-15T14:57:43.000Z">
+<meta property="article:modified_time" content="2026-03-02T03:42:38.732Z">
+<meta property="article:author" content="Ordiy">
+<meta property="article:tag" content="Data">
+<meta property="article:tag" content="FlinkSQL">
+<meta property="article:tag" content="debug">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ordiy.github.io/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            FlinkSQL Error —— OffsetOutOfRangeException | Ordiy&#39;s Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"ordiy.github.io","root":"/","language":["en","zh-cn","default"],"path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Truth & Free","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ordiy&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">107</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">34</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">90</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">FlinkSQL Error —— OffsetOutOfRangeException</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/redefine-avatar.svg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Ordiy</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-07-15 14:57:43</span>
+        <span class="mobile">2025-07-15 14:57:43</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-03-02 03:42:38</span>
+            <span class="mobile">2026-03-02 03:42:38</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Data/">Data</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/FlinkSQL/">FlinkSQL</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/debug/">debug</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h1 id="error-cause"><a href="#error-cause" class="headerlink" title="error cause"></a>error cause</h1><div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">025</span>-<span class="number">07</span>-<span class="number">14</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">32</span>,<span class="number">165</span> <span class="variable constant_">INFO</span>  org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">clients</span>.<span class="property">consumer</span>.<span class="property">internals</span>.<span class="property">Fetcher</span>          [] - [<span class="title class_">Consumer</span> clientId=fink-user-tags-v2-user-init-first-exposure-<span class="number">2</span>, groupId=fink-user-tags-v2-user-init-first-exposure] <span class="title class_">Fetch</span> position <span class="title class_">FetchPosition</span>&#123;offset=<span class="number">447013888</span>, offsetEpoch=<span class="title class_">Optional</span>.<span class="property">empty</span>, currentLeader=<span class="title class_">LeaderAndEpoch</span>&#123;leader=<span class="title class_">Optional</span>[<span class="number">10.101</span><span class="number">.100</span><span class="number">.75</span>:<span class="number">9092</span> (<span class="attr">id</span>: <span class="number">2</span> <span class="attr">rack</span>: <span class="literal">null</span>)], epoch=<span class="number">14</span>&#125;&#125; is out <span class="keyword">of</span> range <span class="keyword">for</span> partition flink-event-point-riskrule-processed-<span class="number">3</span>, raising error to the application since no reset policy is configured</span><br><span class="line"><span class="number">2025</span>-<span class="number">07</span>-<span class="number">14</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">32</span>,<span class="number">165</span> <span class="variable constant_">ERROR</span> org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">base</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">fetcher</span>.<span class="property">SplitFetcherManager</span> [] - <span class="title class_">Received</span> uncaught exception.</span><br><span class="line">java.<span class="property">lang</span>.<span class="property">RuntimeException</span>: <span class="title class_">SplitFetcher</span> thread <span class="number">0</span> received unexpected exception <span class="keyword">while</span> polling the records</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">base</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">fetcher</span>.<span class="property">SplitFetcher</span>.<span class="title function_">runOnce</span>(<span class="title class_">SplitFetcher</span>.<span class="property">java</span>:<span class="number">165</span>) ~[flink-connector-base-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">base</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">fetcher</span>.<span class="property">SplitFetcher</span>.<span class="title function_">run</span>(<span class="title class_">SplitFetcher</span>.<span class="property">java</span>:<span class="number">114</span>) [flink-connector-base-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">Executors$RunnableAdapter</span>.<span class="title function_">call</span>(<span class="title class_">Executors</span>.<span class="property">java</span>:<span class="number">515</span>) [?:?]</span><br><span class="line">	at java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">FutureTask</span>.<span class="title function_">run</span>(<span class="title class_">FutureTask</span>.<span class="property">java</span>:<span class="number">264</span>) [?:?]</span><br><span class="line">	at java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">ThreadPoolExecutor</span>.<span class="title function_">runWorker</span>(<span class="title class_">ThreadPoolExecutor</span>.<span class="property">java</span>:<span class="number">1128</span>) [?:?]</span><br><span class="line">	at java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">ThreadPoolExecutor$Worker</span>.<span class="title function_">run</span>(<span class="title class_">ThreadPoolExecutor</span>.<span class="property">java</span>:<span class="number">628</span>) [?:?]</span><br><span class="line">	at java.<span class="property">lang</span>.<span class="property">Thread</span>.<span class="title function_">run</span>(<span class="title class_">Thread</span>.<span class="property">java</span>:<span class="number">829</span>) [?:?]</span><br><span class="line"><span class="title class_">Caused</span> <span class="attr">by</span>: org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">clients</span>.<span class="property">consumer</span>.<span class="property">OffsetOutOfRangeException</span>: <span class="title class_">Fetch</span> position <span class="title class_">FetchPosition</span>&#123;offset=<span class="number">447013888</span>, offsetEpoch=<span class="title class_">Optional</span>.<span class="property">empty</span>, currentLeader=<span class="title class_">LeaderAndEpoch</span>&#123;leader=<span class="title class_">Optional</span>[<span class="number">10.101</span><span class="number">.100</span><span class="number">.75</span>:<span class="number">9092</span> (<span class="attr">id</span>: <span class="number">2</span> <span class="attr">rack</span>: <span class="literal">null</span>)], epoch=<span class="number">14</span>&#125;&#125; is out <span class="keyword">of</span> range <span class="keyword">for</span> partition flink-event-point-riskrule-processed-<span class="number">3</span></span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">clients</span>.<span class="property">consumer</span>.<span class="property">internals</span>.<span class="property">Fetcher</span>.<span class="title function_">handleOffsetOutOfRange</span>(<span class="title class_">Fetcher</span>.<span class="property">java</span>:<span class="number">1405</span>) ~[kafka-clients-<span class="number">3.2</span><span class="number">.3</span>.<span class="property">jar</span>:?]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">clients</span>.<span class="property">consumer</span>.<span class="property">internals</span>.<span class="property">Fetcher</span>.<span class="title function_">initializeCompletedFetch</span>(<span class="title class_">Fetcher</span>.<span class="property">java</span>:<span class="number">1357</span>) ~[kafka-clients-<span class="number">3.2</span><span class="number">.3</span>.<span class="property">jar</span>:?]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">clients</span>.<span class="property">consumer</span>.<span class="property">internals</span>.<span class="property">Fetcher</span>.<span class="title function_">collectFetch</span>(<span class="title class_">Fetcher</span>.<span class="property">java</span>:<span class="number">658</span>) ~[kafka-clients-<span class="number">3.2</span><span class="number">.3</span>.<span class="property">jar</span>:?]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">clients</span>.<span class="property">consumer</span>.<span class="property">KafkaConsumer</span>.<span class="title function_">pollForFetches</span>(<span class="title class_">KafkaConsumer</span>.<span class="property">java</span>:<span class="number">1286</span>) ~[kafka-clients-<span class="number">3.2</span><span class="number">.3</span>.<span class="property">jar</span>:?]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">clients</span>.<span class="property">consumer</span>.<span class="property">KafkaConsumer</span>.<span class="title function_">poll</span>(<span class="title class_">KafkaConsumer</span>.<span class="property">java</span>:<span class="number">1242</span>) ~[kafka-clients-<span class="number">3.2</span><span class="number">.3</span>.<span class="property">jar</span>:?]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">clients</span>.<span class="property">consumer</span>.<span class="property">KafkaConsumer</span>.<span class="title function_">poll</span>(<span class="title class_">KafkaConsumer</span>.<span class="property">java</span>:<span class="number">1215</span>) ~[kafka-clients-<span class="number">3.2</span><span class="number">.3</span>.<span class="property">jar</span>:?]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">kafka</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">KafkaPartitionSplitReader</span>.<span class="title function_">fetch</span>(<span class="title class_">KafkaPartitionSplitReader</span>.<span class="property">java</span>:<span class="number">101</span>) ~[flink-connector-kafka-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">base</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">fetcher</span>.<span class="property">FetchTask</span>.<span class="title function_">run</span>(<span class="title class_">FetchTask</span>.<span class="property">java</span>:<span class="number">58</span>) ~[flink-connector-base-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">base</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">fetcher</span>.<span class="property">SplitFetcher</span>.<span class="title function_">runOnce</span>(<span class="title class_">SplitFetcher</span>.<span class="property">java</span>:<span class="number">162</span>) ~[flink-connector-base-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	... <span class="number">6</span> more</span><br><span class="line"><span class="number">2025</span>-<span class="number">07</span>-<span class="number">14</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">32</span>,<span class="number">165</span> <span class="variable constant_">INFO</span>  org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">clients</span>.<span class="property">consumer</span>.<span class="property">internals</span>.<span class="property">ConsumerCoordinator</span> [] - [<span class="title class_">Consumer</span> clientId=fink-user-tags-v2-user-init-first-exposure-<span class="number">2</span>, groupId=fink-user-tags-v2-user-init-first-exposure] <span class="title class_">Resetting</span> generation and member id due <span class="attr">to</span>: consumer pro-actively leaving the group</span><br><span class="line"><span class="number">2025</span>-<span class="number">07</span>-<span class="number">14</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">32</span>,<span class="number">165</span> <span class="variable constant_">INFO</span>  org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">clients</span>.<span class="property">consumer</span>.<span class="property">internals</span>.<span class="property">ConsumerCoordinator</span> [] - [<span class="title class_">Consumer</span> clientId=fink-user-tags-v2-user-init-first-exposure-<span class="number">2</span>, groupId=fink-user-tags-v2-user-init-first-exposure] <span class="title class_">Request</span> joining group due <span class="attr">to</span>: consumer pro-actively leaving the group</span><br><span class="line"><span class="number">2025</span>-<span class="number">07</span>-<span class="number">14</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">32</span>,<span class="number">165</span> <span class="variable constant_">INFO</span>  org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">common</span>.<span class="property">metrics</span>.<span class="property">Metrics</span>                      [] - <span class="title class_">Metrics</span> scheduler closed</span><br><span class="line"><span class="number">2025</span>-<span class="number">07</span>-<span class="number">14</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">32</span>,<span class="number">165</span> <span class="variable constant_">INFO</span>  org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">common</span>.<span class="property">metrics</span>.<span class="property">Metrics</span>                      [] - <span class="title class_">Closing</span> reporter org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">common</span>.<span class="property">metrics</span>.<span class="property">JmxReporter</span></span><br><span class="line"><span class="number">2025</span>-<span class="number">07</span>-<span class="number">14</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">32</span>,<span class="number">165</span> <span class="variable constant_">INFO</span>  org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">common</span>.<span class="property">metrics</span>.<span class="property">Metrics</span>                      [] - <span class="title class_">Metrics</span> reporters closed</span><br><span class="line"><span class="number">2025</span>-<span class="number">07</span>-<span class="number">14</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">32</span>,<span class="number">166</span> <span class="variable constant_">INFO</span>  org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">common</span>.<span class="property">utils</span>.<span class="property">AppInfoParser</span>                  [] - <span class="title class_">App</span> info kafka.<span class="property">consumer</span> <span class="keyword">for</span> fink-user-tags-v2-user-init-first-exposure-<span class="number">2</span> unregistered</span><br><span class="line"><span class="number">2025</span>-<span class="number">07</span>-<span class="number">14</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">32</span>,<span class="number">166</span> <span class="variable constant_">INFO</span>  org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">base</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">fetcher</span>.<span class="property">SplitFetcher</span> [] - <span class="title class_">Split</span> fetcher <span class="number">0</span> exited.</span><br><span class="line"><span class="number">2025</span>-<span class="number">07</span>-<span class="number">14</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">32</span>,<span class="number">173</span> <span class="variable constant_">INFO</span>  org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">base</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">SourceReaderBase</span> [] - <span class="title class_">Closing</span> <span class="title class_">Source</span> <span class="title class_">Reader</span>.</span><br><span class="line"><span class="number">2025</span>-<span class="number">07</span>-<span class="number">14</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">32</span>,<span class="number">174</span> <span class="variable constant_">WARN</span>  org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">runtime</span>.<span class="property">taskmanager</span>.<span class="property">Task</span>                    [] - <span class="title class_">Source</span>: src_event_point_source_v2[<span class="number">1</span>] -&gt; <span class="title class_">Calc</span>[<span class="number">2</span>] (<span class="number">3</span>/<span class="number">3</span>)#<span class="number">140</span> (b4261ffe742ad92556738fcad2166ca0_cbc357ccb763df2852fee8c4fc7d55f2_2_140) switched <span class="keyword">from</span> <span class="variable constant_">RUNNING</span> to <span class="variable constant_">FAILED</span> <span class="keyword">with</span> failure <span class="attr">cause</span>:</span><br><span class="line">java.<span class="property">lang</span>.<span class="property">RuntimeException</span>: <span class="title class_">One</span> or more fetchers have encountered exception</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">base</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">fetcher</span>.<span class="property">SplitFetcherManager</span>.<span class="title function_">checkErrors</span>(<span class="title class_">SplitFetcherManager</span>.<span class="property">java</span>:<span class="number">261</span>) ~[flink-connector-base-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">base</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">SourceReaderBase</span>.<span class="title function_">getNextFetch</span>(<span class="title class_">SourceReaderBase</span>.<span class="property">java</span>:<span class="number">169</span>) ~[flink-connector-base-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">base</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">SourceReaderBase</span>.<span class="title function_">pollNext</span>(<span class="title class_">SourceReaderBase</span>.<span class="property">java</span>:<span class="number">131</span>) ~[flink-connector-base-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">base</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">SourceReaderBase</span>.<span class="title function_">pollNext</span>(<span class="title class_">SourceReaderBase</span>.<span class="property">java</span>:<span class="number">157</span>) ~[flink-connector-base-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">streaming</span>.<span class="property">api</span>.<span class="property">operators</span>.<span class="property">SourceOperator</span>.<span class="title function_">emitNext</span>(<span class="title class_">SourceOperator</span>.<span class="property">java</span>:<span class="number">419</span>) ~[flink-dist-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">streaming</span>.<span class="property">runtime</span>.<span class="property">io</span>.<span class="property">StreamTaskSourceInput</span>.<span class="title function_">emitNext</span>(<span class="title class_">StreamTaskSourceInput</span>.<span class="property">java</span>:<span class="number">68</span>) ~[flink-dist-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">streaming</span>.<span class="property">runtime</span>.<span class="property">io</span>.<span class="property">StreamOneInputProcessor</span>.<span class="title function_">processInput</span>(<span class="title class_">StreamOneInputProcessor</span>.<span class="property">java</span>:<span class="number">65</span>) ~[flink-dist-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">streaming</span>.<span class="property">runtime</span>.<span class="property">tasks</span>.<span class="property">StreamTask</span>.<span class="title function_">processInput</span>(<span class="title class_">StreamTask</span>.<span class="property">java</span>:<span class="number">550</span>) ~[flink-dist-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">streaming</span>.<span class="property">runtime</span>.<span class="property">tasks</span>.<span class="property">mailbox</span>.<span class="property">MailboxProcessor</span>.<span class="title function_">runMailboxLoop</span>(<span class="title class_">MailboxProcessor</span>.<span class="property">java</span>:<span class="number">231</span>) ~[flink-dist-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">streaming</span>.<span class="property">runtime</span>.<span class="property">tasks</span>.<span class="property">StreamTask</span>.<span class="title function_">runMailboxLoop</span>(<span class="title class_">StreamTask</span>.<span class="property">java</span>:<span class="number">839</span>) ~[flink-dist-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">streaming</span>.<span class="property">runtime</span>.<span class="property">tasks</span>.<span class="property">StreamTask</span>.<span class="title function_">invoke</span>(<span class="title class_">StreamTask</span>.<span class="property">java</span>:<span class="number">788</span>) ~[flink-dist-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">runtime</span>.<span class="property">taskmanager</span>.<span class="property">Task</span>.<span class="title function_">runWithSystemExitMonitoring</span>(<span class="title class_">Task</span>.<span class="property">java</span>:<span class="number">952</span>) ~[flink-dist-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">runtime</span>.<span class="property">taskmanager</span>.<span class="property">Task</span>.<span class="title function_">restoreAndInvoke</span>(<span class="title class_">Task</span>.<span class="property">java</span>:<span class="number">931</span>) [flink-dist-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">runtime</span>.<span class="property">taskmanager</span>.<span class="property">Task</span>.<span class="title function_">doRun</span>(<span class="title class_">Task</span>.<span class="property">java</span>:<span class="number">745</span>) [flink-dist-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">runtime</span>.<span class="property">taskmanager</span>.<span class="property">Task</span>.<span class="title function_">run</span>(<span class="title class_">Task</span>.<span class="property">java</span>:<span class="number">562</span>) [flink-dist-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at java.<span class="property">lang</span>.<span class="property">Thread</span>.<span class="title function_">run</span>(<span class="title class_">Thread</span>.<span class="property">java</span>:<span class="number">829</span>) [?:?]</span><br><span class="line"><span class="title class_">Caused</span> <span class="attr">by</span>: java.<span class="property">lang</span>.<span class="property">RuntimeException</span>: <span class="title class_">SplitFetcher</span> thread <span class="number">0</span> received unexpected exception <span class="keyword">while</span> polling the records</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">base</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">fetcher</span>.<span class="property">SplitFetcher</span>.<span class="title function_">runOnce</span>(<span class="title class_">SplitFetcher</span>.<span class="property">java</span>:<span class="number">165</span>) ~[flink-connector-base-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">base</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">fetcher</span>.<span class="property">SplitFetcher</span>.<span class="title function_">run</span>(<span class="title class_">SplitFetcher</span>.<span class="property">java</span>:<span class="number">114</span>) ~[flink-connector-base-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">Executors$RunnableAdapter</span>.<span class="title function_">call</span>(<span class="title class_">Executors</span>.<span class="property">java</span>:<span class="number">515</span>) ~[?:?]</span><br><span class="line">	at java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">FutureTask</span>.<span class="title function_">run</span>(<span class="title class_">FutureTask</span>.<span class="property">java</span>:<span class="number">264</span>) ~[?:?]</span><br><span class="line">	at java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">ThreadPoolExecutor</span>.<span class="title function_">runWorker</span>(<span class="title class_">ThreadPoolExecutor</span>.<span class="property">java</span>:<span class="number">1128</span>) ~[?:?]</span><br><span class="line">	at java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">ThreadPoolExecutor$Worker</span>.<span class="title function_">run</span>(<span class="title class_">ThreadPoolExecutor</span>.<span class="property">java</span>:<span class="number">628</span>) ~[?:?]</span><br><span class="line">	... <span class="number">1</span> more</span><br><span class="line"><span class="title class_">Caused</span> <span class="attr">by</span>: org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">clients</span>.<span class="property">consumer</span>.<span class="property">OffsetOutOfRangeException</span>: <span class="title class_">Fetch</span> position <span class="title class_">FetchPosition</span>&#123;offset=<span class="number">447013888</span>, offsetEpoch=<span class="title class_">Optional</span>.<span class="property">empty</span>, currentLeader=<span class="title class_">LeaderAndEpoch</span>&#123;leader=<span class="title class_">Optional</span>[<span class="number">10.101</span><span class="number">.100</span><span class="number">.75</span>:<span class="number">9092</span> (<span class="attr">id</span>: <span class="number">2</span> <span class="attr">rack</span>: <span class="literal">null</span>)], epoch=<span class="number">14</span>&#125;&#125; is out <span class="keyword">of</span> range <span class="keyword">for</span> partition flink-event-point-riskrule-processed-<span class="number">3</span></span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">clients</span>.<span class="property">consumer</span>.<span class="property">internals</span>.<span class="property">Fetcher</span>.<span class="title function_">handleOffsetOutOfRange</span>(<span class="title class_">Fetcher</span>.<span class="property">java</span>:<span class="number">1405</span>) ~[kafka-clients-<span class="number">3.2</span><span class="number">.3</span>.<span class="property">jar</span>:?]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">clients</span>.<span class="property">consumer</span>.<span class="property">internals</span>.<span class="property">Fetcher</span>.<span class="title function_">initializeCompletedFetch</span>(<span class="title class_">Fetcher</span>.<span class="property">java</span>:<span class="number">1357</span>) ~[kafka-clients-<span class="number">3.2</span><span class="number">.3</span>.<span class="property">jar</span>:?]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">clients</span>.<span class="property">consumer</span>.<span class="property">internals</span>.<span class="property">Fetcher</span>.<span class="title function_">collectFetch</span>(<span class="title class_">Fetcher</span>.<span class="property">java</span>:<span class="number">658</span>) ~[kafka-clients-<span class="number">3.2</span><span class="number">.3</span>.<span class="property">jar</span>:?]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">clients</span>.<span class="property">consumer</span>.<span class="property">KafkaConsumer</span>.<span class="title function_">pollForFetches</span>(<span class="title class_">KafkaConsumer</span>.<span class="property">java</span>:<span class="number">1286</span>) ~[kafka-clients-<span class="number">3.2</span><span class="number">.3</span>.<span class="property">jar</span>:?]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">clients</span>.<span class="property">consumer</span>.<span class="property">KafkaConsumer</span>.<span class="title function_">poll</span>(<span class="title class_">KafkaConsumer</span>.<span class="property">java</span>:<span class="number">1242</span>) ~[kafka-clients-<span class="number">3.2</span><span class="number">.3</span>.<span class="property">jar</span>:?]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">kafka</span>.<span class="property">clients</span>.<span class="property">consumer</span>.<span class="property">KafkaConsumer</span>.<span class="title function_">poll</span>(<span class="title class_">KafkaConsumer</span>.<span class="property">java</span>:<span class="number">1215</span>) ~[kafka-clients-<span class="number">3.2</span><span class="number">.3</span>.<span class="property">jar</span>:?]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">kafka</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">KafkaPartitionSplitReader</span>.<span class="title function_">fetch</span>(<span class="title class_">KafkaPartitionSplitReader</span>.<span class="property">java</span>:<span class="number">101</span>) ~[flink-connector-kafka-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">base</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">fetcher</span>.<span class="property">FetchTask</span>.<span class="title function_">run</span>(<span class="title class_">FetchTask</span>.<span class="property">java</span>:<span class="number">58</span>) ~[flink-connector-base-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">base</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">fetcher</span>.<span class="property">SplitFetcher</span>.<span class="title function_">runOnce</span>(<span class="title class_">SplitFetcher</span>.<span class="property">java</span>:<span class="number">162</span>) ~[flink-connector-base-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">connector</span>.<span class="property">base</span>.<span class="property">source</span>.<span class="property">reader</span>.<span class="property">fetcher</span>.<span class="property">SplitFetcher</span>.<span class="title function_">run</span>(<span class="title class_">SplitFetcher</span>.<span class="property">java</span>:<span class="number">114</span>) ~[flink-connector-base-<span class="number">1.17</span><span class="number">.2</span>.<span class="property">jar</span>:<span class="number">1.17</span><span class="number">.2</span>]</span><br><span class="line">	at java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">Executors$RunnableAdapter</span>.<span class="title function_">call</span>(<span class="title class_">Executors</span>.<span class="property">java</span>:<span class="number">515</span>) ~[?:?]</span><br><span class="line">	at java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">FutureTask</span>.<span class="title function_">run</span>(<span class="title class_">FutureTask</span>.<span class="property">java</span>:<span class="number">264</span>) ~[?:?]</span><br><span class="line">	at java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">ThreadPoolExecutor</span>.<span class="title function_">runWorker</span>(<span class="title class_">ThreadPoolExecutor</span>.<span class="property">java</span>:<span class="number">1128</span>) ~[?:?]</span><br><span class="line">	at java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">ThreadPoolExecutor$Worker</span>.<span class="title function_">run</span>(<span class="title class_">ThreadPoolExecutor</span>.<span class="property">java</span>:<span class="number">628</span>) ~[?:?]</span><br><span class="line">	... <span class="number">1</span> more</span><br><span class="line"><span class="number">2025</span>-<span class="number">07</span>-<span class="number">14</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">32</span>,<span class="number">174</span> <span class="variable constant_">INFO</span>  org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">runtime</span>.<span class="property">taskmanager</span>.<span class="property">Task</span>                    [] - <span class="title class_">Freeing</span> task resources <span class="keyword">for</span> <span class="title class_">Source</span>: src_event_point_source_v2[<span class="number">1</span>] -&gt; <span class="title class_">Calc</span>[<span class="number">2</span>] (<span class="number">3</span>/<span class="number">3</span>)#<span class="number">140</span> (b4261ffe742ad92556738fcad2166ca0_cbc357ccb763df2852fee8c4fc7d55f2_2_140).</span><br><span class="line"><span class="number">2025</span>-<span class="number">07</span>-<span class="number">14</span> <span class="number">12</span>:<span class="number">00</span>:<span class="number">32</span>,<span class="number">175</span> <span class="variable constant_">INFO</span>  org.<span class="property">apache</span>.<span class="property">flink</span>.<span class="property">runtime</span>.<span class="property">taskexecutor</span>.<span class="property">TaskExecutor</span>           [] - <span class="title class_">Un</span>-registering task and sending final execution state <span class="variable constant_">FAILED</span> to <span class="title class_">JobManager</span> <span class="keyword">for</span> task <span class="title class_">Source</span>: src_event_point_source_v2[<span class="number">1</span>] -&gt; <span class="title class_">Calc</span>[<span class="number">2</span>] (<span class="number">3</span>/<span class="number">3</span>)#<span class="number">140</span> </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+
+
+
+<h1 id="kafka-topic-properties"><a href="#kafka-topic-properties" class="headerlink" title="kafka topic properties"></a>kafka topic properties</h1><div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">cleanup.<span class="property">policy</span>=<span class="keyword">delete</span></span><br><span class="line">compression.<span class="property">gzip</span>.<span class="property">level</span>=-<span class="number">1</span></span><br><span class="line">compression.<span class="property">lz4</span>.<span class="property">level</span>=<span class="number">9</span></span><br><span class="line">compression.<span class="property">type</span>=zstd</span><br><span class="line">compression.<span class="property">zstd</span>.<span class="property">level</span>=<span class="number">3</span></span><br><span class="line"><span class="keyword">delete</span>.<span class="property">retention</span>.<span class="property">ms</span>=<span class="number">3456000000</span></span><br><span class="line">file.<span class="property">delete</span>.<span class="property">delay</span>.<span class="property">ms</span>=<span class="number">60000</span></span><br><span class="line">flush.<span class="property">messages</span>=<span class="number">9223372036854775807</span></span><br><span class="line">flush.<span class="property">ms</span>=<span class="number">9223372036854775807</span></span><br><span class="line">follower.<span class="property">replication</span>.<span class="property">throttled</span>.<span class="property">replicas</span>=</span><br><span class="line">index.<span class="property">interval</span>.<span class="property">bytes</span>=<span class="number">4096</span></span><br><span class="line">leader.<span class="property">replication</span>.<span class="property">throttled</span>.<span class="property">replicas</span>=</span><br><span class="line">local.<span class="property">retention</span>.<span class="property">bytes</span>=-<span class="number">2</span></span><br><span class="line">local.<span class="property">retention</span>.<span class="property">ms</span>=-<span class="number">2</span></span><br><span class="line">max.<span class="property">compaction</span>.<span class="property">lag</span>.<span class="property">ms</span>=<span class="number">9223372036854775807</span></span><br><span class="line">max.<span class="property">message</span>.<span class="property">bytes</span>=<span class="number">1048588</span></span><br><span class="line">message.<span class="property">downconversion</span>.<span class="property">enable</span>=<span class="literal">true</span></span><br><span class="line">message.<span class="property">format</span>.<span class="property">version</span>=<span class="number">3.0</span>-<span class="title class_">IV1</span></span><br><span class="line">message.<span class="property">timestamp</span>.<span class="property">after</span>.<span class="property">max</span>.<span class="property">ms</span>=<span class="number">9223372036854775807</span></span><br><span class="line">message.<span class="property">timestamp</span>.<span class="property">before</span>.<span class="property">max</span>.<span class="property">ms</span>=<span class="number">9223372036854775807</span></span><br><span class="line">message.<span class="property">timestamp</span>.<span class="property">difference</span>.<span class="property">max</span>.<span class="property">ms</span>=<span class="number">9223372036854775807</span></span><br><span class="line">message.<span class="property">timestamp</span>.<span class="property">type</span>=<span class="title class_">CreateTime</span></span><br><span class="line">min.<span class="property">cleanable</span>.<span class="property">dirty</span>.<span class="property">ratio</span>=<span class="number">0.7</span></span><br><span class="line">min.<span class="property">compaction</span>.<span class="property">lag</span>.<span class="property">ms</span>=<span class="number">60000</span></span><br><span class="line">min.<span class="property">insync</span>.<span class="property">replicas</span>=<span class="number">1</span></span><br><span class="line">preallocate=<span class="literal">false</span></span><br><span class="line">remote.<span class="property">storage</span>.<span class="property">enable</span>=<span class="literal">false</span></span><br><span class="line">retention.<span class="property">bytes</span>=-<span class="number">1</span></span><br><span class="line">retention.<span class="property">ms</span>=<span class="number">3456000000</span></span><br><span class="line">segment.<span class="property">bytes</span>=<span class="number">1073741824</span></span><br><span class="line">segment.<span class="property">index</span>.<span class="property">bytes</span>=<span class="number">10485760</span></span><br><span class="line">segment.<span class="property">jitter</span>.<span class="property">ms</span>=<span class="number">0</span></span><br><span class="line">segment.<span class="property">ms</span>=<span class="number">604800000</span></span><br><span class="line">unclean.<span class="property">leader</span>.<span class="property">election</span>.<span class="property">enable</span>=<span class="literal">false</span></span><br></pre></td></tr></table></figure></div>
+
+<h1 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h1><div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> /data/kafka-bin/bin/kafka-consumer-groups.sh  --bootstrap-server 10.101.100.21:9092,10.101.100.75:9092,10.101.100.232:9092  --group fink-user-tags-v2-user-init-first-exposure   --describe</span><br><span class="line">/data/kafka-bin/bin/kafka-consumer-groups.sh  --bootstrap-server 10.21.100.21:9092,10.21.100.75:9092,10.21.100.232:9092  --group fink-user-tags-v2-user-init-first-exposure   --describe</span><br><span class="line"></span><br><span class="line">Consumer group &#x27;fink-user-tags-v2-user-init-first-exposure&#x27; has no active members.</span><br><span class="line"></span><br><span class="line">GROUP                                      TOPIC                                PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID     HOST            CLIENT-ID</span><br><span class="line">fink-user-tags-v2-user-init-first-exposure flink-event-point-riskrule-processed 1          559298895       625483460       66184565        -               -               -</span><br><span class="line">fink-user-tags-v2-user-init-first-exposure flink-event-point-riskrule-processed 2          559358558       625545458       66186900        -               -               -</span><br><span class="line">fink-user-tags-v2-user-init-first-exposure flink-event-point-riskrule-processed 0          559357644       625537537       66179893        -               -               -</span><br><span class="line">fink-user-tags-v2-user-init-first-exposure flink-event-point-riskrule-processed 5          559348549       625522842       66174293        -               -               -</span><br><span class="line">fink-user-tags-v2-user-init-first-exposure flink-event-point-riskrule-processed 3          559359386       625540063       66180677        -               -               -</span><br><span class="line">fink-user-tags-v2-user-init-first-exposure flink-event-point-riskrule-processed 4          559353695       625535243       66181548        -               -               -</span><br></pre></td></tr></table></figure></div>
+
+<h1 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h1><p>我使用了 reset offset 到 指定日期</p>
+<div class="code-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/data/kafka-bin/bin/kafka-consumer-groups.sh \</span><br><span class="line"> --bootstrap-server 10.21.100.21:9092,10.21.100.75:9092,10.21.100.232:9092 \</span><br><span class="line">        --topic flink-event-point-riskrule-processed \</span><br><span class="line">        --group fink-user-tags-v2-user-init-first-exposure \</span><br><span class="line">        --reset-offsets \</span><br><span class="line">        --to-datetime &quot;2025-06-20T00:00:00.000&quot; \</span><br></pre></td></tr></table></figure></div>
+
+<p>这个日期的数据已经被清理了？</p>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> FlinkSQL Error —— OffsetOutOfRangeException</li>
+        <li><strong>Author:</strong> Ordiy</li>
+        <li><strong>Created at
+                :</strong> 2025-07-15 14:57:43</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-03-02 03:42:38
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://ordiy.github.io/posts/2025-06-01-flinksql-error-kafka-offset/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/Data/">#Data</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/FlinkSQL/">#FlinkSQL</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/debug/">#debug</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/posts/2025-06-01-flink-udf-quick-start-action/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">使用`Mavne Archetypes`定一个flink-udf-quickstart工具</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/posts/2025-06-01-Analyzing-Replica-Inconsistency-in-ClickHouse/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">Analyzing Replica Inconsistency in ClickHouse</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.js';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+                    lang: 'zh-CN',
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">FlinkSQL Error —— OffsetOutOfRangeException</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#error-cause"><span class="nav-text">error cause</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#kafka-topic-properties"><span class="nav-text">kafka topic properties</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#shell"><span class="nav-text">shell</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0"><span class="nav-text">原因</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ordiy</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        90 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>

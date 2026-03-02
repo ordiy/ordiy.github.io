@@ -6,6 +6,116 @@
     <meta name="keywords" content="Hexo Theme Redefine">
     
     <meta name="author" content="Ordiy">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
     <!-- preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,15 +133,18 @@
         
         <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Flink standalone session cluster 安装与配置 - flink - nginx - log">
+<meta property="og:title" content="Flink standalone session cluster 安装与配置">
 <meta property="og:url" content="https://ordiy.github.io/posts/2025-flink-session-mode-cluster-install/index.html">
 <meta property="og:site_name" content="Ordiy&#39;s Blog">
 <meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ordiy.github.io/images/redefine-og.webp">
 <meta property="article:published_time" content="2025-01-01T00:00:00.000Z">
-<meta property="article:modified_time" content="2025-07-10T03:00:39.834Z">
+<meta property="article:modified_time" content="2026-03-02T03:42:38.732Z">
 <meta property="article:author" content="Ordiy">
+<meta property="article:tag" content="nginx">
+<meta property="article:tag" content="Flink">
+<meta property="article:tag" content="log">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ordiy.github.io/images/redefine-og.webp">
     
@@ -45,7 +158,7 @@
     
     <title>
         
-            Flink standalone session cluster 安装与配置 - flink - nginx - log | Ordiy Blog
+            Flink standalone session cluster 安装与配置 | Ordiy&#39;s Blog
         
     </title>
 
@@ -82,7 +195,7 @@
 
     <script id="hexo-configurations">
     window.config = {"hostname":"ordiy.github.io","root":"/","language":["en","zh-cn","default"],"path":"search.json"};
-    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"atom-one-light","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/530e8906-4109-4871-b851-3301fee1e1bb.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"The truth sets me free","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Truth & Free","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
     window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
     window.data = {"masonry":false};
   </script>
@@ -132,7 +245,7 @@
             
             <a class="logo-title" href="/">
                 
-                Ordiy Blog
+                Ordiy&#39;s Blog
                 
             </a>
         </div>
@@ -243,29 +356,6 @@
 
             
             
-                
-                    
-                    
-                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
-                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
-                           href="/tags"
-                        >
-                            <span>Tags</span>
-                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
-                        </a>
-                    </li>
-                
-                    
-                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
-                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
-                           href="/categories"
-                        >
-                            <span>Categories</span>
-                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
-                        </a>
-                    </li>
-                
-            
         </ul>
 
         <div class="statistics flex justify-around my-2.5">
@@ -274,11 +364,11 @@
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">35</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">34</div>
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">91</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">90</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -301,7 +391,7 @@
 		<div class="article-title relative w-full">
 			
 			<div class="w-full flex items-center pt-6 justify-start">
-				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Flink standalone session cluster 安装与配置 - flink - nginx - log</h1>
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Flink standalone session cluster 安装与配置</h1>
 			</div>
 			
 		</div>
@@ -329,8 +419,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-07-10 03:39</span>
-            <span class="mobile">2025-07-10 03:39</span>
+            <span class="desktop">2026-03-02 03:42:38</span>
+            <span class="mobile">2026-03-02 03:42:38</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -354,7 +444,7 @@
                             <li>></li>
                         
                         <li>
-                            <a href="/categories/tech/data/">data</a>&nbsp;
+                            <a href="/categories/tech/Data/">Data</a>&nbsp;
                         </li>
                     
                     
@@ -363,10 +453,33 @@
         </span>
     
     
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/nginx/">nginx</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Flink/">Flink</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/log/">log</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
 
     
     
     
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
 
@@ -517,14 +630,14 @@ query.server.port: 6125</p>
 		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
 			<div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> Flink standalone session cluster 安装与配置 - flink - nginx - log</li>
+        <li><strong>Title:</strong> Flink standalone session cluster 安装与配置</li>
         <li><strong>Author:</strong> Ordiy</li>
         <li><strong>Created at
                 :</strong> 2025-01-01 00:00:00</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-07-10 03:00:39
+                    :</strong> 2026-03-02 03:42:38
             </li>
         
         <li>
@@ -537,7 +650,7 @@ query.server.port: 6125</p>
             
 
             
-                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>.
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
             
         </li>
     </ul>
@@ -546,6 +659,22 @@ query.server.port: 6125</p>
 		</div>
 		
 
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/nginx/">#nginx</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/Flink/">#Flink</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/log/">#log</a>&nbsp;
+			</li>
+			
+		</ul>
 		
 
 		
@@ -559,7 +688,7 @@ query.server.port: 6125</p>
 						<i class="fa-solid fa-chevron-left"></i>
 					</span>
 					<span class="title flex justify-center items-center">
-						<span class="post-nav-title-item">Flink Save point error</span>
+						<span class="post-nav-title-item truncate max-w-48">Flink Save point error</span>
 						<span class="post-nav-item">Prev posts</span>
 					</span>
 				</a>
@@ -569,7 +698,7 @@ query.server.port: 6125</p>
 			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
 				<a class="next" rel="next" href="/posts/2025-nginx-log-flink-etl/">
 					<span class="title flex justify-center items-center">
-						<span class="post-nav-title-item">Flink清洗Nginx日志</span>
+						<span class="post-nav-title-item truncate max-w-48">Flink清洗Nginx日志</span>
 						<span class="post-nav-item">Next posts</span>
 					</span>
 					<span class="right arrow-icon flex justify-center items-center">
@@ -583,6 +712,47 @@ query.server.port: 6125</p>
 
 
 		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.js';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+                    lang: 'zh-CN',
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+		</div>
+		
 	</div>
 
 	
@@ -590,7 +760,7 @@ query.server.port: 6125</p>
 		<div class="post-toc-wrap">
 	<div class="post-toc">
 		<div class="toc-title">On this page</div>
-		<div class="page-title">Flink standalone session cluster 安装与配置 - flink - nginx - log</div>
+		<div class="page-title">Flink standalone session cluster 安装与配置</div>
 		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JDK-11-Flink-1-17"><span class="nav-text">JDK 11 + Flink 1.17</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Flink-%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84"><span class="nav-text">Flink 程序结构</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flink-%E9%83%A8%E7%BD%B2"><span class="nav-text">Flink 部署</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Session-mode"><span class="nav-text">Session mode</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81"><span class="nav-text">特征</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%A8%8B%E5%BA%8F"><span class="nav-text">测试程序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#flink-%E6%80%BB%E5%86%85%E5%AD%98%E5%A4%A7%E5%B0%8F-Total-Process-Memory"><span class="nav-text">flink 总内存大小 Total Process Memory</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E7%82%B9%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95%EF%BC%88%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%88%96-HDFS-S3%EF%BC%89"><span class="nav-text">检查点存储目录（本地文件系统或 HDFS&#x2F;S3）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Fault-tolerance-and-checkpointing"><span class="nav-text">Fault tolerance and checkpointing</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RocksDB-%E6%9C%AC%E5%9C%B0%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95%EF%BC%88%E6%AF%8F%E4%B8%AA-TaskManager%EF%BC%89"><span class="nav-text">RocksDB 本地数据存储目录（每个 TaskManager）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89%E5%90%AF%E7%94%A8%E6%A3%80%E6%9F%A5%E7%82%B9%EF%BC%8C%E8%AE%BE%E7%BD%AE%E9%97%B4%E9%9A%94%EF%BC%88%E6%AF%AB%E7%A7%92%EF%BC%89"><span class="nav-text">（可选）启用检查点，设置间隔（毫秒）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89%E4%BC%98%E5%8C%96-RocksDB-%E6%80%A7%E8%83%BD"><span class="nav-text">（可选）优化 RocksDB 性能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Rest-web-frontend"><span class="nav-text">Rest &amp; web frontend</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-port-to-which-the-REST-client-connects-to-If-rest-bind-port-has"><span class="nav-text">The port to which the REST client connects to. If rest.bind-port has</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#not-been-specified-then-the-server-will-bind-to-this-port-as-well"><span class="nav-text">not been specified, then the server will bind to this port as well.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-address-to-which-the-REST-client-will-connect-to"><span class="nav-text">The address to which the REST client will connect to</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-1"><span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Port-range-for-the-REST-and-web-server-to-bind-to"><span class="nav-text">Port range for the REST and web server to bind to.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-2"><span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-address-that-the-REST-web-server-binds-to"><span class="nav-text">The address that the REST &amp; web server binds to</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#By-default-this-is-localhost-which-prevents-the-REST-web-server-from"><span class="nav-text">By default, this is localhost, which prevents the REST &amp; web server from</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#being-able-to-communicate-outside-of-the-machine-container-it-is-running-on"><span class="nav-text">being able to communicate outside of the machine&#x2F;container it is running on.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-3"><span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#To-enable-this-set-the-bind-address-to-one-that-has-access-to-outside-facing"><span class="nav-text">To enable this, set the bind address to one that has access to outside-facing</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#network-interface-such-as-0-0-0-0"><span class="nav-text">network interface, such as 0.0.0.0.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-4"><span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Fault-tolerance-and-checkpointing-1"><span class="nav-text">Fault tolerance and checkpointing</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Advanced"><span class="nav-text">Advanced</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HistoryServer"><span class="nav-text">HistoryServer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-address-under-which-the-web-based-HistoryServer-listens"><span class="nav-text">The address under which the web-based HistoryServer listens.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-port-under-which-the-web-based-HistoryServer-listens"><span class="nav-text">The port under which the web-based HistoryServer listens.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Comma-separated-list-of-directories-to-monitor-for-completed-jobs"><span class="nav-text">Comma separated list of directories to monitor for completed jobs.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Interval-in-milliseconds-for-refreshing-the-monitored-directories"><span class="nav-text">Interval in milliseconds for refreshing the monitored directories.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E7%94%A8-ZooKeeper-HA"><span class="nav-text">启用 ZooKeeper HA</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ZooKeeper-%E9%9B%86%E7%BE%A4%E5%9C%B0%E5%9D%80"><span class="nav-text">ZooKeeper 集群地址</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HA-%E5%85%83%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E8%B7%AF%E5%BE%84%EF%BC%88S3%EF%BC%89"><span class="nav-text">HA 元数据存储路径（S3）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ZooKeeper-%E6%A0%B9%E8%B7%AF%E5%BE%84%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%8C%E9%9A%94%E7%A6%BB-Flink-%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="nav-text">ZooKeeper 根路径（可选，隔离 Flink 数据）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E5%94%AF%E4%B8%80%E6%A0%87%E8%AF%86%EF%BC%88%E9%81%BF%E5%85%8D%E5%A4%9A%E9%9B%86%E7%BE%A4%E5%86%B2%E7%AA%81%EF%BC%89"><span class="nav-text">集群唯一标识（避免多集群冲突）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#flink-oci-01-flink-session-cluster-01-as-Zookeeper-namespace-high-availability-zookeeper-path-root-high-availability-cluster-id"><span class="nav-text">&#39;&#x2F;flink-oci-01&#x2F;flink-session-cluster-01&#39; as Zookeeper namespace.  ${high-availability.zookeeper.path.root} + ${high-availability.cluster-id}</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ha"><span class="nav-text">ha</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E7%94%A8-ZooKeeper-HA-1"><span class="nav-text">启用 ZooKeeper HA</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ZooKeeper-%E9%9B%86%E7%BE%A4%E5%9C%B0%E5%9D%80-1"><span class="nav-text">ZooKeeper 集群地址</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HA-%E5%85%83%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E8%B7%AF%E5%BE%84%EF%BC%88S3%EF%BC%89-1"><span class="nav-text">HA 元数据存储路径（S3）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ZooKeeper-%E6%A0%B9%E8%B7%AF%E5%BE%84%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%8C%E9%9A%94%E7%A6%BB-Flink-%E6%95%B0%E6%8D%AE%EF%BC%89-1"><span class="nav-text">ZooKeeper 根路径（可选，隔离 Flink 数据）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E5%94%AF%E4%B8%80%E6%A0%87%E8%AF%86%EF%BC%88%E9%81%BF%E5%85%8D%E5%A4%9A%E9%9B%86%E7%BE%A4%E5%86%B2%E7%AA%81%EF%BC%89-1"><span class="nav-text">集群唯一标识（避免多集群冲突）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#metrics"><span class="nav-text">metrics</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#port-9249"><span class="nav-text">port 9249</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95"><span class="nav-text">遇到的问题记录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#taskManager-slot-%E8%80%97%E5%B0%BD"><span class="nav-text">taskManager slot 耗尽</span></a></li></ol></li></ol>
 
 	</div>
@@ -613,13 +783,37 @@ query.server.port: 6125</p>
               <span>2022</span>
               -
             
-            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ordiy</a>
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ordiy</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        90 posts in total
+                    </span>
+                    
+                </p>
             
         </div>
         
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
         <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
             <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
-            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
         </div>
         
         
@@ -663,6 +857,10 @@ query.server.port: 6125</p>
 		
 
 		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
 		
 	</ul>
 </div>
