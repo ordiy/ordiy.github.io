@@ -412,7 +412,7 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">107</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">124</div>
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -420,7 +420,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">90</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">112</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -452,7 +452,7 @@
 </div>
                 <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">107</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">124</div>
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -460,7 +460,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">90</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">112</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -485,60 +485,33 @@
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/posts/2025-08-01-flinkl-ml-performence-issus-p1/">
-                            FlinkML 遇到的性能问题--避坑
+                        <a href="/posts/2025-zk-watch-lock/">
+                            
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
-                            <p>FlinkML进行矩阵计算的遇到的性能问题,以及原因分析</p>
-
+                            
+                            使用Curator实现分布式锁核心逻辑使用Apache zookeeper作为分布式协调服务，Apache Curator作为Zookeeper的客户端库来实现分布式锁。通过Curator的InterProcessMutex类，可以轻松地创建和管理分布式锁。
+12345678910111213141516boolean acquired ==  distLock.acquire(lockAw...
                         
                     </div>
 
                     <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
         <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Fri Aug 01 2025 00:00:00 GMT+0000">
+            <span class="home-article-date" data-date="Mon Mar 02 2026 04:17:17 GMT+0000">
                 
-                    2025-08-01
+                    2026-03-02
                 
             </span>
         </span>
         
-            <span class="home-article-category">
-                <i class="fa-solid fa-folders"></i>&nbsp;
-            <ul>
-                
-                
-                    
-                        
-                        <li>
-                            <a href="/categories/tech/">tech</a>&nbsp;
-                        </li>
-                    
-                    
-                
-            </ul>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/Flink/">Flink</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
         
     </div>
 
-    <a href="/posts/2025-08-01-flinkl-ml-performence-issus-p1/">Read more<span class="seo-reader-text">FlinkML 遇到的性能问题--避坑</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/posts/2025-zk-watch-lock/">Read more<span class="seo-reader-text"></span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -553,14 +526,14 @@
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/posts/2025-06-01-flink-udf-quick-start-action/">
-                            使用`Mavne Archetypes`定一个flink-udf-quickstart工具
+                        <a href="/posts/2026-02-28-cdn-log-analysis-aws-cloudflare/">
+                            AWS CloudFront 与 Cloudflare 边缘日志解析对比
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
-                            <p>使用<code>Mavne Archetypes</code>定义统一的flink-udf-pom模板，便于快速复用和版本一致性</p>
+                            <p>通过对比 AWS CloudFront TSV 日志与 Cloudflare Logpush JSON 的字段结构，总结两大 CDN 延迟日志的接入分析方法，以及 Cloudflare 自带 Geo 富化的优势。</p>
 
                         
                     </div>
@@ -568,97 +541,9 @@
                     <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
         <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Jul 23 2025 16:26:39 GMT+0000">
+            <span class="home-article-date" data-date="Sat Feb 28 2026 16:15:00 GMT+0000">
                 
-                    2025-07-23
-                
-            </span>
-        </span>
-        
-            <span class="home-article-category">
-                <i class="fa-solid fa-folders"></i>&nbsp;
-            <ul>
-                
-                
-                    
-                        
-                        <li>
-                            <a href="/categories/tech/">tech</a>&nbsp;
-                        </li>
-                    
-                    
-                
-                    
-                        
-                            <li>></li>
-                        
-                        <li>
-                            <a href="/categories/tech/blog/">blog</a>&nbsp;
-                        </li>
-                    
-                    
-                
-            </ul>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/Data/">Data</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/FlinkSQL/">FlinkSQL</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/UDF/">UDF</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/posts/2025-06-01-flink-udf-quick-start-action/">Read more<span class="seo-reader-text">使用`Mavne Archetypes`定一个flink-udf-quickstart工具</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/posts/2025-06-01-flinksql-error-kafka-offset/">
-                            FlinkSQL Error —— OffsetOutOfRangeException
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            <p>2025-06-01-flinksql-error-kafka-offset</p>
-
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Tue Jul 15 2025 14:57:43 GMT+0000">
-                
-                    2025-07-15
+                    2026-02-28
                 
             </span>
         </span>
@@ -686,342 +571,25 @@
                     
                         <li>
                             
-                            <a href="/tags/Data/">Data</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/FlinkSQL/">FlinkSQL</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/debug/">debug</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/posts/2025-06-01-flinksql-error-kafka-offset/">Read more<span class="seo-reader-text">FlinkSQL Error —— OffsetOutOfRangeException</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/posts/2025-06-01-Analyzing-Replica-Inconsistency-in-ClickHouse/">
-                            Analyzing Replica Inconsistency in ClickHouse
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            <p>在 ClickHouse 多Shard多副本集群中，使用 ReplicatedMergeTree 引擎建表时，如果未显式指定 Zookeeper 路径，系统默认使用包含随机 {uuid} 的路径，可能导致同一 Shard 的不同副本 Zookeeper 路径不一致，进而引发数据不一致的问题。本文分析了该问题的成因，并提出规避建议。 <br> In ClickHouse multi-shard, multi-replica clusters, using ReplicatedMergeTree without explicitly setting the Zookeeper path can lead to inconsistent paths due to randomly generated {uuid} values. This may cause data inconsistency between replicas within the same shard. This post analyzes the root cause and provides mitigation suggestions.</p>
-
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Thu Jul 10 2025 15:40:38 GMT+0000">
-                
-                    2025-07-10
-                
-            </span>
-        </span>
-        
-            <span class="home-article-category">
-                <i class="fa-solid fa-folders"></i>&nbsp;
-            <ul>
-                
-                
-                    
-                        
-                        <li>
-                            <a href="/categories/tech/">tech</a>&nbsp;
-                        </li>
-                    
-                    
-                
-            </ul>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/Debug/">Debug</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/ClickHouse/">ClickHouse</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/posts/2025-06-01-Analyzing-Replica-Inconsistency-in-ClickHouse/">Read more<span class="seo-reader-text">Analyzing Replica Inconsistency in ClickHouse</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/posts/2025-06-01-flink-action-guide-02/">
-                            Flink使用经验总结-1
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            <p>Flink遇到问题处理，以及部分场景的工具使用经验总结。</p>
-
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Jul 09 2025 10:38:33 GMT+0000">
-                
-                    2025-07-09
-                
-            </span>
-        </span>
-        
-            <span class="home-article-category">
-                <i class="fa-solid fa-folders"></i>&nbsp;
-            <ul>
-                
-                
-                    
-                        
-                        <li>
-                            <a href="/categories/tech/">tech</a>&nbsp;
-                        </li>
-                    
-                    
-                
-            </ul>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/Data/">Data</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/Flink/">Flink</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/FlinkSQL/">FlinkSQL</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/posts/2025-06-01-flink-action-guide-02/">Read more<span class="seo-reader-text">Flink使用经验总结-1</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/posts/2024-10-10-kafka-connect-config-source-and-sink-task/">
-                            Kafka Connect 配置source task and sink task 操作手册
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            <p>指引配置不同组件的Kakfa Connect sink&#x2F;source task，以及注意事项</p>
-
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Tue Apr 29 2025 20:17:01 GMT+0000">
-                
-                    2025-04-29
-                
-            </span>
-        </span>
-        
-            <span class="home-article-category">
-                <i class="fa-solid fa-folders"></i>&nbsp;
-            <ul>
-                
-                
-                    
-                        
-                        <li>
-                            <a href="/categories/tech/">tech</a>&nbsp;
-                        </li>
-                    
-                    
-                
-                    
-                        
-                            <li>></li>
-                        
-                        <li>
-                            <a href="/categories/tech/Data/">Data</a>&nbsp;
-                        </li>
-                    
-                    
-                
-            </ul>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/kafka/">kafka</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/kafka-connect/">kafka connect</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/CDC/">CDC</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/posts/2024-10-10-kafka-connect-config-source-and-sink-task/">Read more<span class="seo-reader-text">Kafka Connect 配置source task and sink task 操作手册</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/posts/2025-04-10-oci-ampere-arm-cpu-intro-md/">
-                            Cloud上ARM CPU的调研及和几点思考
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            <p>随着Apple在ARM CPU替代Intel CPU的取得的巨大成功后，对ARM在云市场上大规模应用和部署是否也可行？。总体来看，ARM CPU在成本、灵活性和功耗上，相比X86CPU都有明显的优势。本文以Ampera ARM CPU为代表，简单分析其技术、性能测试和应用场景。</p>
-
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Sun Apr 27 2025 11:06:31 GMT+0000">
-                
-                    2025-04-27
-                
-            </span>
-        </span>
-        
-            <span class="home-article-category">
-                <i class="fa-solid fa-folders"></i>&nbsp;
-            <ul>
-                
-                
-                    
-                        
-                        <li>
-                            <a href="/categories/tech/">tech</a>&nbsp;
-                        </li>
-                    
-                    
-                
-            </ul>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/vm/">vm</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/OCI/">OCI</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
                             <a href="/tags/AWS/">AWS</a>&nbsp;
                         </li>
                     
+                        <li>
+                            | 
+                            <a href="/tags/CDN/">CDN</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/Cloudflare/">Cloudflare</a>&nbsp;
+                        </li>
+                    
                 </ul>
             </span>
         
     </div>
 
-    <a href="/posts/2025-04-10-oci-ampere-arm-cpu-intro-md/">Read more<span class="seo-reader-text">Cloud上ARM CPU的调研及和几点思考</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/posts/2026-02-28-cdn-log-analysis-aws-cloudflare/">Read more<span class="seo-reader-text">AWS CloudFront 与 Cloudflare 边缘日志解析对比</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -1036,14 +604,14 @@
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/posts/2025-01-01-clickhouse-external-disk-with-s3/">
-                            Clickhouse add external disk
+                        <a href="/posts/2026-02-28-kafka-cve-2508-jndi-fix/">
+                            通过 KAFKA_OPTS 禁用危险登录模块修复 Kafka JNDI 高危漏洞
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
-                            <p>Clickhouse集群添加S3外部存储</p>
+                            <p>在不停服、不换版本的前提下，通过编辑 systemd 服务文件向 KAFKA_OPTS 注入 disallowed.login.modules 指令推送 JNDI&#x2F;Kerberos 漏洞的修复方案。</p>
 
                         
                     </div>
@@ -1051,9 +619,9 @@
                     <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
         <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Thu Apr 17 2025 11:40:56 GMT+0000">
+            <span class="home-article-date" data-date="Sat Feb 28 2026 16:00:00 GMT+0000">
                 
-                    2025-04-17
+                    2026-02-28
                 
             </span>
         </span>
@@ -1066,17 +634,7 @@
                     
                         
                         <li>
-                            <a href="/categories/Data/">Data</a>&nbsp;
-                        </li>
-                    
-                    
-                
-                    
-                        
-                            <li>></li>
-                        
-                        <li>
-                            <a href="/categories/Data/tech/">tech</a>&nbsp;
+                            <a href="/categories/tech/">tech</a>&nbsp;
                         </li>
                     
                     
@@ -1091,17 +649,12 @@
                     
                         <li>
                             
-                            <a href="/tags/Data/">Data</a>&nbsp;
+                            <a href="/tags/Kafka/">Kafka</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/clickhouse/">clickhouse</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/s3/">s3</a>&nbsp;
+                            <a href="/tags/Security/">Security</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -1109,7 +662,7 @@
         
     </div>
 
-    <a href="/posts/2025-01-01-clickhouse-external-disk-with-s3/">Read more<span class="seo-reader-text">Clickhouse add external disk</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/posts/2026-02-28-kafka-cve-2508-jndi-fix/">Read more<span class="seo-reader-text">通过 KAFKA_OPTS 禁用危险登录模块修复 Kafka JNDI 高危漏洞</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -1124,14 +677,14 @@
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/posts/2025-01-01-clickhouse-show-show-table-parts/">
-                            Clickhouse system.parts 使用
+                        <a href="/posts/2026-02-28-flink-risk-rule-system/">
+                            基于 Flink 构建生产级广告过滤风控流系统实践
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
-                            <p>使用system.parts统计表容量、分区大小和表行数等信息</p>
+                            <p>记录在生产环境部署一个基于 Kafka + Redis 的 Flink 风控过滤作业，包括实机参数配置、多条优化规则的设计思路与业务部署实践。</p>
 
                         
                     </div>
@@ -1139,9 +692,9 @@
                     <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
         <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Tue Apr 15 2025 18:00:45 GMT+0000">
+            <span class="home-article-date" data-date="Sat Feb 28 2026 15:45:00 GMT+0000">
                 
-                    2025-04-15
+                    2026-02-28
                 
             </span>
         </span>
@@ -1154,7 +707,7 @@
                     
                         
                         <li>
-                            <a href="/categories/blog/">blog</a>&nbsp;
+                            <a href="/categories/tech/">tech</a>&nbsp;
                         </li>
                     
                     
@@ -1169,12 +722,17 @@
                     
                         <li>
                             
-                            <a href="/tags/Data/">Data</a>&nbsp;
+                            <a href="/tags/Flink/">Flink</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/clickhouse/">clickhouse</a>&nbsp;
+                            <a href="/tags/Kafka/">Kafka</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/Redis/">Redis</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -1182,7 +740,7 @@
         
     </div>
 
-    <a href="/posts/2025-01-01-clickhouse-show-show-table-parts/">Read more<span class="seo-reader-text">Clickhouse system.parts 使用</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/posts/2026-02-28-flink-risk-rule-system/">Read more<span class="seo-reader-text">基于 Flink 构建生产级广告过滤风控流系统实践</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -1197,14 +755,14 @@
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/posts/2025-01-01-clickhouse-config-interperation/">
-                            clickhouse config xml
+                        <a href="/posts/2026-02-28-rds-to-clickhouse-full-incremental-sync/">
+                            RDS 到 ClickHouse 全量快照 + 增量 CDC 一体化同步架构实践
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
-                            <p>Clickhouse 24.x config.xml 配置说明</p>
+                            <p>展示如何利用 AWS RDS S3 快照作为全量基线再配合 Debezium Binlog CDC 完成增量结合，通过 ReplicatedReplacingMergeTree 入库，实现大表零干扰迁移。</p>
 
                         
                     </div>
@@ -1212,9 +770,9 @@
                     <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
         <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Tue Apr 15 2025 17:41:51 GMT+0000">
+            <span class="home-article-date" data-date="Sat Feb 28 2026 15:30:00 GMT+0000">
                 
-                    2025-04-15
+                    2026-02-28
                 
             </span>
         </span>
@@ -1227,7 +785,7 @@
                     
                         
                         <li>
-                            <a href="/categories/Data/">Data</a>&nbsp;
+                            <a href="/categories/tech/">tech</a>&nbsp;
                         </li>
                     
                     
@@ -1242,12 +800,17 @@
                     
                         <li>
                             
-                            <a href="/tags/Data/">Data</a>&nbsp;
+                            <a href="/tags/ClickHouse/">ClickHouse</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/clickhouse/">clickhouse</a>&nbsp;
+                            <a href="/tags/Kafka/">Kafka</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/AWS-RDS/">AWS RDS</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -1255,7 +818,372 @@
         
     </div>
 
-    <a href="/posts/2025-01-01-clickhouse-config-interperation/">Read more<span class="seo-reader-text">clickhouse config xml</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/posts/2026-02-28-rds-to-clickhouse-full-incremental-sync/">Read more<span class="seo-reader-text">RDS 到 ClickHouse 全量快照 + 增量 CDC 一体化同步架构实践</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/posts/2026-02-28-flink-session-cluster-docker-compose/">
+                            使用 Docker Compose 快速搭建 Flink Session 集群
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            <p>提供一份可直接运行的 docker-compose.yml，在本地开发环境快速拉起带 Web UI 的 Flink Session Cluster，方便调试 Flink SQL 和 UDF。</p>
+
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Sat Feb 28 2026 15:15:00 GMT+0000">
+                
+                    2026-02-28
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/Flink/">Flink</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/Docker/">Docker</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/posts/2026-02-28-flink-session-cluster-docker-compose/">Read more<span class="seo-reader-text">使用 Docker Compose 快速搭建 Flink Session 集群</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/posts/2026-02-28-bash-split-xargs-clickhouse/">
+                            Bash split + xargs 并行处理 ClickHouse 批量数据更新
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            <p>将海量 ID 文件用 split 切分后，通过 xargs 并行分发给 clickhouse-client 执行，是一种安全、可控的大批量补丁方法。</p>
+
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Sat Feb 28 2026 15:00:00 GMT+0000">
+                
+                    2026-02-28
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/ClickHouse/">ClickHouse</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/Bash/">Bash</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/posts/2026-02-28-bash-split-xargs-clickhouse/">Read more<span class="seo-reader-text">Bash split + xargs 并行处理 ClickHouse 批量数据更新</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/posts/2026-02-28-clickhouse-export-to-kafka/">
+                            ClickHouse 数据外发：使用 Kafka Engine 表将数据回写消息队列
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            <p>展示如何在 ClickHouse 中创建 Kafka Engine 外挂表，通过 INSERT INTO ... SELECT 将已清洗的报表数据写入指定 Kafka Topic。</p>
+
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Sat Feb 28 2026 14:45:00 GMT+0000">
+                
+                    2026-02-28
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/ClickHouse/">ClickHouse</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/Kafka/">Kafka</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/posts/2026-02-28-clickhouse-export-to-kafka/">Read more<span class="seo-reader-text">ClickHouse 数据外发：使用 Kafka Engine 表将数据回写消息队列</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/posts/2026-02-28-flink-ml-performance-issue/">
+                            Flink ML 性能瓶颈分析与流式机器学习架构演进
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            <p>实验通过 Flink ML 在流处理中执行干扰识别演算，发现严重性能问题后转为离线训练+在线轻量推断分离架构的分析与最终決策。</p>
+
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Sat Feb 28 2026 14:30:00 GMT+0000">
+                
+                    2026-02-28
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/Flink/">Flink</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/MachineLearning/">MachineLearning</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/posts/2026-02-28-flink-ml-performance-issue/">Read more<span class="seo-reader-text">Flink ML 性能瓶颈分析与流式机器学习架构演进</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/posts/2026-02-28-nginx-ssl-basic-auth-bigdata/">
+                            Nginx SSL + Basic Auth 保护内网大数据 Web 管理界面
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            <p>利用 Nginx 反向代理 + Let&#39;s Encrypt SSL + auth_basic 对 Flink UI 、Airflow 等内网 Web 管理界面进行认证防护。</p>
+
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Sat Feb 28 2026 14:15:00 GMT+0000">
+                
+                    2026-02-28
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/Nginx/">Nginx</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/Security/">Security</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/posts/2026-02-28-nginx-ssl-basic-auth-bigdata/">Read more<span class="seo-reader-text">Nginx SSL + Basic Auth 保护内网大数据 Web 管理界面</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -1265,7 +1193,7 @@
 
     <div class="home-paginator px-7 py-5">
         <div class="paginator">
-	<span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa-regular fa-angle-right"></i></a>
+	<span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/2/"><i class="fa-regular fa-angle-right"></i></a>
 </div>
   
     </div>
@@ -1291,7 +1219,7 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        90 posts in total
+                        112 posts in total
                     </span>
                     
                 </p>
