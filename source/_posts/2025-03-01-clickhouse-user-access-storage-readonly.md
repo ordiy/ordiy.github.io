@@ -55,8 +55,12 @@ Code: 495. DB::Exception: Received from localhost:9000. DB::Exception: There was
 
 -  原因
 **user兼容性：**
-**两种方法可以同时使用，但不能同时管理同一个访问实体。**
+**xml和SQL,两种方法可以同时使用，但不能同时管理同一个访问实体。**
 **这允许用户从基于文件的方法平滑过渡到SQL配置驱动的方法。**
+
+# 使用建议
+- GRANT 可以用于表级别的权限管理
+- user.xml 适合全局用户权限管理
 
 - 参考文章
 https://clickhouse.com/docs/operations/access-rights

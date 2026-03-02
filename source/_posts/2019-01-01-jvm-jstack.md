@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 2019-01-01-jvm-jstack
+title: jdk jstack used guide
 categories:
   - tech
 tags:
@@ -8,7 +8,7 @@ tags:
 date: 2019-01-01 00:00:00
 update: 2019-01-01 00:00:00
 comments: false
-excerpt: jstack used guide
+excerpt: jdk jstack command used guide
 ---
 
 # jstack used

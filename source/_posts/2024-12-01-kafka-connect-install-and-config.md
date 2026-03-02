@@ -8,8 +8,7 @@ tags:
 categories:
  - Data
  - kafka
-
-excerpt: 初始化kafka connect环境，并配置sink组件
+excerpt: kakfa connect是非常好用的CDC工具，管理简单，还可以配置kafka web工具提供图形化界面，降低数据接入门槛和运维难度
 ---
 
 # kafka connect 应用场景
@@ -179,7 +178,8 @@ Group=ubuntu
 #指定JDK 17
 Environment="JAVA_HOME=/usr/local/java/jdk-17"
 Environment="PATH=/usr/local/java/jdk-17/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-Environment="KAFKA_HEAP_OPTS=-Xms3G -Xmx32G"
+#这里需要将内存设置在一个较大值，防止oom （ 序列化和反序列化数据量较大）
+Environment="KAFKA_HEAP_OPTS=-Xms20G -Xmx32G"
 ExecStart=/data/kafka-connect-node01/kafka-bin/bin/connect-distributed.sh -daemon /data/kafka-connect-node01/kafka-bin/config/connect-distributed.properties
 Restart=on-failure
 RestartSec=10

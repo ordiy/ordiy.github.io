@@ -6,7 +6,7 @@ tags:
 categories:
   - tech
 excerpt: "FlinkML进行矩阵计算的遇到的性能问题,以及原因分析"
-date: 2025-08-01 00:00:00
+date: 2025-10-01 00:00:00
 ---
 
 
@@ -19,13 +19,13 @@ FlinkML会将向量计算转换为Flink算子执行计算，如下图:
 ![](https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/2024/202509221902287.png)
 
 
-在特征简单的情况下是可以的，但是类似于广告欺诈等场景，feature会很多，然后Flink算子执行向量计算就会成为瓶颈（性能瓶颈）。
+在特征简单的情况下是可以的，但是类似于广告欺诈等场景，feature会很多(高维度），然后Flink算子执行向量计算就会成为瓶颈（性能瓶颈）。
 同时需要消耗大量的Slot用于执行FlinkML转换过来的算子，本来简单的向量计算变成了分布式pipeline计算，所以结果就是性能下降和计算资源消耗大。  
 
 整个执行逻辑链路就是：
 ```
 FlinkML --> flink stream 算子 
-            ---> FlinkCore ---> JVM ---> OS ---> CPU
+            ---> FlinkCore/breeze ---> JVM ---> OS ---> CPU
 ```
 
 任务占用的Flink Slot：
@@ -133,10 +133,10 @@ public class NaiveBayesTestMe {
 
 # 综合结论
 
-## 使用python `scikit-learn`，放弃FlinkML
+## 使用`scikit-learn`
 
 FlinkML项目暂时还不成熟，社区活跃度也很低（https://nightlies.apache.org/flink/flink-ml-docs-master），不建议使用。
-  也不太推荐通过UDT在FlinkSQL中进行自定义的向量计算（封装Breeze和底层高性能OpenBLAS工作量巨大，复杂度较高，部署和维护都是一个很耗费时间的事情，投入的时间和产出不成正比）。
+  也不太推荐通过UDT在FlinkSQL中进行自定义的向量计算（复杂度较高，部署和维护都是一个很耗费时间的事情，投入的时间和产出不成正比）。
 如果队Java/Scala实现向量计算感兴趣，具体可以参考SparkML的（MLlib 使用线性代数包 Breeze 和 dev.ludovic.netlib 来优化数值处理 。这些包可用作系统库或运行时库路径，则它们可以调用本机加速库，例如 Intel MKL 或 OpenBLAS ），
 
 综合考虑在ML模型部署环节还是需要使用python,几直接使用`scikit-learn`库及相关的库。
@@ -145,7 +145,7 @@ FlinkML项目暂时还不成熟，社区活跃度也很低（https://nightlies.a
 `scikit-learn`(C) --> OS --> 硬件资源
 ```
 
-## Flink进行实时的特征提取/挖掘
+## Flink处理实时的特征提取
 在实时数据处理的环节，即实时提取数据特征使用FlinkStream/FlinkSQL还是最便捷的方案。
 
 
@@ -166,5 +166,5 @@ FlinkML项目暂时还不成熟，社区活跃度也很低（https://nightlies.a
 # 参考
 - FlinkML   
 https://github.com/apache/flink-ml
-- scikit-learn
+- scikit-learn   
 https://scikit-learn.org/

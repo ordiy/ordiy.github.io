@@ -1,5 +1,5 @@
 ---
-title:  Kafka broker 配置PLAINTEXT和SASL_SSL双协议
+title:  Kafka公网通信的安全问题--Kafka broker配置PLAINTEXT和SASL_SSL双协议
 layout: post
 date: 2024-12-01 00:00:00
 tags:
@@ -8,11 +8,30 @@ tags:
   - sasl_ssl
 categories: 
   - blog
-excerpt: Kafka broker 配置多协议混合, 内网使用PLAINTEXT协议, 公网使用SASL_SSL
+excerpt: 在多云数据处理/同步的场景下，需要对Kafka通信数据进行加密和身份认证保证安全。Kafka broker 配置多协议混合, 内网使用PLAINTEXT协议, 公网使用SASL_SSL
 ---
 
+# 关于kafka security
+
+引用[apache kakfa 的文档简介](https://kafka.apache.org/documentation/#security_overview)
+
+```
+The following security measures are currently supported:
+Authentication of connections to brokers from clients (producers and consumers), other brokers and tools, using either SSL or SASL. Kafka supports the following SASL mechanisms:
+SASL/GSSAPI (Kerberos) - starting at version 0.9.0.0
+SASL/PLAIN - starting at version 0.10.0.0
+SASL/SCRAM-SHA-256 and SASL/SCRAM-SHA-512 - starting at version 0.10.2.0
+SASL/OAUTHBEARER - starting at version 2.0
+Encryption of data transferred between brokers and clients, between brokers, or between brokers and tools using SSL (Note that there is a performance degradation when SSL is enabled, the magnitude of which depends on the CPU type and the JVM implementation.)
+Authorization of read / write operations by clients
+Authorization is pluggable and integration with external authorization services is supported
+It's worth noting that security is optional - non-secured clusters are supported, as well as a mix of authenticated, unauthenticated, encrypted and non-encrypted clients. The guides below explain how to configure and use the security features in both clients and brokers.
+```
+简单概括： 安全可以分为2部分： 身份认证（Authentication）和数据传输加密（Encryption of data transferred）。
+
+
 # 需求
- Kafka 同一个集群实现，内网使用PLAINTEXT协议, 公网使用SASL_SSL。
+ Kafka 同一个集群实现，内网使用PLAINTEXT协议, 公网使用SASL_SSL（解决多云数据传输加密和身份证认证）。
 
 ```js
 
@@ -200,7 +219,7 @@ broker.id=1
 listeners=PLAINTEXT://0.0.0.0:9092,SASL_SSL://0.0.0.0:19098
 
 #需要配置 advertised.listeners PLAINTEXT + SASL_SSL 
-advertised.listeners=PLAINTEXT://10.21.100.21:9092,SASL_SSL://node03.kafka-broker-data.my-prod-host.com:19091
+advertised.listeners=PLAINTEXT://xx.xx.100.21:9092,SASL_SSL://node03.kafka-broker-data.my-prod-host.com:19091
 listener.security.protocol.map=PLAINTEXT:PLAINTEXT,SASL_SSL:SASL_SSL
 
 #broker内部通信使用PLAINTEXT
@@ -236,7 +255,7 @@ log.retention.check.interval.ms=300000
 
 compression.type=zstd
 
-zookeeper.connect=10.21.100.88:2181,10.21.100.46:2181,10.21.100.211:2181/prod-kafka-cluster-bigdata
+zookeeper.connect=xx.xx.100.88:2181,xx.xx.100.46:2181,xx.xx.100.211:2181/prod-kafka-cluster-bigdata
 zookeeper.connection.timeout.ms=18000
 group.initial.rebalance.delay.ms=0
 ```
@@ -269,8 +288,115 @@ WantedBy=multi-user.target
 
 ```
 
+## kafka broker  debug network log 
+```shell
+export KAFKA_OPTS=-Djavax.net.debug=all
+bin/kafka-server-start etc/kafka/server.properties
+
+```
+
 # client test 
+
+## kafka client test 
 ```js
+
+vim kafka-client-sasl-ssl-plain.properties
+
+log4j.logger.org.apache.kafka=DEBUG
+# 安全协议类型
+security.protocol=SASL_SSL
+
+# SASL 认证机制
+sasl.mechanism=PLAIN
+
+#forbidden dns name check
+ssl.endpoint.identification.algorithm=
+
+# SSL 配置
+# keystore 配置（如果需要客户端认证则需要配置）
+ssl.truststore.location=/data/kafka-client/kafka-bin/broker-cmm-truststore.jks
+ssl.truststore.password=pwdXX2024P87d98ac9wz
+
+# JAAS 配置文件路径（需要在启动时指定）
+sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="xxx-user" password="pwd-foruser-xxxx" ;
+
+```
+
+启动测试命令：
+```js
+
+
 ./bin/kafka-console-consumer.sh --bootstrap-server node01.kafka-broker-data.my-host-pord.com:19096,node02.kafka-broker-data. my-host-pord.com:19096,node03.kafka-broker-data. my-host-pord.com:19096        --topic source.pro-pro-connect-offsets-v2     --consumer.config kafka-client-sasl-ssl-plain.properties     --partition 0     --property print.value=true --from-beginning
 
 ```
+
+## flink sql test
+```sql
+
+CREATE TABLE KafkaTable (
+  `user_id` BIGINT,
+  `item_id` BIGINT,
+  `behavior` STRING,
+  `ts` TIMESTAMP(3) METADATA FROM 'timestamp'
+) WITH (
+  'connector' = 'kafka',
+  ...
+  'properties.security.protocol' = 'SASL_SSL',
+  /* SSL 配置 */
+  /* 配置服务端提供的 truststore (CA 证书) 的路径 */
+  'properties.ssl.truststore.location' = '/path/to/kafka.client.truststore.jks',
+  'properties.ssl.truststore.password' = 'pwdXX2024P87d98ac9wz',
+  /* 如果要求客户端认证，则需要配置 keystore (私钥) 的路径 */
+  'properties.ssl.keystore.location' = '/path/to/kafka.client.keystore.jks',
+  'properties.ssl.keystore.password' = 'pwdXX2024P87d98ac9wz',
+  /* SASL 配置 */
+  /* 将 SASL 机制配置为 as SCRAM-SHA-256 */
+  'properties.sasl.mechanism' = 'SCRAM-SHA-256',
+  /* 配置 JAAS */
+  'properties.sasl.jaas.config' = 'org.apache.kafka.common.security.scram.ScramLoginModule required username=\"username\" password=\"password\";'
+)
+```
+参考：  
+https://nightlies.apache.org/flink/flink-docs-release-1.17/zh/docs/connectors/table/kafka/
+
+
+
+# 其它补充说明
+ ## SSL/TLS通信模式
+注意非常重要的一点：
+ Kafka Broker 与Client之间的 SSL/TLS通信有2种模式：
+  - 1. 单向认证（服务器认证客户端）  （ 只需要配置truststore ）
+  - 2. 双向认证（服务器认证客户端，客户端认证服务器）  （ 需要配置keystore 和 truststore）
+
+双向认证会更复杂，需要配置多个私钥/证书对，同样也更安全。
+
+## kafka broker已经支持pem格式的证书（个人比较推荐，减少jks转换麻烦，跨语言的兼容性也更好）
+从kafka 2.1.0版本开始，kafka broker已经支持pem格式的证书，可以直接使用openssl生成的pem格式证书，避免了jks格式转换
+`ssl.truststore.type` 和 `ssl.keystore.type` 配置为 `PEM` 即可。
+具体参考，后续补充。
+
+
+
+## 将JKS转换为PEM格式
+```js
+
+
+keytool -list -v  -keystore ./broker-cmm-truststore.jks -storepass pwdXX2024P87d98ac9wz
+broker-cmm-truststore
+
+# 将证书导出为 PEM 格式
+keytool -exportcert -alias broker-cmm-truststore \
+        -keystore ./broker-cmm-truststore.jks \
+        -storepass pwdXX2024P87d98ac9wz \
+        -file broker-cmm-truststore-for-client.pem \
+        -rfc
+
+```
+会得到一个PEM格式的证书文件 `broker-cmm-truststore-for-client.pem`
+
+# 参考
+- confluent kafka encryption   
+https://docs.confluent.io/platform/6.2/kafka/encryption.html
+
+- kafka security    
+https://kafka.apache.org/documentation/#security

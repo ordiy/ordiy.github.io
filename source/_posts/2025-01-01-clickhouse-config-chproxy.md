@@ -4,7 +4,7 @@ tags:
   - clickhouse
 categories:
   - tech
- - Data
+  - Data
 excerpt: Clickhouse config Chproxy 便于测试环境进行使用和配置
 date: 2025-01-01 10:00:00
 layout: post

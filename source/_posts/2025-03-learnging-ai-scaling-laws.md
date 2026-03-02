@@ -7,7 +7,7 @@ tags:
   - law
 categories:
   - tech
- - Data
+  - Data
 excerpt: AI Scaling Law 
 date: 2025-03-26 18:08:00
 ---

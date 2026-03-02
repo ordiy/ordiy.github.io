@@ -6,7 +6,7 @@ tags:
  - clickhouse
  - optimize
 categories:
-- Data
+ - Data
 layout: post
 ---
 
