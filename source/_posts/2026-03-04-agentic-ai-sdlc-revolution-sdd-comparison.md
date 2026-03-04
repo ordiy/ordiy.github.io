@@ -1,12 +1,28 @@
 ---
-title: "Agentic AI 视角下的 SDLC 革命：从 SDD 到意图驱动IDD的软件工程"
-tags: [AI, agentic-ai, SDLC, SDD, spec-driven-development, software-engineering, cursor, claude-code, developer-productivity, career, software-engineer-future]
-date: 2026-03-04
-updated: 2026-03-04
+title: Agentic AI 视角下的 SDLC 革命：从 SDD 到意图驱动IDD的软件工程
+tags:
+  - AI
+  - agentic-ai
+  - SDLC
+  - SDD
+  - spec-driven-development
+  - software-engineering
+  - cursor
+  - claude-code
+  - developer-productivity
+  - career
+  - software-engineer-future
+excerpt: >-
+  当 AI Agent 能自主完成整个开发循环，传统 SDLC
+  的哪些环节会被颠覆？大型软件从「资产」变为「燃料」意味着什么？这对工程师的职业生涯又意味着什么？本文从第一性原理重新审视软件工程的未来形态。
+layout: post
 status: draft
 type: post
-excerpt: 当 AI Agent 能自主完成整个开发循环，传统 SDLC 的哪些环节会被颠覆？大型软件从「资产」变为「燃料」意味着什么？这对工程师的职业生涯又意味着什么？本文从第一性原理重新审视软件工程的未来形态。
+date: 2026-03-04 00:00:00
+updated: 2026-03-04 00:00:00
+categories:
 ---
+
 
 # Agentic AI 视角下的 SDLC 革命
 

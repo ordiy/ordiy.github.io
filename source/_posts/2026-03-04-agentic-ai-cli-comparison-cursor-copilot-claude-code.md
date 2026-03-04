@@ -1,12 +1,23 @@
 ---
-title: "Agentic AI 编码工具三强对决：Cursor CLI vs GitHub Copilot CLI vs Claude Code"
-tags: [AI, agentic-ai, cursor, github-copilot, claude-code, cli, software-engineering, developer-tools]
-date: 2026-03-04
-updated: 2026-03-04
+title: Agentic AI 编码工具三强对决：Cursor CLI vs GitHub Copilot CLI vs Claude Code
+tags:
+  - AI
+  - agentic-ai
+  - cursor
+  - github-copilot
+  - claude-code
+  - cli
+  - software-engineering
+  - developer-tools
+excerpt: 深度对比三款主流 Agentic AI 编码工具的用法、智能程度与未来趋势，并探讨 AI 时代软件开发的最佳实践范式。
+layout: post
 status: draft
 type: post
-excerpt: 深度对比三款主流 Agentic AI 编码工具的用法、智能程度与未来趋势，并探讨 AI 时代软件开发的最佳实践范式。
+date: 2026-03-04 00:00:00
+updated: 2026-03-04 00:00:00
+categories:
 ---
+
 
 # Agentic AI 编码工具三强对决
 
