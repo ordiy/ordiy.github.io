@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en,zh-cn,default">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    
+    <meta name="author" content="Ordiy">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes ASAP (before DOMContentLoaded)
+            (function() {
+                const addBodyClass = () => {
+                    const b = document.body;
+                    if (!b) return false;
+                    b.classList.add(theme + "-mode");
+                    return true;
+                };
+
+                // Try immediately
+                if (addBodyClass()) return;
+
+                // Observe until body exists
+                const mo = new MutationObserver(() => {
+                    if (addBodyClass()) mo.disconnect();
+                });
+                mo.observe(document.documentElement, { childList: true, subtree: true });
+            })();
+        })();
+    </script>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://ordiy.github.io/posts/2026-03-04-agentic-ai-sdlc-revolution-sdd-comparison/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agentic AI 视角下的 SDLC 革命：从 SDD 到意图驱动IDD的软件工程">
+<meta property="og:url" content="https://ordiy.github.io/posts/2026-03-04-agentic-ai-sdlc-revolution-sdd-comparison/index.html">
+<meta property="og:site_name" content="Ordiy&#39;s Blog">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ordiy.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2026-03-04T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-04T00:00:00.000Z">
+<meta property="article:author" content="Ordiy">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="agentic-ai">
+<meta property="article:tag" content="cursor">
+<meta property="article:tag" content="claude-code">
+<meta property="article:tag" content="software-engineering">
+<meta property="article:tag" content="SDLC">
+<meta property="article:tag" content="SDD">
+<meta property="article:tag" content="spec-driven-development">
+<meta property="article:tag" content="developer-productivity">
+<meta property="article:tag" content="career">
+<meta property="article:tag" content="software-engineer-future">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ordiy.github.io/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Agentic AI 视角下的 SDLC 革命：从 SDD 到意图驱动IDD的软件工程 | Ordiy&#39;s Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"ordiy.github.io","root":"/","language":["en","zh-cn","default"],"path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Truth & Free","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":[{"icon":"fa-brands fa-github","url":null},{"icon":"fa-brands fa-twitter","url":null},{"icon":"fa-solid fa-at","url":"you@example.com"},{"icon":"fa-brands fa-telegram","url":null},{"icon":"/images/custom-icon.svg","url":null}],"qrs":[{"icon":"fa-brands fa-weixin","qr":null},{"icon":"/images/custom-icon.svg","qr":null}]}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1","theme":{"light":"default","dark":"dark"}}},"version":"2.9.0","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur","masonry":{"batch_size":12,"initial_batch_size":24}},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footer":{"runtime":true,"icon":"<i class=\"fa-solid fa-heart fa-beat\" style=\"--fa-animation-duration: 0.5s; color: #f54545\"></i>","start":"2022/8/17 11:45:14","statistics":true,"customize":null,"icp":{"enable":false,"number":null,"url":null}},"footerStart":"2022/8/17 11:45:14","mermaid":{"style":{"light":"default","dark":"dark"}}};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.i18n = {"search":"Search...","toc":"On this page","prev":"Prev","next":"Next","prev_posts":"Prev posts","next_posts":"Next posts","page":"Page %d","recent_posts":"Recent Posts","share":"Share","powered_by":"POWERED BY %s","theme":"THEME","rss_feed":"RSS Feed","category":"Category","categories":"Categories","tag":"Tag","tags":"Tags","post":"Post","posts":"Posts","tagcloud":"Tag Cloud","comment":"Comment","comments":"Comments","home":"Home","archive":"Archive","archives":"Archives","top":"TOP","sticky":"Sticky","go-back-home":"Go Back Home","masonry_loading":"Loading photos...","image_viewer":"Image viewer","close":"Close","exif":{"title":"EXIF","cards":{"camera":"Camera","lens":"Lens","exposure":"Exposure","other":"Other"},"fields":{"make":"Brand","model":"Model","date_taken":"Date taken","lens_model":"Lens","focal_length":"Focal length","focus_mode":"Focus mode","shutter":"Shutter","aperture":"Aperture","iso":"ISO","exposure_program":"Exposure program","exposure_compensation":"Exposure compensation","metering_mode":"Metering mode","flash":"Flash","white_balance":"White balance","latitude":"Latitude","longitude":"Longitude","altitude":"Altitude"},"status":{"loading":"Loading...","no_exif":"No EXIF available","library_missing":"EXIF library not loaded","image_source_missing":"Image source unavailable","unavailable":"EXIF unavailable (blocked by CORS or missing metadata)","flag_unavailable":"EXIF unavailable"}},"about":"About","changelog":"Changelog","links":"Links","link":"Link","friends":"Friends","friend":"Friend","timeline":"Timeline","shuoshuo":"Shuoshuo","bookmarks":"Bookmarks","site_uv":"VISITOR COUNT","site_pv":"TOTAL PAGE VIEWS","read_more":"Read more","wordcount":"Words","min2read":"Mins","status":"Status","runtime":"Blog up for","days":"days","hours":"hrs","minutes":"Min","seconds":"Sec","optimized_by":"and Optimized by Evan","rights":"All Rights Reserved","site_posts":"%s posts in total","site_wordcount":"%s words in total","copyright":{"author":"Author","title":"Title","link":"Link","create_time":"Created at","update_time":"Updated at","license_title":"License","license_content":"This work is licensed under %s.","all_rights_reserved":"All Rights Reserved &#169; %s","public_domain":"This work is in the public domain."},"ago":{"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"},"create_time":"Created","update_time":"Updated","expired":"This post is written %s days ago, and the content may not be up to date."};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ordiy&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">141</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">35</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">115</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Agentic AI 视角下的 SDLC 革命：从 SDD 到意图驱动IDD的软件工程</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] shrink-0 rounded-medium border border-border-color p-px">
+				<img src="/images/redefine-avatar.svg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Ordiy</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv5</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-03-04</span>
+        <span class="mobile">2026-03-04</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-03-04</span>
+            <span class="mobile">2026-03-04</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/AI/">AI</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/agentic-ai/">agentic-ai</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/cursor/">cursor</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/claude-code/">claude-code</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/software-engineering/">software-engineering</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/SDLC/">SDLC</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/SDD/">SDD</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/spec-driven-development/">spec-driven-development</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/developer-productivity/">developer-productivity</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/career/">career</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/software-engineer-future/">software-engineer-future</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h1 id="Agentic-AI-视角下的-SDLC-革命"><a href="#Agentic-AI-视角下的-SDLC-革命" class="headerlink" title="Agentic AI 视角下的 SDLC 革命"></a>Agentic AI 视角下的 SDLC 革命</h1><blockquote>
+<p>软件开发史上，每一次范式迁移都伴随着「谁是生产主体」的根本性位移：</p>
+<p>汇编时代 → 人是唯一生产者<br>IDE + 框架时代 → 人 + 工具<br>GitHub Copilot 时代 → 人驾驶，AI 辅助<br><strong>Agentic AI 时代 → AI 执行，人审批</strong></p>
+</blockquote>
+<hr>
+<h2 id="一、传统-SDLC-的本质是什么？"><a href="#一、传统-SDLC-的本质是什么？" class="headerlink" title="一、传统 SDLC 的本质是什么？"></a>一、传统 SDLC 的本质是什么？</h2><p>在回答&quot;Agentic AI 改变了什么&quot;之前，先追问一个更根本的问题：<strong>传统 SDLC 的本质是什么？</strong></p>
+<p>传统软件开发生命周期（SDLC）是一套<strong>信息转化与传递的流水线</strong>：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">人类意图（模糊）</span><br><span class="line">    ↓  [需求分析] 消除歧义，结构化表达</span><br><span class="line">需求文档（PRD）</span><br><span class="line">    ↓  [架构设计] 技术决策，分解问题</span><br><span class="line">设计文档（HLD/LLD）</span><br><span class="line">    ↓  [编码实现] 将逻辑转化为机器可执行的符号</span><br><span class="line">代码</span><br><span class="line">    ↓  [测试验证] 验证代码行为是否符合需求</span><br><span class="line">通过的测试套件</span><br><span class="line">    ↓  [部署运维] 将可执行产物推向用户</span><br><span class="line">运行中的系统</span><br></pre></td></tr></table></figure></div>
+
+<p>每个阶段本质上是<strong>信息的降维翻译</strong>——从模糊的人类语言，逐步翻译为精确的机器指令。</p>
+<p><strong>这套流水线存在的根本原因，是在 AI 之前，只有人类能做这种&quot;翻译&quot;工作。</strong></p>
+<hr>
+<h2 id="二、Agentic-AI-对-SDLC-的七大颠覆"><a href="#二、Agentic-AI-对-SDLC-的七大颠覆" class="headerlink" title="二、Agentic AI 对 SDLC 的七大颠覆"></a>二、Agentic AI 对 SDLC 的七大颠覆</h2><h3 id="2-1-需求阶段：意图直达规格，歧义由-AI-消除"><a href="#2-1-需求阶段：意图直达规格，歧义由-AI-消除" class="headerlink" title="2.1 需求阶段：意图直达规格，歧义由 AI 消除"></a>2.1 需求阶段：意图直达规格，歧义由 AI 消除</h3><p><strong>传统模式</strong>：需求分析师花 2~4 周与业务方反复沟通，产出 PRD，开发再花 1 周读 PRD 问问题。</p>
+<p><strong>Agentic AI 模式</strong>：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Spec-kit + Cursor 的实际工作流（来自 maddevs.io 的实验）</span></span><br><span class="line">specify-cli create \</span><br><span class="line">  --intent <span class="string">&quot;我需要一个监听 Telnet 端口、展示彩色 ASCII 艺术画的服务&quot;</span> \</span><br><span class="line">  --short-name <span class="string">&quot;telnet-art&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># AI 自动生成：</span></span><br><span class="line"><span class="comment"># ✅ 功能规格（含边界条件）</span></span><br><span class="line"><span class="comment"># ✅ 数据模型</span></span><br><span class="line"><span class="comment"># ✅ 协议契约（contracts/telnet-protocol.md）</span></span><br><span class="line"><span class="comment"># ✅ 验收标准</span></span><br><span class="line"><span class="comment"># ✅ 研究报告（技术选型理由）</span></span><br></pre></td></tr></table></figure></div>
+
+<p><strong>最颠覆的洞察</strong>：AI 没有人类的「知识诅咒（Curse of Knowledge）」——它不会假设对方已经知道某个上下文，因此生成的规格比人写的更完整、边界条件更全面。</p>
+<blockquote>
+<p>「将任务分配给人类同事时，我们常常留下隐含信息。模型没有这种偏见，所以生成的任务颗粒度极高，描述每一个细小步骤。」<br>— <em>maddevs.io</em></p>
+</blockquote>
+<p><strong>革命程度：★★★★☆</strong><br>需求阶段从&quot;2~4周人工对齐&quot;压缩到&quot;小时级意图澄清&quot;。</p>
+<hr>
+<h3 id="2-2-设计阶段：规格即设计，AI-是架构师"><a href="#2-2-设计阶段：规格即设计，AI-是架构师" class="headerlink" title="2.2 设计阶段：规格即设计，AI 是架构师"></a>2.2 设计阶段：规格即设计，AI 是架构师</h3><p><strong>传统模式</strong>：架构师手工绘制架构图、设计数据模型、定义 API 契约——这些文档通常在项目结束时就已过时。</p>
+<p><strong>Agentic AI 模式（SDD 路线）</strong>：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/speckit.constitution  → 定义架构原则、技术栈约束</span><br><span class="line">/speckit.plan          → AI 研究最优技术方案，生成执行计划</span><br><span class="line">/speckit.tasks         → AI 分解为精确的可执行任务，含验收标准</span><br></pre></td></tr></table></figure></div>
+
+<p>规格文件（<code>specs/</code> 目录）变成<strong>比代码更重要的源码</strong>——代码是可重新生成的产物，规格是真正的&quot;源头&quot;。</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">specs/</span><br><span class="line">├── constitution.md      # 架构宪法：约束 AI 行为的边界</span><br><span class="line">├── plan.md              # 技术选型 + 执行路线图</span><br><span class="line">├── data-model.md        # 数据模型</span><br><span class="line">├── research.md          # 技术调研结论</span><br><span class="line">└── contracts/</span><br><span class="line">    └── api-protocol.md  # 接口契约</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>最颠覆的洞察</strong>：设计文档第一次有机会与实现保持<strong>同步</strong>——因为代码是从规格生成的，而不是代码写完了再补文档。</p>
+<p><strong>革命程度：★★★★★</strong><br>这是对&quot;文档总是滞后于代码&quot;这一几十年顽疾的根本性解决。</p>
+<hr>
+<h3 id="2-3-实现阶段：开发者从「写代码」变为「审查代码」"><a href="#2-3-实现阶段：开发者从「写代码」变为「审查代码」" class="headerlink" title="2.3 实现阶段：开发者从「写代码」变为「审查代码」"></a>2.3 实现阶段：开发者从「写代码」变为「审查代码」</h3><p>这是最直观也最容易被低估的转变。</p>
+<p><strong>传统模式</strong>：开发者 80% 时间写代码，20% 时间读代码（Code Review）。</p>
+<p><strong>Agentic AI 模式</strong>：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/speckit.implement  Phase 1 to Phase 3  <span class="comment"># 一行命令，AI 生成多文件代码</span></span><br><span class="line">claude -p <span class="string">&quot;实现用户认证模块，参考 specs/contracts/auth-protocol.md&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>开发者角色变成：</p>
+<ul>
+<li><strong>意图工程师（Intent Engineer）</strong>：把模糊想法转化为清晰描述</li>
+<li><strong>审查工程师（Review Engineer）</strong>：审查 AI 产出，判断方向是否正确</li>
+<li><strong>约束工程师（Constraint Engineer）</strong>：维护 <code>CLAUDE.md</code> &#x2F; <code>.cursorrules</code> 等 AI 行为边界</li>
+</ul>
+<p><strong>最颠覆的洞察</strong>：实现速度不再受限于「人类打字速度」，而是受限于「人类的意图清晰度和审查速度」。</p>
+<p><strong>革命程度：★★★★★</strong><br>这是软件工程生产关系的根本变革，不亚于从汇编到高级语言的跃迁。</p>
+<hr>
+<h3 id="2-4-测试阶段：测试从-验证代码-变为-驱动生成"><a href="#2-4-测试阶段：测试从-验证代码-变为-驱动生成" class="headerlink" title="2.4 测试阶段：测试从&quot;验证代码&quot;变为&quot;驱动生成&quot;"></a>2.4 测试阶段：测试从&quot;验证代码&quot;变为&quot;驱动生成&quot;</h3><p><strong>传统 TDD</strong>：先写测试，再写代码，让测试驱动实现。</p>
+<p><strong>Agentic AI 下的演进</strong>（三种路线并行）：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">路线 A：Agent 生成测试 + 生成代码（双轮生成）</span><br><span class="line">路线 B：人写验收标准 → AI 生成测试 → AI 生成代码（意图→验收→实现）</span><br><span class="line">路线 C：AI 生成代码 → AI 运行测试 → AI 自动修复（闭环自愈）</span><br><span class="line"></span><br><span class="line"># 路线 C 的 GitHub Actions 示例</span><br><span class="line">jobs:</span><br><span class="line">  ai-fix-tests:</span><br><span class="line">    steps:</span><br><span class="line">      - run: mvn test || true</span><br><span class="line">      - run: claude -p &quot;分析测试失败，修复代码，不得修改测试本身&quot; --allow-all-tools</span><br><span class="line">      - run: mvn verify</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>最颠覆的洞察</strong>：测试失败不再是&quot;需要人工介入&quot;的信号，而是 AI Agent 的自动任务输入。CI&#x2F;CD 流水线第一次有了内置的自愈能力。</p>
+<p><strong>革命程度：★★★★☆</strong></p>
+<hr>
+<h3 id="2-5-部署阶段：意图直达生产环境"><a href="#2-5-部署阶段：意图直达生产环境" class="headerlink" title="2.5 部署阶段：意图直达生产环境"></a>2.5 部署阶段：意图直达生产环境</h3><div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Copilot CLI：一句话完成完整 PR 流程</span></span><br><span class="line">copilot -p <span class="string">&quot;</span></span><br><span class="line"><span class="string">  将 feature/auth-refactor 分支的变更创建 PR，</span></span><br><span class="line"><span class="string">  添加 changelog 条目，assign 给 @alice 审查，</span></span><br><span class="line"><span class="string">  如果 CI 通过则自动合并到 main</span></span><br><span class="line"><span class="string">&quot;</span> --allow-all-tools</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>最颠覆的洞察</strong>：部署流程的「最后一公里」——提交、PR、合并、发布——开始被 Agent 整体接管。</p>
+<p><strong>革命程度：★★★☆☆</strong>（工具链已成熟，普及还需时间）</p>
+<hr>
+<h3 id="2-6-维护阶段：从被动修复到主动巡检"><a href="#2-6-维护阶段：从被动修复到主动巡检" class="headerlink" title="2.6 维护阶段：从被动修复到主动巡检"></a>2.6 维护阶段：从被动修复到主动巡检</h3><p>传统维护是<strong>被动响应</strong>：报警 → 人工排查 → 修复。</p>
+<p>Agentic AI 模式开始让维护变得<strong>主动</strong>：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定时任务：每周日凌晨 AI 自动巡检</span></span><br><span class="line">claude -p <span class="string">&quot;</span></span><br><span class="line"><span class="string">  扫描过去一周的错误日志，</span></span><br><span class="line"><span class="string">  识别高频异常，</span></span><br><span class="line"><span class="string">  为 Top 3 问题生成 GitHub Issue 并附上初步根因分析</span></span><br><span class="line"><span class="string">&quot;</span> --allow-all-tools</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>革命程度：★★★☆☆</strong>（仍在早期探索阶段）</p>
+<hr>
+<h3 id="2-7-【最深层颠覆】SDLC-各阶段边界的消融"><a href="#2-7-【最深层颠覆】SDLC-各阶段边界的消融" class="headerlink" title="2.7 【最深层颠覆】SDLC 各阶段边界的消融"></a>2.7 【最深层颠覆】SDLC 各阶段边界的消融</h3><p>传统 SDLC 是<strong>瀑布式或迭代式的时序结构</strong>——各阶段有明确分界。</p>
+<p>Agentic AI 让这些边界开始消融：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">意图描述</span><br><span class="line">   ↓ AI 同时完成：</span><br><span class="line">   ├── 生成规格（需求）</span><br><span class="line">   ├── 生成架构设计</span><br><span class="line">   ├── 生成实现代码</span><br><span class="line">   ├── 生成测试用例</span><br><span class="line">   └── 生成部署配置</span><br></pre></td></tr></table></figure></div>
+
+<p>换句话说，<strong>&quot;从意图到运行&quot;可以是一个连续的单步操作</strong>，而不是几个月的线性流程。</p>
+<p>这不是某一个阶段的优化，而是<strong>对整个流程结构的重新定义</strong>。</p>
+<p><strong>革命程度：★★★★★（这才是真正的范式转移）</strong></p>
+<hr>
+<h2 id="三、SDD-vs-Agentic-AI：两种路线的效率地图"><a href="#三、SDD-vs-Agentic-AI：两种路线的效率地图" class="headerlink" title="三、SDD vs Agentic AI：两种路线的效率地图"></a>三、SDD vs Agentic AI：两种路线的效率地图</h2><h3 id="3-1-SDD（规格驱动开发）的工作流"><a href="#3-1-SDD（规格驱动开发）的工作流" class="headerlink" title="3.1 SDD（规格驱动开发）的工作流"></a>3.1 SDD（规格驱动开发）的工作流</h3><p>基于 Cursor + Spec-kit 的实际流程：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">人类意图（一句话描述）</span><br><span class="line">    ↓</span><br><span class="line">/speckit.specify    → AI 生成完整规格文档</span><br><span class="line">    ↓ [人工 Review &amp; 调整]</span><br><span class="line">/speckit.plan       → AI 研究技术方案，生成执行计划</span><br><span class="line">    ↓ [人工确认]</span><br><span class="line">/speckit.tasks      → AI 分解为精确任务（含边界条件和验收标准）</span><br><span class="line">    ↓ [人工验证任务列表]</span><br><span class="line">/speckit.implement  → AI 按阶段生成代码</span><br><span class="line">    ↓ [人工测试每个 Phase]</span><br><span class="line">Working Product</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>本质</strong>：在人类意图和机器代码之间，插入一个<strong>结构化的中间表示层（规格文档）</strong>，人类在这一层进行质量控制。</p>
+<h3 id="3-2-Agentic-AI（直接任务执行）的工作流"><a href="#3-2-Agentic-AI（直接任务执行）的工作流" class="headerlink" title="3.2 Agentic AI（直接任务执行）的工作流"></a>3.2 Agentic AI（直接任务执行）的工作流</h3><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">人类意图（自然语言 Prompt）</span><br><span class="line">    ↓</span><br><span class="line">Agent 分析上下文（读取 CLAUDE.md / .cursorrules）</span><br><span class="line">    ↓</span><br><span class="line">Agent 规划（内部推理，不一定显式输出）</span><br><span class="line">    ↓</span><br><span class="line">Agent 执行（写文件、运行命令、测试）</span><br><span class="line">    ↓ [人工审批关键步骤]</span><br><span class="line">Working Product</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>本质</strong>：意图直接驱动执行，中间层是 AI 的内部推理，不显式暴露给人类。</p>
+<hr>
+<h3 id="3-3-效率对比矩阵"><a href="#3-3-效率对比矩阵" class="headerlink" title="3.3 效率对比矩阵"></a>3.3 效率对比矩阵</h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>SDD（规格驱动）</th>
+<th>Agentic AI（直接执行）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>上手速度</strong></td>
+<td>慢（需学习规格体系）</td>
+<td>快（自然语言即可）</td>
+</tr>
+<tr>
+<td><strong>意图保真度</strong></td>
+<td>高（规格是显式校验点）</td>
+<td>中（依赖 Prompt 质量）</td>
+</tr>
+<tr>
+<td><strong>绿地项目（0→1）</strong></td>
+<td>✅ 最优（规格即文档）</td>
+<td>✅ 够用，可能偏向）</td>
+</tr>
+<tr>
+<td><strong>存量大项目改造</strong></td>
+<td>❌ 难（规格难以逆向）</td>
+<td>✅ 更强（理解现有代码）</td>
+</tr>
+<tr>
+<td><strong>团队协作</strong></td>
+<td>✅ 优（规格是沟通媒介）</td>
+<td>⚠️ 依赖 CLAUDE.md 完整性</td>
+</tr>
+<tr>
+<td><strong>连续迭代</strong></td>
+<td>⚠️ 规格更新成本高</td>
+<td>✅ 自然对话，随时调整</td>
+</tr>
+<tr>
+<td><strong>可审计性</strong></td>
+<td>✅ 每个决策有文档可查</td>
+<td>⚠️ AI 推理过程是黑箱</td>
+</tr>
+<tr>
+<td><strong>错误定位</strong></td>
+<td>✅ 归因到规格层</td>
+<td>⚠️ 需要人工追溯上下文</td>
+</tr>
+<tr>
+<td><strong>CI&#x2F;CD 集成</strong></td>
+<td>⚠️ 工具链尚不成熟</td>
+<td>✅ 三大工具均原生支持</td>
+</tr>
+<tr>
+<td><strong>时间效率（小项目）</strong></td>
+<td>中（规格生成有开销）</td>
+<td>高（直接执行）</td>
+</tr>
+<tr>
+<td><strong>时间效率（大项目）</strong></td>
+<td>高（规格减少返工）</td>
+<td>中（幻觉风险上升）</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="3-4-两种模式的本质差异"><a href="#3-4-两种模式的本质差异" class="headerlink" title="3.4 两种模式的本质差异"></a>3.4 两种模式的本质差异</h3><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SDD：  [意图] → [显式规格] → [代码]</span><br><span class="line">              ↑              ↑</span><br><span class="line">          人工质控点      人工质控点</span><br><span class="line"></span><br><span class="line">Agentic：[意图] ─────────────→ [代码]</span><br><span class="line">                    ↑</span><br><span class="line">              AI 内部推理（黑箱）</span><br><span class="line">              人工审批执行动作</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>SDD 的赌注</strong>：如果规格正确，代码大概率正确。<br><strong>Agentic AI 的赌注</strong>：如果模型够聪明，即使没有中间层也能正确理解意图。</p>
+<p>目前，<strong>两个赌注都在被验证中</strong>，且都在特定场景下成立。</p>
+<hr>
+<h3 id="3-5-场景化选择建议"><a href="#3-5-场景化选择建议" class="headerlink" title="3.5 场景化选择建议"></a>3.5 场景化选择建议</h3><p><strong>推荐 SDD 的场景：</strong></p>
+<ul>
+<li>全新产品，需要向团队&#x2F;投资人说明架构决策</li>
+<li>多人协作，规格作为&quot;合同&quot;减少沟通成本</li>
+<li>需要严格审计的行业（金融、医疗）</li>
+<li>Vibe Coding 爱好者，不想陷入&quot;反复 Prompt 调试&quot;的泥潭</li>
+</ul>
+<p><strong>推荐 Agentic AI 的场景：</strong></p>
+<ul>
+<li>向已有大型代码库添加功能</li>
+<li>复杂重构（AI 需要理解全局上下文）</li>
+<li>临时自动化脚本和工具</li>
+<li>已有清晰意图，追求极速交付</li>
+</ul>
+<p><strong>理想组合：</strong></p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SDD（规格层）+ Agentic AI（执行层）</span><br><span class="line"></span><br><span class="line">1. 用 Spec-kit / Kiro 生成规格文档 → 人工确认</span><br><span class="line">2. 将规格写入 CLAUDE.md           → 成为 AI 长期记忆</span><br><span class="line">3. 用 Claude Code / Cursor CLI    → 执行具体任务</span><br><span class="line">4. CI/CD Agent 自动运行测试并修复  → 闭环自愈</span><br></pre></td></tr></table></figure></div>
+
+<hr>
+<h2 id="四、AI-时代软件开发的最佳范式（个人判断）"><a href="#四、AI-时代软件开发的最佳范式（个人判断）" class="headerlink" title="四、AI 时代软件开发的最佳范式（个人判断）"></a>四、AI 时代软件开发的最佳范式（个人判断）</h2><p>经历了工具的持续演进和社区实践的沉淀，我认为最适合 AI 时代的开发范式是一个<strong>三层架构</strong>：</p>
+<h3 id="第一层：意图层（Intent-Layer）"><a href="#第一层：意图层（Intent-Layer）" class="headerlink" title="第一层：意图层（Intent Layer）"></a>第一层：意图层（Intent Layer）</h3><p><strong>工具</strong>：自然语言 + Spec-kit &#x2F; Kiro<br><strong>产出</strong>：<code>CLAUDE.md</code>、<code>specs/constitution.md</code>、PRD</p>
+<p>这一层的核心是<strong>把模糊意图转化为可执行约束</strong>。不是写代码，而是<strong>训练 AI 了解你的项目</strong>。</p>
+<div class="code-container" data-rel="Markdown"><figure class="iseeu highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># CLAUDE.md 示例（意图层产物）</span></span><br><span class="line"></span><br><span class="line"><span class="section">## 项目定位</span></span><br><span class="line">实时数据处理平台，读多写少，延迟 SLA &lt; 100ms</span><br><span class="line"></span><br><span class="line"><span class="section">## 架构约束</span></span><br><span class="line"><span class="bullet">-</span> 领域驱动设计（DDD），严禁 domain 层直接引用 infrastructure</span><br><span class="line"><span class="bullet">-</span> 所有外部依赖必须通过 Interface 抽象</span><br><span class="line"><span class="bullet">-</span> 禁止在 Service 层写 SQL</span><br><span class="line"></span><br><span class="line"><span class="section">## 技术栈</span></span><br><span class="line">Java 21 + Spring Boot 3.3 + PostgreSQL + Kafka</span><br><span class="line"></span><br><span class="line"><span class="section">## 质量门控</span></span><br><span class="line"><span class="bullet">-</span> 单元测试覆盖率 &gt; 80%</span><br><span class="line"><span class="bullet">-</span> 新增公共 API 必须有 OpenAPI 注解</span><br><span class="line"><span class="bullet">-</span> PR 合并前必须通过静态扫描（SonarQube）</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="第二层：协作层（Collaboration-Layer）"><a href="#第二层：协作层（Collaboration-Layer）" class="headerlink" title="第二层：协作层（Collaboration Layer）"></a>第二层：协作层（Collaboration Layer）</h3><p><strong>工具</strong>：Cursor IDE &#x2F; VS Code + AI Extension<br><strong>产出</strong>：代码、测试、文档</p>
+<p>这一层是传统意义上的&quot;开发工作&quot;，但人类的角色已经改变：</p>
+<table>
+<thead>
+<tr>
+<th>传统角色</th>
+<th>AI 时代角色</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>编写实现代码</td>
+<td>审查 AI 生成的代码（重点：逻辑边界、安全漏洞）</td>
+</tr>
+<tr>
+<td>手写单元测试</td>
+<td>定义验收标准，审查 AI 生成的测试</td>
+</tr>
+<tr>
+<td>更新 API 文档</td>
+<td>确认 AI 同步生成的 OpenAPI 注解正确</td>
+</tr>
+<tr>
+<td>Debug 代码错误</td>
+<td>向 AI 描述错误现象，审查修复方案</td>
+</tr>
+</tbody></table>
+<h3 id="第三层：自动化层（Automation-Layer）"><a href="#第三层：自动化层（Automation-Layer）" class="headerlink" title="第三层：自动化层（Automation Layer）"></a>第三层：自动化层（Automation Layer）</h3><p><strong>工具</strong>：GitHub Actions &#x2F; GitLab CI + Claude Code &#x2F; Copilot CLI<br><strong>产出</strong>：稳定运行的系统</p>
+<div class="code-container" data-rel="Yaml"><figure class="iseeu highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CI/CD Pipeline 的 AI 层</span></span><br><span class="line"><span class="attr">pipeline:</span></span><br><span class="line">  <span class="attr">stages:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">build</span>          <span class="comment"># 传统：编译 + 静态分析</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">test</span>           <span class="comment"># 传统：单元 + 集成测试</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">ai-fix:</span>        <span class="comment"># 新增：AI 自动修复失败测试</span></span><br><span class="line">        <span class="attr">if:</span> <span class="string">test_failed</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">claude</span> <span class="string">-p</span> <span class="string">&quot;修复失败的测试，不得改变测试意图&quot;</span> <span class="string">--allow-all-tools</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">ai-review:</span>     <span class="comment"># 新增：AI 代码审查</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">copilot</span> <span class="string">-p</span> <span class="string">&quot;检查本次 PR 变更，报告安全风险和性能隐患&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">deploy</span>         <span class="comment"># 传统：部署</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">ai-monitor:</span>    <span class="comment"># 新增：AI 巡检</span></span><br><span class="line">        <span class="attr">schedule:</span> <span class="string">weekly</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">claude</span> <span class="string">-p</span> <span class="string">&quot;分析本周日志，生成 Issue&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<hr>
+<h2 id="五、最终判断：哪些变化是真正不可逆的？"><a href="#五、最终判断：哪些变化是真正不可逆的？" class="headerlink" title="五、最终判断：哪些变化是真正不可逆的？"></a>五、最终判断：哪些变化是真正不可逆的？</h2><p>历史上，真正不可逆的技术变革有一个特征：<strong>它解决了一个此前被认为是&quot;本质困难&quot;而非&quot;工程问题&quot;的问题</strong>。</p>
+<p>Agentic AI 正在解决的&quot;本质困难&quot;只有一个：</p>
+<blockquote>
+<p><strong>人类意图与机器指令之间的翻译成本。</strong></p>
+</blockquote>
+<p>这个翻译成本，驱动了过去 70 年软件工程所有的方法论创新——UML、设计模式、敏捷、TDD、微服务……本质上都是在降低&quot;意图→代码&quot;这条链路上的信息损耗。</p>
+<p>当 AI 能够高质量地完成这个翻译，<strong>软件工程方法论将面临一次全面的重新推导</strong>。</p>
+<p>目前最可能不可逆的变化：</p>
+<ol>
+<li><strong>规格优先于代码</strong>：未来的代码库中，<code>specs/</code> 目录和 <code>CLAUDE.md</code> 会比 <code>src/</code> 更重要</li>
+<li><strong>开发与测试的边界消失</strong>：AI 同步生成实现和测试，TDD 中&quot;先写测试&quot;的仪式感消失</li>
+<li><strong>文档滞后问题被永久解决</strong>：文档由 AI 按规格生成，与代码天然同步</li>
+<li><strong>CI 从&quot;检查&quot;变为&quot;修复&quot;</strong>：流水线不再只报告问题，开始自主解决问题</li>
+<li><strong>软件从「资产」变为「燃料」</strong>：代码库不再是护城河，可按需重新生成；真正的资产是封装了领域知识的规格文档（见下节）</li>
+</ol>
+<h3 id="5-1-【延伸洞察】软件从「资产」变为「燃料」"><a href="#5-1-【延伸洞察】软件从「资产」变为「燃料」" class="headerlink" title="5.1 【延伸洞察】软件从「资产」变为「燃料」"></a>5.1 【延伸洞察】软件从「资产」变为「燃料」</h3><p>这里有一个更深层的推论，值得单独点出：</p>
+<blockquote>
+<p><strong>大型软件系统，正在从「资产」（Asset）变为「生产力的燃料」（Fuel&#x2F;Consumable）。</strong></p>
+</blockquote>
+<p><strong>传统范式下</strong>，代码库是公司最重要的资产之一：</p>
+<ul>
+<li>需要几年、几十年持续积累</li>
+<li>需要小心翼翼地维护，避免「技术债」侵蚀资产价值</li>
+<li>代码的完整性和健康度是企业竞争力的护城河</li>
+<li>「从头重写」是高风险、高成本的最后手段</li>
+</ul>
+<p><strong>Agentic AI 范式下</strong>，这个逻辑开始反转：</p>
+<ul>
+<li><strong>规格（Spec）才是资产</strong>——它封装了领域知识、架构决策、业务约束，是真正不可快速替代的东西</li>
+<li><strong>代码只是规格被执行后的产物</strong>——更像是每次构建时生成的编译产物，可以随时丢弃再生成</li>
+<li><strong>技术债不再是慢性病</strong>——如果一个模块腐化了，从规格重新生成即可，而不是在旧代码上反复打补丁</li>
+<li><strong>「从头重写」变得廉价</strong>——只要规格存在，重新生成代码的成本趋近于零</li>
+</ul>
+<p>类比历史上的类似转变：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">印刷术之前：手抄书稿是珍贵资产（稀缺·不可复制）</span><br><span class="line">印刷术之后：印版/底稿才是资产，印出的书是消耗品</span><br><span class="line"></span><br><span class="line">软件工程前期：可执行的编译文件是资产（分发珍贵）</span><br><span class="line">源代码时代：源代码是资产，编译输出是产物</span><br><span class="line"></span><br><span class="line">Agentic AI 时代：规格/意图是资产，源代码是产物</span><br></pre></td></tr></table></figure></div>
+
+<p>这意味着软件行业的价值链将发生根本性重构：</p>
+<table>
+<thead>
+<tr>
+<th>过去的竞争壁垒</th>
+<th>未来的竞争壁垒</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>亿行级别的精心积累的代码库</td>
+<td>对行业领域的深刻理解，编码为规格</td>
+</tr>
+<tr>
+<td>能写出高质量代码的工程师团队</td>
+<td>能清晰表达意图和约束的「规格工程师」</td>
+</tr>
+<tr>
+<td>难以复制的历史技术积累</td>
+<td>难以复制的领域知识和 AI 协作工作流</td>
+</tr>
+</tbody></table>
+<p><strong>推论</strong>：未来企业的核心数字资产，不是 <code>git clone</code> 下来的几百万行代码，而是那份精心维护的 <code>CLAUDE.md</code> 和 <code>specs/</code> 目录——那里浓缩着无法被 AI 自动推断的领域知识和决策历史。</p>
+<hr>
+<p><strong>还不会改变的</strong>：</p>
+<ul>
+<li><strong>需要人类做的系统级架构决策</strong>（至少在未来 3~5 年内）</li>
+<li><strong>需要领域专家参与的需求澄清</strong>（AI 不了解特定行业的业务约束）</li>
+<li><strong>最终的安全职责</strong>（AI 可以提议，人类必须审批）</li>
+</ul>
+<hr>
+<h2 id="六、对技术人员职业生涯的影响"><a href="#六、对技术人员职业生涯的影响" class="headerlink" title="六、对技术人员职业生涯的影响"></a>六、对技术人员职业生涯的影响</h2><p>如果代码是燃料、规格是资产，那么<strong>过去 30 年形成的技术职业价值评估体系，正在被全面重新定价</strong>。</p>
+<h3 id="6-1-压力最大的岗位"><a href="#6-1-压力最大的岗位" class="headerlink" title="6.1 压力最大的岗位"></a>6.1 压力最大的岗位</h3><p>**初中级「代码执行者」**是受冲击最直接的群体：</p>
+<table>
+<thead>
+<tr>
+<th>岗位</th>
+<th>受冲击原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>外包&#x2F;外包平台 CRUD 开发</td>
+<td>样板代码生成成本趋近于零</td>
+</tr>
+<tr>
+<td>初级测试工程师（手动测试）</td>
+<td>测试用例由 AI 生成，执行由 CI 自动化</td>
+</tr>
+<tr>
+<td>文档工程师</td>
+<td>文档与代码同步生成，无需专职维护</td>
+</tr>
+<tr>
+<td>「翻译型」需求分析师</td>
+<td>把 Word 文档翻译成代码的工作可被 SDD 工具替代</td>
+</tr>
+</tbody></table>
+<p>但需要补充：这不意味着这些岗位消失，而是<strong>岗位密度下降，同等输出需要的人更少</strong>。一个 Agentic AI 辅助的工程师可以完成过去 3~5 人的工作量——这是生产力提升，也是用工收缩。</p>
+<hr>
+<h3 id="6-2-价值上升的岗位"><a href="#6-2-价值上升的岗位" class="headerlink" title="6.2 价值上升的岗位"></a>6.2 价值上升的岗位</h3><p>价值重构的逻辑来自「资产 → 燃料」的转变：<strong>越靠近规格（意图）端，价值越高；越靠近代码（执行）端，价值越低</strong>。</p>
+<p><strong>明确受益的角色：</strong></p>
+<p><strong>① 领域专家（Domain Expert）</strong></p>
+<p>AI 能写任何语言的代码，但无法替代「某家医院的排班逻辑为什么不能按常识设计」这类深层领域知识。理解业务规则的深度，将是最不可替代的能力。</p>
+<p><strong>② 系统架构师（Architect）</strong></p>
+<p>技术债可以被 AI 重写，但「为什么当初选择微服务而非单体」「为什么这里用 Event Sourcing」这类架构决策的背景，只有人能记录、传承和演进。架构师的核心产出从「画图」变成「维护架构决策记录（ADR）」——这正是规格层最核心的内容。</p>
+<p><strong>③ 规格工程师 &#x2F; AI 导向工程师（Spec Engineer &#x2F; AI Orchestrator）</strong></p>
+<p>这是一个正在涌现的新职业角色——专职负责：</p>
+<ul>
+<li>将模糊需求转化为精确的 <code>CLAUDE.md</code> 和 Spec 文档</li>
+<li>设计 AI Agent 的工具权限边界和工作流</li>
+<li>审查 AI 产出，维护规格与代码的一致性</li>
+<li>构建组织级的 AI 协作工作流（Prompt 工程 + Agent 编排）</li>
+</ul>
+<p><strong>④ 安全工程师（Security Engineer）</strong></p>
+<p>Agentic AI 拥有运行 shell 命令、修改文件、调用外部 API 的能力。谁来审计 AI 的行为边界、设置最小权限原则、评估 Prompt Injection 风险？安全工程师的职责范围正在迅速扩展。</p>
+<p><strong>⑤ 平台工程师（Platform Engineer）</strong></p>
+<p>为 AI Agent 提供安全、可观测的运行环境——沙箱隔离、工具权限管理、审计日志、Agent 编排基础设施——这套「AI 运行时平台」需要专业维护。</p>
+<hr>
+<h3 id="6-3-职业转型的关键判断"><a href="#6-3-职业转型的关键判断" class="headerlink" title="6.3 职业转型的关键判断"></a>6.3 职业转型的关键判断</h3><p>这场变革与以往技术浪潮（互联网化、云化、移动化）有一个根本不同：</p>
+<p><strong>以往的技术浪潮创造了大量新的执行层岗位</strong>（PHP 开发、iOS 开发、云运维）。</p>
+<p><strong>这次 AI 浪潮压缩的恰恰是执行层，扩张的是意图层和判断层</strong>——而这些层级需要的不是「更多地敲键盘」，而是更深的领域理解和更强的系统判断力。</p>
+<p>对个人职业路径的具体建议：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">如果你是初中级开发者：</span><br><span class="line">  ✅ 尽快掌握 Agentic AI 工具（Cursor / Claude Code）</span><br><span class="line">     → 用 AI 扩大自己的交付能力，而不是等待被替代</span><br><span class="line">  ✅ 向领域深度发展，而不是追求技术栈宽度</span><br><span class="line">     → 「懂某个行业的工程师」远比「懂 10 种框架的工程师」稀缺</span><br><span class="line">  ✅ 学习规格写作和 AI 工作流设计</span><br><span class="line">     → 这是新的核心工程能力</span><br><span class="line"></span><br><span class="line">如果你是高级工程师/架构师：</span><br><span class="line">  ✅ 把你的隐性架构知识显式化（写 ADR，维护 CLAUDE.md）</span><br><span class="line">     → 这是你最不可替代的知识，也是最容易随着你离职而消失的知识</span><br><span class="line">  ✅ 承担 AI 输出的最终裁决者角色</span><br><span class="line">     → 审查 AI 代码的能力需要比写代码更深的理解</span><br><span class="line">  ✅ 建立 AI-in-loop 的团队工作流</span><br><span class="line">     → 能让 AI「乘数效应」发挥价值的工程师，将比「自己写」更有竞争力</span><br><span class="line"></span><br><span class="line">如果你是工程管理者：</span><br><span class="line">  ✅ 重新设计绩效评估体系</span><br><span class="line">     → 不再以代码行数/PR 数量衡量，而是以意图清晰度和交付质量衡量</span><br><span class="line">  ✅ 建立「规格资产」的组织治理</span><br><span class="line">     → CLAUDE.md / specs/ 目录应该纳入知识管理体系，不能只存在于某个工程师的脑子里</span><br></pre></td></tr></table></figure></div>
+
+<hr>
+<h3 id="6-4-一个值得警惕的陷阱：「AI-使用熟练度」本身不是护城河"><a href="#6-4-一个值得警惕的陷阱：「AI-使用熟练度」本身不是护城河" class="headerlink" title="6.4 一个值得警惕的陷阱：「AI 使用熟练度」本身不是护城河"></a>6.4 一个值得警惕的陷阱：「AI 使用熟练度」本身不是护城河</h3><p>目前很多工程师在努力学习「如何更好地 Prompt」「如何配置 MCP」，这当然是短期内必要的。</p>
+<p>但需要清醒认识到：<strong>工具使用技能的半衰期在加速缩短</strong>。今天需要精心设计 Prompt 的任务，明年可能只需一句话。今天需要配置 MCP 的集成，后年可能已经内置。</p>
+<p><strong>真正长期保值的能力只有两类：</strong></p>
+<ol>
+<li><strong>领域知识的深度</strong>——AI 无法替代你对某个具体行业、具体系统的深层理解</li>
+<li><strong>系统性判断力</strong>——在不确定条件下做出正确架构决策的能力，这需要大量失败经验积累</li>
+</ol>
+<p>「会用 AI 工具」是入场券，不是护城河。<strong>在 AI 时代建立职业护城河，靠的是 AI 目前还做不到的事情：在复杂的、有约束的、有历史包袱的真实世界中做出正确判断。</strong></p>
+<hr>
+<h2 id="七、推荐阅读"><a href="#七、推荐阅读" class="headerlink" title="七、推荐阅读"></a>七、推荐阅读</h2><ul>
+<li><a class="link"   target="_blank" rel="noopener" href="https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/" >Spec-Driven Development with AI: Get started with a new open source toolkit<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> — GitHub 官方 SDD 入门</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html" >Understanding SDD: Kiro, spec-kit, and Tessl<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> — Martin Fowler 博客，最清醒的 SDD 分析</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://maddevs.io/writeups/project-creation-using-spec-kit-and-cursor/" >Project Creation from 0 to 1 Using Spec-kit and Cursor<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> — 本文参考的实战案例</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://docs.github.com/en/copilot/concepts/agents/copilot-cli/about-copilot-cli" >About GitHub Copilot CLI<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> — Copilot CLI 官方文档</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://code.claude.com/docs/en/overview" >Claude Code Overview<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> — Claude Code 官方概述</li>
+</ul>
+<hr>
+<p><em>写于 2026-03-04 | 软件工程正在经历自高级语言发明以来最深刻的范式迁移，本文是一个持续更新中的思考快照。</em></p>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Agentic AI 视角下的 SDLC 革命：从 SDD 到意图驱动IDD的软件工程</li>
+        <li><strong>Author:</strong> Ordiy</li>
+        <li><strong>Created at
+                :</strong> 2026-03-04 00:00:00</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2026-03-04 00:00:00
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://ordiy.github.io/posts/2026-03-04-agentic-ai-sdlc-revolution-sdd-comparison/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/AI/">#AI</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/agentic-ai/">#agentic-ai</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/cursor/">#cursor</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/claude-code/">#claude-code</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/software-engineering/">#software-engineering</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/SDLC/">#SDLC</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/SDD/">#SDD</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/spec-driven-development/">#spec-driven-development</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/developer-productivity/">#developer-productivity</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/career/">#career</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/software-engineer-future/">#software-engineer-future</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/posts/2026-03-04-agentic-ai-cli-comparison-cursor-copilot-claude-code/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">Agentic AI 编码工具三强对决：Cursor CLI vs GitHub Copilot CLI vs Claude Code</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/posts/2026-02-28-cdn-log-analysis-aws-cloudflare/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">AWS CloudFront 与 Cloudflare 边缘日志解析对比</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.js';
+
+      (function() {
+        const startPath = location.pathname;
+        const startTime = Date.now();
+        const retryDelay = 200;
+        const retryLimit = 5000;
+
+        const runWaline = () => {
+          if (location.pathname !== startPath) {
+            return;
+          }
+
+          const container = document.getElementById('waline');
+          if (!container) {
+            if (Date.now() - startTime < retryLimit) {
+              setTimeout(runWaline, retryDelay);
+            }
+            return;
+          }
+
+          if (window.redefineWalineInstance?.destroy) {
+            window.redefineWalineInstance.destroy();
+          }
+
+          container.innerHTML = '';
+          window.redefineWalineInstance = init({
+            el: '#waline',
+            serverURL: 'https://example.example.com',
+            path: location.pathname,
+            dark: 'body[class~="dark-mode"]',
+            reaction: false,
+            requiredMeta: ['nick', 'mail'],
+            emoji: [],
+                      lang: 'zh-CN',
+          });
+        };
+
+        runWaline();
+      })();
+    </script>
+
+
+
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">Agentic AI 视角下的 SDLC 革命：从 SDD 到意图驱动IDD的软件工程</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Agentic-AI-%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84-SDLC-%E9%9D%A9%E5%91%BD"><span class="nav-text">Agentic AI 视角下的 SDLC 革命</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BC%A0%E7%BB%9F-SDLC-%E7%9A%84%E6%9C%AC%E8%B4%A8%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-text">一、传统 SDLC 的本质是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Agentic-AI-%E5%AF%B9-SDLC-%E7%9A%84%E4%B8%83%E5%A4%A7%E9%A2%A0%E8%A6%86"><span class="nav-text">二、Agentic AI 对 SDLC 的七大颠覆</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E9%9C%80%E6%B1%82%E9%98%B6%E6%AE%B5%EF%BC%9A%E6%84%8F%E5%9B%BE%E7%9B%B4%E8%BE%BE%E8%A7%84%E6%A0%BC%EF%BC%8C%E6%AD%A7%E4%B9%89%E7%94%B1-AI-%E6%B6%88%E9%99%A4"><span class="nav-text">2.1 需求阶段：意图直达规格，歧义由 AI 消除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E8%AE%BE%E8%AE%A1%E9%98%B6%E6%AE%B5%EF%BC%9A%E8%A7%84%E6%A0%BC%E5%8D%B3%E8%AE%BE%E8%AE%A1%EF%BC%8CAI-%E6%98%AF%E6%9E%B6%E6%9E%84%E5%B8%88"><span class="nav-text">2.2 设计阶段：规格即设计，AI 是架构师</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%AE%9E%E7%8E%B0%E9%98%B6%E6%AE%B5%EF%BC%9A%E5%BC%80%E5%8F%91%E8%80%85%E4%BB%8E%E3%80%8C%E5%86%99%E4%BB%A3%E7%A0%81%E3%80%8D%E5%8F%98%E4%B8%BA%E3%80%8C%E5%AE%A1%E6%9F%A5%E4%BB%A3%E7%A0%81%E3%80%8D"><span class="nav-text">2.3 实现阶段：开发者从「写代码」变为「审查代码」</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E6%B5%8B%E8%AF%95%E9%98%B6%E6%AE%B5%EF%BC%9A%E6%B5%8B%E8%AF%95%E4%BB%8E-%E9%AA%8C%E8%AF%81%E4%BB%A3%E7%A0%81-%E5%8F%98%E4%B8%BA-%E9%A9%B1%E5%8A%A8%E7%94%9F%E6%88%90"><span class="nav-text">2.4 测试阶段：测试从&quot;验证代码&quot;变为&quot;驱动生成&quot;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E9%83%A8%E7%BD%B2%E9%98%B6%E6%AE%B5%EF%BC%9A%E6%84%8F%E5%9B%BE%E7%9B%B4%E8%BE%BE%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83"><span class="nav-text">2.5 部署阶段：意图直达生产环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-%E7%BB%B4%E6%8A%A4%E9%98%B6%E6%AE%B5%EF%BC%9A%E4%BB%8E%E8%A2%AB%E5%8A%A8%E4%BF%AE%E5%A4%8D%E5%88%B0%E4%B8%BB%E5%8A%A8%E5%B7%A1%E6%A3%80"><span class="nav-text">2.6 维护阶段：从被动修复到主动巡检</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-%E3%80%90%E6%9C%80%E6%B7%B1%E5%B1%82%E9%A2%A0%E8%A6%86%E3%80%91SDLC-%E5%90%84%E9%98%B6%E6%AE%B5%E8%BE%B9%E7%95%8C%E7%9A%84%E6%B6%88%E8%9E%8D"><span class="nav-text">2.7 【最深层颠覆】SDLC 各阶段边界的消融</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81SDD-vs-Agentic-AI%EF%BC%9A%E4%B8%A4%E7%A7%8D%E8%B7%AF%E7%BA%BF%E7%9A%84%E6%95%88%E7%8E%87%E5%9C%B0%E5%9B%BE"><span class="nav-text">三、SDD vs Agentic AI：两种路线的效率地图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-SDD%EF%BC%88%E8%A7%84%E6%A0%BC%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%EF%BC%89%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-text">3.1 SDD（规格驱动开发）的工作流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-Agentic-AI%EF%BC%88%E7%9B%B4%E6%8E%A5%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%EF%BC%89%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-text">3.2 Agentic AI（直接任务执行）的工作流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E6%95%88%E7%8E%87%E5%AF%B9%E6%AF%94%E7%9F%A9%E9%98%B5"><span class="nav-text">3.3 效率对比矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E4%B8%A4%E7%A7%8D%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%9C%AC%E8%B4%A8%E5%B7%AE%E5%BC%82"><span class="nav-text">3.4 两种模式的本质差异</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-%E5%9C%BA%E6%99%AF%E5%8C%96%E9%80%89%E6%8B%A9%E5%BB%BA%E8%AE%AE"><span class="nav-text">3.5 场景化选择建议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81AI-%E6%97%B6%E4%BB%A3%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E6%9C%80%E4%BD%B3%E8%8C%83%E5%BC%8F%EF%BC%88%E4%B8%AA%E4%BA%BA%E5%88%A4%E6%96%AD%EF%BC%89"><span class="nav-text">四、AI 时代软件开发的最佳范式（个人判断）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E5%B1%82%EF%BC%9A%E6%84%8F%E5%9B%BE%E5%B1%82%EF%BC%88Intent-Layer%EF%BC%89"><span class="nav-text">第一层：意图层（Intent Layer）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E5%B1%82%EF%BC%9A%E5%8D%8F%E4%BD%9C%E5%B1%82%EF%BC%88Collaboration-Layer%EF%BC%89"><span class="nav-text">第二层：协作层（Collaboration Layer）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E5%B1%82%EF%BC%9A%E8%87%AA%E5%8A%A8%E5%8C%96%E5%B1%82%EF%BC%88Automation-Layer%EF%BC%89"><span class="nav-text">第三层：自动化层（Automation Layer）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E6%9C%80%E7%BB%88%E5%88%A4%E6%96%AD%EF%BC%9A%E5%93%AA%E4%BA%9B%E5%8F%98%E5%8C%96%E6%98%AF%E7%9C%9F%E6%AD%A3%E4%B8%8D%E5%8F%AF%E9%80%86%E7%9A%84%EF%BC%9F"><span class="nav-text">五、最终判断：哪些变化是真正不可逆的？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E3%80%90%E5%BB%B6%E4%BC%B8%E6%B4%9E%E5%AF%9F%E3%80%91%E8%BD%AF%E4%BB%B6%E4%BB%8E%E3%80%8C%E8%B5%84%E4%BA%A7%E3%80%8D%E5%8F%98%E4%B8%BA%E3%80%8C%E7%87%83%E6%96%99%E3%80%8D"><span class="nav-text">5.1 【延伸洞察】软件从「资产」变为「燃料」</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%AF%B9%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%91%98%E8%81%8C%E4%B8%9A%E7%94%9F%E6%B6%AF%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-text">六、对技术人员职业生涯的影响</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-%E5%8E%8B%E5%8A%9B%E6%9C%80%E5%A4%A7%E7%9A%84%E5%B2%97%E4%BD%8D"><span class="nav-text">6.1 压力最大的岗位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-%E4%BB%B7%E5%80%BC%E4%B8%8A%E5%8D%87%E7%9A%84%E5%B2%97%E4%BD%8D"><span class="nav-text">6.2 价值上升的岗位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-%E8%81%8C%E4%B8%9A%E8%BD%AC%E5%9E%8B%E7%9A%84%E5%85%B3%E9%94%AE%E5%88%A4%E6%96%AD"><span class="nav-text">6.3 职业转型的关键判断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-%E4%B8%80%E4%B8%AA%E5%80%BC%E5%BE%97%E8%AD%A6%E6%83%95%E7%9A%84%E9%99%B7%E9%98%B1%EF%BC%9A%E3%80%8CAI-%E4%BD%BF%E7%94%A8%E7%86%9F%E7%BB%83%E5%BA%A6%E3%80%8D%E6%9C%AC%E8%BA%AB%E4%B8%8D%E6%98%AF%E6%8A%A4%E5%9F%8E%E6%B2%B3"><span class="nav-text">6.4 一个值得警惕的陷阱：「AI 使用熟练度」本身不是护城河</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E6%8E%A8%E8%8D%90%E9%98%85%E8%AF%BB"><span class="nav-text">七、推荐阅读</span></a></li></ol></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ordiy</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        115 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.9.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container" role="dialog" aria-modal="true" aria-label="Image viewer">
+	<button class="image-viewer-close" type="button" aria-label="Close">
+		<i class="fa-solid fa-xmark"></i>
+	</button>
+	<button class="image-viewer-prev" type="button" aria-label="Prev">
+		<i class="fa-solid fa-chevron-left"></i>
+	</button>
+	<div class="image-viewer-frame">
+		<img src="" alt="">
+	</div>
+	<div class="image-viewer-exif-panel hidden absolute left-1/2 bottom-20 -translate-x-1/2 w-[min(92vw,420px)] max-h-[60vh] overflow-hidden rounded-2xl bg-background-color-transparent-80 p-4 text-left shadow-redefine-flat backdrop-blur-md" role="dialog" aria-label="EXIF" aria-hidden="true">
+		<div class="flex items-center justify-between mb-3">
+			<span class="text-sm font-semibold text-first-text-color">EXIF</span>
+			<button class="image-viewer-exif-close flex h-8 w-8 items-center justify-center rounded-full bg-background-color-transparent-80 text-first-text-color transition hover:bg-background-color-transparent-40" type="button" aria-label="Close">
+				<i class="fa-solid fa-xmark text-[0.65rem]"></i>
+			</button>
+		</div>
+		<div class="image-viewer-exif-cards grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-1 scrollbar-hide"></div>
+		<template class="image-viewer-exif-card-template">
+			<div class="rounded-lg bg-background-color-transparent-40 px-3 py-2">
+				<div class="image-viewer-exif-card-header flex items-center gap-2 mb-1">
+					<i class="image-viewer-exif-card-icon fa-solid fa-circle-info text-xs text-third-text-color"></i>
+					<div class="image-viewer-exif-card-title text-xs font-semibold text-first-text-color"></div>
+				</div>
+				<div class="image-viewer-exif-card-items flex flex-col gap-1"></div>
+			</div>
+		</template>
+	</div>
+	<button class="image-viewer-exif-toggle flex items-center gap-2 hidden absolute left-1/2 bottom-6 -translate-x-1/2 rounded-full border border-border-color bg-background-color-transparent-80 px-4 py-2 text-first-text-color backdrop-blur-md transition hover:bg-background-color-transparent-40" type="button" aria-label="EXIF" aria-expanded="false">
+		<i class="fa-solid fa-circle-info text-xs"></i>
+		<span class="text-xs font-semibold uppercase tracking-wider">EXIF</span>
+	</button>
+	<button class="image-viewer-next" type="button" aria-label="Next">
+		<i class="fa-solid fa-chevron-right"></i>
+	</button>
+</div>
+
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    window.swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+
+    window.dispatchEvent(
+        new CustomEvent("redefine:swup:ready", {
+            detail: {
+                swup: window.swup,
+            },
+        }),
+    );
+</script>
+
+
+
+
+	
+<script src="/js/build/main.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+
+	
+</body>
+
+</html>
