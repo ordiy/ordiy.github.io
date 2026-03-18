@@ -4,12 +4,19 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
+      pages: write
+      id-token: write
 
     steps:
       - name: Checkout source
@@ -29,11 +36,103 @@ jobs:
       - name: Build site
         run: npm run build
 
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Validate generated HTML
+        run: |
+          set -euo pipefail
+
+          files=(
+            public/index.html
+            public/404.html
+            public/archives/index.html
+            public/tags/index.html
+            public/categories/index.html
+          )
+
+          for file in "${files[@]}"; do
+            if [ ! -s "$file" ]; then
+              echo "::error file=$file::Generated file is missing or empty"
+              exit 1
+            fi
+
+            if ! grep -q '<!DOCTYPE html>' "$file"; then
+              echo "::error file=$file::Missing <!DOCTYPE html> marker"
+              exit 1
+            fi
+
+            if ! grep -qi '<html' "$file"; then
+              echo "::error file=$file::Missing <html> marker"
+              exit 1
+            fi
+
+            bytes=$(wc -c < "$file")
+            echo "Validated $file (${bytes} bytes)"
+          done
+
+          if ! grep -q "Ordiy" public/index.html; then
+            echo "::error file=public/index.html::Homepage is missing the expected site marker"
+            exit 1
+          fi
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload generated site snapshot
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-          publish_branch: gh-pages
-          enable_jekyll: false
-          commit_message: "ci: deploy ${{ github.sha }}"
+          name: generated-site
+          path: public
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Smoke test deployed homepage
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          set -euo pipefail
+
+          page_url="${PAGE_URL%/}/"
+          response_file="$(mktemp)"
+
+          for attempt in 1 2 3 4 5; do
+            echo "Smoke test attempt ${attempt}: ${page_url}"
+
+            if curl --fail --silent --show-error --location "$page_url" -o "$response_file"; then
+              bytes=$(wc -c < "$response_file")
+
+              if [ "$bytes" -gt 1024 ] \
+                && grep -q '<!DOCTYPE html>' "$response_file" \
+                && grep -q 'Ordiy' "$response_file"; then
+                echo "Smoke test passed (${bytes} bytes)"
+                exit 0
+              fi
+
+              echo "Response missing expected markers (${bytes} bytes)"
+              sed -n '1,40p' "$response_file"
+            fi
+
+            sleep 10
+          done
+
+          echo "::error::Deployed homepage is blank or missing expected markers"
+          exit 1
