@@ -1,22 +1,7 @@
----
-title: 使用 Apache Curator 实现 ZooKeeper 分布式锁
-tags:
-  - ZooKeeper
-  - Curator
-  - distributed-lock
-  - Java
-  - distributed-systems
-excerpt: 使用 Apache ZooKeeper 作为分布式协调服务，结合 Apache Curator 客户端库实现分布式锁，通过 InterProcessMutex 管理锁的获取与释放，并附真实测试日志与主备切换场景分析。
-layout: post
-status: publish
-type: post
-date: 2025-01-01 00:00:00
-updated: 2025-01-01 00:00:00
-categories:
-  - 分布式系统
----
 
-# 使用Curator实现分布式锁
+
+使用Curator实现分布式锁
+=======================
 
 # 核心逻辑
 使用Apache zookeeper作为分布式协调服务，Apache Curator作为Zookeeper的客户端库来实现分布式锁。通过Curator的InterProcessMutex类，可以轻松地创建和管理分布式锁。
