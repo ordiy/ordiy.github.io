@@ -163,3 +163,9 @@ mediumzoom: false
 #     - slug
 #     - tags
 #     - title
+
+# MathJax support
+mathjax:
+  enable: true
+  per_page: true
+  cdn: https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML

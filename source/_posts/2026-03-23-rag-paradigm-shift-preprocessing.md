@@ -3,6 +3,7 @@ title: 从关键词到上下文：RAG 时代的检索范式转移与预处理重
 date: 2026-03-23 13:58:00
 tags: [AI, RAG, NLP, Vector Database]
 categories: [AI_ML]
+mathjax: true
 ---
 
 在构建生产级 AI Agent 或 RAG（检索增强生成）系统时，许多从传统数据开发转型的工程师会面临两个核心疑问：**既然 Elasticsearch（BM25）已经足够快，为什么还需要向量数据库？** 以及，**为什么我们不再像以前在 PyTorch 中处理 NLP 任务那样，进行繁琐的“去停用词”和“词干还原”？**
@@ -24,7 +25,9 @@ categories: [AI_ML]
 ### 2. 工业界的新标准：混合搜索 (Hybrid Search)
 单纯的向量检索容易产生“语义幻觉”。目前主流的架构是使用 **RRF (Reciprocal Rank Fusion)** 算法将两者的结果融合：
 
-$$RRFscore(d) = \sum_{r \in R} \frac{1}{k + rank(r, d)}$$
+$$
+RRFscore(d) = \sum_{r \in R} \frac{1}{k + rank(r, d)}
+$$
 
 **Python 实现：混合检索融合逻辑**
 ```python
