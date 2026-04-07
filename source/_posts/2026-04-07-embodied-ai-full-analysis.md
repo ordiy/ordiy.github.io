@@ -18,7 +18,7 @@ categories:
 ### 核心基石：从“说”到“做”的跨越
 在这一领域，两篇里程碑式的研究定义了当下的技术边界：
 * **PaLM-SayCan (Google Robotics):** 
- * **核心逻辑：** 提出 **$P(\text{Say}) \times P(\text{Can})$** 公式。
+ * **核心逻辑：** 提出 $P(\text{Say}) \times P(\text{Can})$ 公式。
  * **解读：** 语言模型（Say）提供常识规划，底层技能库（Can）判断环境可行性。它解决了“符号接地”问题，让 AI 的大脑与现实环境完成了第一次深度对齐。
 * **$\pi_0$ (Physical Intelligence):**
  * **核心逻辑：** 基于 **Flow Matching** 的大规模 **VLA (Vision-Language-Action)** 模型。
