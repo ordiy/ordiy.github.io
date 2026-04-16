@@ -1,5 +1,5 @@
 ---
-title: 当 AI Agent 开始写代码，工程师的工作在往哪走？
+title: 当 AI Agent自动化后，工程师的工作在往哪走？
 date: 2026-04-16 10:30:00
 tags:
   - AI Agents
@@ -13,7 +13,7 @@ categories:
   - AI Engineering
 ---
 
-# 当 AI Agent 开始写代码，工程师的工作在往哪走？
+# 当 AI Agent自动化后，工程师的工作在往哪走？
 
 > 我们用同一个模型（gemma-4-31b-it）驱动了两套 AI 编码工具，让它们从零构建一个完整的 Streamlit 股票分析应用。测试结束后，我得出了一个让自己意外的结论——真正决定生产力的，不是模型，是 harness。
 
@@ -21,7 +21,7 @@ categories:
 
 ## 一、一次意外的实验
 
-几周前，我做了一个对比实验：用相同的模型（Google Gemma-4-31B），分别驱动 **aider** 和 **opencode** 两套 AI 编码工具，完成五轮渐进式任务——从脚手架搭建、功能迭代，到 bug 修复，再到复杂数据计算。
+几天前，我做了一个对比实验：用相同的模型（Google Gemma-4-31B），分别驱动 **aider** 和 **opencode** 两套 AI 编码工具，完成五轮渐进式任务——从脚手架搭建、功能迭代，到 bug 修复，再到复杂数据计算。
 
 任务对象是一个真实的 Python Web 项目：类似 [StockPeers](https://demo-stockpeers.streamlit.app) 的股票同伴分析仪表盘，包含归一化走势图、MA 均线叠加、相关性热力图、绩效汇总表。
 
