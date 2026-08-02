@@ -220,7 +220,7 @@ mvn archetype:generate                                  \
   -DarchetypeGroupId=io.github.ordiy.flink.udf                \
   -DarchetypeArtifactId=flink-udf-java-quickstarter         \
   -DarchetypeVersion=1.0.1                \
-  -DgroupId=com.qiliangjia.data.flink \
+  -DgroupId=com.xxx.data.flink \
   -DartifactId=flink-udf-ip-get-geo-info-by-read-localfile \
   -Dversion=1.0.0-flink-1.17.2
   

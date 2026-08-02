@@ -59,7 +59,7 @@ http {
 ```
 日志:
 ```js
-129.80.59.27 - app_data09 [2025-06-03T03:52:23+00:00] file-upload.data-oci.qiliangjia.com  22 da52888533afb04512bf8c55044a4816 "GET /data_v2/data_v1/ip_geo_info/1.1.1.1 HTTP/1.1" /data_v2/data_v1/ip_geo_info/1.1.1.1  306  200 [application/json]  343 "" "curl/8.5.0" "{\"name\":\"hello_world\"}" ""
+129.80.59.27 - app_data09 [2025-06-03T03:52:23+00:00] file-upload.data-oci.xxx.com  22 da52888533afb04512bf8c55044a4816 "GET /data_v2/data_v1/ip_geo_info/1.1.1.1 HTTP/1.1" /data_v2/data_v1/ip_geo_info/1.1.1.1  306  200 [application/json]  343 "" "curl/8.5.0" "{\"name\":\"hello_world\"}" ""
 
 ```
 
@@ -158,7 +158,7 @@ log 内容:
 Request URI: /data_v2/data_v1/ip_geo_info/1.1.1.1
 Request Headers:
 accept: */*
-host: file-upload.data-oci.qiliangjia.com
+host: file-upload.data-oci.xxx.com
 content-length: 22
 authorization: Basic cWxqX2RhdGEwOTpwd2RRTEpEYXRhMDkyMDI0MjliYzJmNmJhZjkw
 content-type: application/json
@@ -172,7 +172,7 @@ content-type: application/json
 transfer-encoding: chunked
 content-disposition: inline;filename=f.txt
 Response Body: {"lat":null,"lon":null,"country_code":null,"city":null,"geo_id":""}
- while sending to client, client: 129.80.59.27, server: file-upload.data-oci.qiliangjia.com, request: "GET /data_v2/data_v1/ip_geo_info/1.1.1.1 HTTP/1.1", upstream: "http://10.21.100.117:18901/data_v1/ip_geo_info/1.1.1.1", host: "file-upload.data-oci.qiliangjia.com"
+ while sending to client, client: 129.80.59.27, server: file-upload.data-oci.xxx.com, request: "GET /data_v2/data_v1/ip_geo_info/1.1.1.1 HTTP/1.1", upstream: "http://10.21.100.117:18901/data_v1/ip_geo_info/1.1.1.1", host: "file-upload.data-oci.xxx.com"
 ```
 
 # filebeat 同步数据到MQ

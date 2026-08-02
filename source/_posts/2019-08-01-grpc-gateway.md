@@ -85,7 +85,7 @@ iPortal控制台需要实现对用户授权（表权限、API、频次限制)、
 ![image](https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20200713192114.png)
 
 #### 服务发现与负载均衡
-综合比对了eureka,envovy方式后，基于易用性和团队技术储备选择了使用`eureka`。并结合极光自研发的微服务管理平台可以实现对服务的自动监控、告警、节点平滑上下线等功能。
+综合比对了eureka,envovy方式后，基于易用性和团队技术储备选择了使用`eureka`。并结合xxx自研发的微服务管理平台可以实现对服务的自动监控、告警、节点平滑上下线等功能。
 ![image](https://raw.githubusercontent.com/ordiy/study_notes/master/res/image/node_image/blog_20200713192905.png)
 
 gateway进行请求转发的过程示意图：
